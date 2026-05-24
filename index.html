@@ -1,0 +1,143 @@
+<div id="modalPost" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn" onclick="toggleModal()">&times;</span>
+            <strong style="font-size: 1.2rem;">Nova Ideia 💡</strong>
+        </div>
+        
+        <div class="mood-selector">
+            <div class="mood-chip active" onclick="selectMood(this)">🤔 Opinião</div>
+            <div class="mood-chip" onclick="selectMood(this)">🚀 Ideia</div>
+            <div class="mood-chip" onclick="selectMood(this)">❓ Dúvida</div>
+        </div>
+
+        <textarea id="postText" placeholder="O que você está pensando hoje, Mateus? Lembre-se: sua voz tem poder!"></textarea>
+        
+        <div class="modal-footer">
+            <button class="btn-post" onclick="publicarPost()">Lançar Voz</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* --- Estilos do Modal (Interface de Escrita) --- */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        align-items: flex-end; /* Abre de baixo para cima no mobile */
+    }
+
+    .modal-content {
+        background-color: white;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        border-radius: 20px 20px 0 0;
+        padding: 20px;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .close-btn { font-size: 28px; cursor: pointer; color: #666; }
+
+    .mood-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .mood-chip {
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 2px solid var(--gray-light);
+        font-size: 0.9rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: 0.3s;
+    }
+
+    .mood-chip.active {
+        background: var(--turquesa);
+        color: white;
+        border-color: var(--turquesa);
+    }
+
+    textarea {
+        width: 100%;
+        height: 150px;
+        border: none;
+        outline: none;
+        font-size: 1.1rem;
+        resize: none;
+        color: var(--text);
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 15px;
+        border-top: 1px solid #EEE;
+    }
+
+    .btn-post {
+        background: var(--coral);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    /* Ajuste no botão (+) da barra inferior para chamar a função */
+    .nav-item-add {
+        font-size: 2rem !important;
+        color: var(--coral) !important;
+    }
+</style>
+
+<script>
+    function toggleModal() {
+        const modal = document.getElementById('modalPost');
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    // Troca o estilo do botão da barra inferior para abrir o modal
+    document.querySelector('.bottom-nav .nav-item:nth-child(3)').onclick = toggleModal;
+
+    function selectMood(el) {
+        document.querySelectorAll('.mood-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function publicarPost() {
+        const texto = document.getElementById('postText').value;
+        if(texto.trim() === "") {
+            alert("Escreva algo antes de lançar sua voz!");
+            return;
+        }
+        
+        alert("Incrível! Sua voz foi lançada no feed. +15 XP de Criatividade!");
+        toggleModal();
+        document.getElementById('postText').value = ""; // Limpa o campo
+    }
+</script>

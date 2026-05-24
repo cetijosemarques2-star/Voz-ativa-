@@ -25,11 +25,11 @@
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray);
         }
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--turquesa); text-decoration:none; }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--turquesa); }
         .logo span { color: var(--coral); }
 
         /* --- Telas --- */
-        .tela { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
+        .tela { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.2s ease; }
         .tela.ativa { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -37,9 +37,9 @@
         .stories {
             background: var(--white); padding: 15px; display: flex;
             gap: 15px; overflow-x: auto; border-bottom: 1px solid var(--gray);
+            scrollbar-width: none;
         }
-        .story { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; transition: transform 0.2s; }
-        .story:active { transform: scale(0.9); }
+        .story { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
         .circle {
             width: 65px; height: 65px; border-radius: 50%;
             background: linear-gradient(45deg, var(--amarelo), var(--coral));
@@ -48,11 +48,11 @@
         .inner { background: white; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
         /* --- Posts --- */
-        .post { background: var(--white); border: 1px solid var(--gray); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .post { background: var(--white); border: 1px solid var(--gray); border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
         .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--turquesa); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .post-content { padding: 30px; text-align: center; font-size: 1.1rem; font-weight: 600; }
-        .post-footer { padding: 12px; border-top: 1px solid #f0f0f0; font-size: 0.9rem; }
+        .post-content { padding: 30px; text-align: center; font-size: 1.1rem; font-weight: 600; line-height: 1.4; color: #2A9D8F; }
+        .post-footer { padding: 12px; border-top: 1px solid #f0f0f0; font-size: 0.8rem; color: #666; }
 
         /* --- Nav Inferior --- */
         nav {
@@ -64,144 +64,128 @@
         .nav-btn { font-size: 1.6rem; cursor: pointer; border: none; background: none; }
         .btn-add { font-size: 2.2rem; color: var(--coral); transform: translateY(-5px); }
 
-        /* --- Modal Estilizado --- */
+        /* --- Modais --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; position: relative; }
-        .modal-luma-head { font-size: 3rem; margin-bottom: 15px; }
-        .btn-acao { width: 100%; padding: 15px; background: var(--turquesa); color: white; border: none; border-radius: 12px; font-weight: 800; margin-top: 15px; cursor: pointer; }
-        
-        textarea { width: 100%; height: 120px; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin: 15px 0; outline: none; font-size: 1rem; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; }
+        .btn-acao { width: 100%; padding: 15px; background: var(--turquesa); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        textarea { width: 100%; height: 120px; border: 1px solid #eee; padding: 15px; border-radius: 10px; margin: 15px 0; outline: none; font-size: 1rem; resize: none; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">VOZ<span>ATIVA</span></div>
-    <div>🔥 <span id="streakCount">7</span> Dias</div>
+    <div>🔥 7 Dias</div>
 </header>
 
 <section id="home" class="tela ativa">
     <div class="stories" style="margin: -15px -15px 15px -15px;">
-        <div class="story" onclick="abrirLuma('dica')">
-            <div class="circle"><div class="inner">✨</div></div>
-            <span>Luma IA</span>
-        </div>
-        <div class="story" onclick="abrirLuma('missao')">
-            <div class="circle"><div class="inner">🎤</div></div>
-            <span>Desafio</span>
-        </div>
-        <div class="story" onclick="abrirLuma('ideia')">
-            <div class="circle"><div class="inner">💡</div></div>
-            <span>Ideias</span>
-        </div>
+        <div class="story" onclick="abrirLuma('✨ Dica da Luma: Acredite no poder da sua comunicação!')"><div class="circle"><div class="inner">✨</div></div><span>Luma IA</span></div>
+        <div class="story" onclick="abrirLuma('🎤 Desafio: O que você mudaria na sua escola?')"><div class="circle"><div class="inner">🎤</div></div><span>Desafio</span></div>
+        <div class="story" onclick="abrirLuma('💡 Ideia: Use a criatividade para resolver um problema hoje!')"><div class="circle"><div class="inner">💡</div></div><span>Ideias</span></div>
     </div>
-    
     <div id="feedPosts">
-        <article class="post">
-            <div class="post-header"><div class="avatar">L</div> <span>Luma IA</span></div>
-            <div class="post-content" style="background: #E8FBF9; color: #2A9D8F;">
-                Qual é a sua maior meta para essa semana? 🚀
-            </div>
-            <div class="post-footer"><b>vozativa</b> Comente sua meta e ganhe XP!</div>
-        </article>
+        <p style="text-align: center; color: #999; margin-top: 20px;">Ouvindo as vozes da galera...</p>
     </div>
 </section>
 
-<section id="buscar" class="tela"><h2>Explorar</h2><p>Pesquise novos temas de debate...</p></section>
-<section id="evolucao" class="tela"><h2>Seu Progresso</h2><p>Nível 5: Explorador de Ideias</p></section>
-<section id="perfil" class="tela"><h2>Seu Perfil</h2><p>Mateus Silva</p></section>
+<section id="buscar" class="tela"><h2>Explorar</h2><p style="margin-top:10px; color:#666;">Encontre debates interessantes.</p></section>
+<section id="evolucao" class="tela"><h2>Seu Progresso</h2><p style="margin-top:10px; color:#666;">Nível 5: Explorador de Voz</p></section>
+<section id="perfil" class="tela"><h2>Perfil</h2><p style="margin-top:10px; color:#666;">Olá, Mateus Silva!</p></section>
 
 <nav>
     <button class="nav-btn" onclick="mudarTela('home')">🏠</button>
     <button class="nav-btn" onclick="mudarTela('buscar')">🔍</button>
-    <button class="nav-btn btn-add" onclick="abrirModalPost()">+</button>
+    <button class="nav-btn btn-add" id="btnAbrirModal">+</button>
     <button class="nav-btn" onclick="mudarTela('evolucao')">📈</button>
     <button class="nav-btn" onclick="mudarTela('perfil')">👤</button>
 </nav>
 
-<div id="modalLuma" class="modal">
-    <div class="modal-content">
-        <div class="modal-luma-head">✨</div>
-        <h2 id="lumaTitulo">Dica da Luma</h2>
-        <p id="lumaTexto" style="margin: 15px 0; line-height: 1.5; color: #555;">...</p>
-        <button class="btn-acao" onclick="fecharModais()">Entendido!</button>
-    </div>
-</div>
-
 <div id="modalPost" class="modal">
     <div class="modal-content">
         <h3>Lançar sua Voz 📢</h3>
-        <textarea id="textoPost" placeholder="Escreva sua ideia ou opinião..."></textarea>
-        <button class="btn-acao" onclick="publicar()">Publicar agora</button>
-        <p onclick="fecharModais()" style="margin-top:15px; color:#999; cursor:pointer;">Cancelar</p>
+        <textarea id="textoPost" placeholder="O que você está pensando agora?"></textarea>
+        <button class="btn-acao" id="btnPublicar">Publicar no Feed</button>
+        <p onclick="fecharModal()" style="margin-top:15px; color:#999; cursor:pointer;">Cancelar</p>
     </div>
 </div>
 
-<script>
-    // Função para navegar entre as telas
-    function mudarTela(id) {
-        document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
-        document.getElementById(id).classList.add('ativa');
-    }
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Função para os Stories da Luma
-    function abrirLuma(tipo) {
-        const modal = document.getElementById('modalLuma');
-        const titulo = document.getElementById('lumaTitulo');
-        const texto = document.getElementById('lumaTexto');
-        const cabeca = document.querySelector('.modal-luma-head');
+  // Suas credenciais
+  const firebaseConfig = {
+    apiKey: "AIzaSyAsq5o-D_HKf8EJ5j5fJ_76Wo8yk7TVWu0",
+    authDomain: "voz-ativa-50ac8.firebaseapp.com",
+    databaseURL: "https://voz-ativa-50ac8-default-rtdb.firebaseio.com",
+    projectId: "voz-ativa-50ac8",
+    storageBucket: "voz-ativa-50ac8.firebasestorage.app",
+    messagingSenderId: "1019643084772",
+    appId: "1:1019643084772:web:7ad55417a546582a4751f1",
+    measurementId: "G-YFVGYX3F7S"
+  };
 
-        if(tipo === 'dica') {
-            cabeca.innerText = "✨";
-            titulo.innerText = "Dica da Luma";
-            texto.innerText = "Para falar bem em público, tente manter as mãos visíveis e respire fundo antes de começar. Você é capaz!";
-        } else if(tipo === 'missao') {
-            cabeca.innerText = "🎤";
-            titulo.innerText = "Desafio do Dia";
-            texto.innerText = "Poste uma opinião curta sobre: 'O que a escola deveria ensinar e não ensina?'. Vale 30 XP!";
-        } else if(tipo === 'ideia') {
-            cabeca.innerText = "💡";
-            titulo.innerText = "Chuva de Ideias";
-            texto.innerText = "E se você criasse um projeto para ajudar o meio ambiente no seu bairro? Use a caixa de texto para rascunhar!";
-        }
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const postsCol = collection(db, "posts");
 
-        modal.style.display = 'flex';
-    }
+  // Abrir Modal
+  document.getElementById('btnAbrirModal').onclick = () => {
+    document.getElementById('modalPost').style.display = 'flex';
+  };
 
-    // Modal de Postagem
-    function abrirModalPost() {
-        document.getElementById('modalPost').style.display = 'flex';
-    }
+  // Fechar Modal
+  window.fecharModal = () => {
+    document.getElementById('modalPost').style.display = 'none';
+  };
 
-    function fecharModais() {
-        document.getElementById('modalLuma').style.display = 'none';
-        document.getElementById('modalPost').style.display = 'none';
-    }
+  // Publicar no Firestore
+  document.getElementById('btnPublicar').onclick = async () => {
+    const texto = document.getElementById('textoPost').value;
+    if(!texto.trim()) return alert("Escreva algo antes de postar!");
 
-    // Publicar Post
-    function publicar() {
-        const texto = document.getElementById('textoPost').value;
-        if(texto.trim() === "") return alert("Escreva algo primeiro!");
-
-        const feed = document.getElementById('feedPosts');
-        const post = document.createElement('article');
-        post.className = 'post';
-        post.innerHTML = `
-            <div class="post-header"><div class="avatar">M</div> <span>Você</span></div>
-            <div class="post-content" style="background:#FFF9E6;">${texto}</div>
-            <div class="post-footer"><b>Agora mesmo</b> • +10 XP de Voz</div>
-        `;
-        feed.prepend(post);
+    try {
+        await addDoc(postsCol, {
+            texto: texto,
+            autor: "Mateus Silva",
+            data: serverTimestamp()
+        });
         document.getElementById('textoPost').value = "";
-        fecharModais();
-        mudarTela('home');
+        fecharModal();
+    } catch (e) {
+        alert("Erro ao conectar com o banco de dados. Verifique se o Firestore está em modo de teste.");
     }
+  };
 
-    // Fechar modal clicando fora dele
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') fecharModais();
-    }
+  // Ler do Firestore em Tempo Real
+  const q = query(postsCol, orderBy("data", "desc"));
+  onSnapshot(q, (snapshot) => {
+    const feed = document.getElementById('feedPosts');
+    feed.innerHTML = "";
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+        const postHTML = `
+            <article class="post">
+                <div class="post-header"><div class="avatar">${data.autor.charAt(0)}</div> <span>${data.autor}</span></div>
+                <div class="post-content" style="background:#E8FBF9;">${data.texto}</div>
+                <div class="post-footer">Postado agora • +10 XP</div>
+            </article>`;
+        feed.innerHTML += postHTML;
+    });
+  });
+
+  // Funções Visuais
+  window.mudarTela = (id) => {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(id).classList.add('ativa');
+  };
+
+  window.abrirLuma = (msg) => {
+    alert(msg);
+  };
 </script>
 
 </body>
-</html>
+    </html>
+    

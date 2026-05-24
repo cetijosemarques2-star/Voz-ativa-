@@ -17,59 +17,40 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
         body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 
         /* --- Header --- */
         header {
-            background: var(--white);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--gray);
+            background: var(--white); padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray);
         }
-
         .logo { font-weight: 800; font-size: 1.5rem; color: var(--turquesa); }
         .logo span { color: var(--coral); }
 
+        /* --- Telas (Seções) --- */
+        .tela { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
+        .tela.ativa { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         /* --- Stories --- */
         .stories {
-            background: var(--white);
-            padding: 15px;
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            border-bottom: 1px solid var(--gray);
+            background: var(--white); padding: 15px; display: flex;
+            gap: 15px; overflow-x: auto; border-bottom: 1px solid var(--gray);
         }
-
         .story { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
         .circle {
             width: 60px; height: 60px; border-radius: 50%;
             background: linear-gradient(45deg, var(--amarelo), var(--coral));
             padding: 3px; margin-bottom: 5px;
         }
-        .inner { 
-            background: white; width: 100%; height: 100%; 
-            border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; font-size: 1.2rem;
-        }
+        .inner { background: white; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
 
-        /* --- Feed --- */
-        .feed { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-        .post {
-            background: var(--white);
-            border: 1px solid var(--gray);
-            border-radius: 12px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+        /* --- Posts --- */
+        .post { background: var(--white); border: 1px solid var(--gray); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
         .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
         .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--turquesa); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .post-content { padding: 30px; text-align: center; font-size: 1.2rem; font-weight: 600; background: #fff9e6; }
+        .post-content { padding: 30px; text-align: center; font-size: 1.2rem; font-weight: 600; }
         .post-footer { padding: 12px; border-top: 1px solid #f0f0f0; }
 
         /* --- Barra de Navegação --- */
@@ -79,75 +60,108 @@
             justify-content: space-around; padding: 15px;
             border-top: 1px solid var(--gray);
         }
-        .nav-btn { font-size: 1.5rem; cursor: pointer; border: none; background: none; }
+        .nav-btn { font-size: 1.5rem; cursor: pointer; border: none; background: none; transition: 0.2s; }
+        .nav-btn:active { transform: scale(1.2); }
         .btn-add { font-size: 2.2rem; color: var(--coral); transform: translateY(-5px); }
 
-        /* --- Modal de Postagem --- */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.5);
-            z-index: 1000; align-items: flex-end;
-        }
-        .modal-content {
-            background: white; width: 100%; max-width: 500px;
-            margin: 0 auto; border-radius: 20px 20px 0 0;
-            padding: 20px; animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
+        /* --- Estilos de Evolução e Perfil --- */
+        .stats-box { background: var(--white); padding: 20px; border-radius: 15px; border: 2px solid var(--amarelo); margin-bottom: 15px; }
+        .progresso-bar { width: 100%; height: 15px; background: #eee; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .progresso-fill { width: 65%; height: 100%; background: var(--turquesa); }
+
+        /* --- Modal --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 20px 20px 0 0; padding: 20px; }
         textarea { width: 100%; height: 120px; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin: 15px 0; outline: none; font-size: 1rem; }
-        
-        .btn-send { width: 100%; padding: 12px; background: var(--turquesa); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-send { width: 100%; padding: 12px; background: var(--turquesa); color: white; border: none; border-radius: 10px; font-weight: 800; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">VOZ<span>ATIVA</span></div>
-    <div>🔥 7 Dias</div>
+    <div id="streakDisplay">🔥 7 Dias</div>
 </header>
 
-<div class="stories">
-    <div class="story"><div class="circle"><div class="inner">✨</div></div><span>Luma IA</span></div>
-    <div class="story"><div class="circle"><div class="inner">🎤</div></div><span>Desafio</span></div>
-    <div class="story"><div class="circle"><div class="inner">💡</div></div><span>Ideias</span></div>
-</div>
+<section id="home" class="tela ativa">
+    <div class="stories" style="margin: -15px -15px 15px -15px;">
+        <div class="story"><div class="circle"><div class="inner">✨</div></div><span>Luma IA</span></div>
+        <div class="story"><div class="circle"><div class="inner">🎤</div></div><span>Desafio</span></div>
+        <div class="story"><div class="circle"><div class="inner">💡</div></div><span>Ideias</span></div>
+    </div>
+    <div id="feedPosts">
+        <article class="post">
+            <div class="post-header"><div class="avatar">L</div> <span>Luma IA</span></div>
+            <div class="post-content" style="background: var(--turquesa); color: white;">
+                Qual é a sua maior meta para essa semana? 🚀
+            </div>
+            <div class="post-footer"><b>vozativa</b> Comente sua meta e ganhe XP!</div>
+        </article>
+    </div>
+</section>
 
-<main class="feed" id="feedPosts">
-    <article class="post">
-        <div class="post-header"><div class="avatar">L</div> <span>Luma IA</span></div>
-        <div class="post-content" style="background: var(--turquesa); color: white;">
-            Qual é a sua maior meta para essa semana? 🚀
-        </div>
-        <div class="post-footer"><b>vozativa</b> Comente sua meta e ganhe XP!</div>
-    </article>
-</main>
+<section id="buscar" class="tela">
+    <h2>Explorar Temas</h2>
+    <input type="text" placeholder="Pesquisar debates ou amigos..." style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; margin:15px 0;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span style="background:#eee; padding:8px 15px; border-radius:20px;">#Futuro</span>
+        <span style="background:#eee; padding:8px 15px; border-radius:20px;">#Escola</span>
+        <span style="background:#eee; padding:8px 15px; border-radius:20px;">#Criatividade</span>
+    </div>
+</section>
+
+<section id="evolucao" class="tela">
+    <h2>Sua Jornada</h2>
+    <div class="stats-box">
+        <strong>Nível 5 - Explorador</strong>
+        <div class="progresso-bar"><div class="progresso-fill"></div></div>
+        <p style="font-size:0.8rem; margin-top:5px;">Faltam 350 XP para o Nível 6</p>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="stats-box" style="text-align:center;">🏆<br>3 Medalhas</div>
+        <div class="stats-box" style="text-align:center;">💬<br>12 Debates</div>
+    </div>
+</section>
+
+<section id="perfil" class="tela">
+    <div style="text-align:center; padding:20px;">
+        <div class="avatar" style="width:80px; height:80px; font-size:2rem; margin: 0 auto;">M</div>
+        <h2 style="margin-top:10px;">Mateus Silva</h2>
+        <p style="color:#666;">"Sempre em busca de novos desafios!"</p>
+        <button style="margin-top:15px; padding:8px 20px; border-radius:20px; border:1px solid #ddd; background:white;">Editar Perfil</button>
+    </div>
+</section>
 
 <nav>
-    <button class="nav-btn">🏠</button>
-    <button class="nav-btn">🔍</button>
+    <button class="nav-btn" onclick="mudarTela('home')">🏠</button>
+    <button class="nav-btn" onclick="mudarTela('buscar')">🔍</button>
     <button class="nav-btn btn-add" onclick="abrirModal()">+</button>
-    <button class="nav-btn">📈</button>
-    <button class="nav-btn">👤</button>
+    <button class="nav-btn" onclick="mudarTela('evolucao')">📈</button>
+    <button class="nav-btn" onclick="mudarTela('perfil')">👤</button>
 </nav>
 
 <div id="modal" class="modal">
     <div class="modal-content">
         <h3>Lançar minha Voz 📢</h3>
-        <textarea id="textoPost" placeholder="Escreva sua ideia ou opinião aqui..."></textarea>
+        <textarea id="textoPost" placeholder="Escreva sua ideia aqui..."></textarea>
         <button class="btn-send" onclick="publicar()">Publicar no Feed</button>
-        <button onclick="fecharModal()" style="width: 100%; background: none; border: none; margin-top: 10px; color: #666; cursor: pointer;">Cancelar</button>
+        <button onclick="fecharModal()" style="width:100%; border:none; background:none; margin-top:10px; color:#666;">Cancelar</button>
     </div>
 </div>
 
 <script>
-    function abrirModal() {
-        document.getElementById('modal').style.display = 'flex';
+    // Função para trocar de tela
+    function mudarTela(idTela) {
+        // Esconde todas as telas
+        document.querySelectorAll('.tela').forEach(tela => {
+            tela.classList.remove('ativa');
+        });
+        // Mostra a tela clicada
+        document.getElementById(idTela).classList.add('ativa');
     }
 
-    function fecharModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
+    function abrirModal() { document.getElementById('modal').style.display = 'flex'; }
+    function fecharModal() { document.getElementById('modal').style.display = 'none'; }
 
     function publicar() {
         const texto = document.getElementById('textoPost').value;
@@ -157,14 +171,15 @@
         const novoPost = document.createElement('article');
         novoPost.className = 'post';
         novoPost.innerHTML = `
-            <div class="post-header"><div class="avatar">M</div> <span>Você (Mateus)</span></div>
-            <div class="post-content">${texto}</div>
-            <div class="post-footer"><b>Acabou de postar</b> • +10 XP de Voz</div>
+            <div class="post-header"><div class="avatar">M</div> <span>Você</span></div>
+            <div class="post-content" style="background:#fff9e6;">${texto}</div>
+            <div class="post-footer"><b>Agora mesmo</b> • +10 XP</div>
         `;
         
-        feed.prepend(novoPost); // Coloca o post no topo
+        feed.prepend(novoPost);
         document.getElementById('textoPost').value = "";
         fecharModal();
+        mudarTela('home'); // Volta para o feed após postar
     }
 </script>
 

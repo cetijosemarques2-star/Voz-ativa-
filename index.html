@@ -1,143 +1,172 @@
-<div id="modalPost" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close-btn" onclick="toggleModal()">&times;</span>
-            <strong style="font-size: 1.2rem;">Nova Ideia 💡</strong>
-        </div>
-        
-        <div class="mood-selector">
-            <div class="mood-chip active" onclick="selectMood(this)">🤔 Opinião</div>
-            <div class="mood-chip" onclick="selectMood(this)">🚀 Ideia</div>
-            <div class="mood-chip" onclick="selectMood(this)">❓ Dúvida</div>
-        </div>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voz Ativa | Sua ideia tem poder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amarelo: #FFD23F;
+            --turquesa: #2EC4B6;
+            --coral: #FF9F1C;
+            --bg: #F9FAFB;
+            --white: #FFFFFF;
+            --text: #2D3436;
+            --gray: #dbdbdb;
+        }
 
-        <textarea id="postText" placeholder="O que você está pensando hoje, Mateus? Lembre-se: sua voz tem poder!"></textarea>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+
+        /* --- Header --- */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--turquesa); }
+        .logo span { color: var(--coral); }
+
+        /* --- Stories --- */
+        .stories {
+            background: var(--white);
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .story { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
+        .circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(45deg, var(--amarelo), var(--coral));
+            padding: 3px; margin-bottom: 5px;
+        }
+        .inner { 
+            background: white; width: 100%; height: 100%; 
+            border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; font-size: 1.2rem;
+        }
+
+        /* --- Feed --- */
+        .feed { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+        .post {
+            background: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--turquesa); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        .post-content { padding: 30px; text-align: center; font-size: 1.2rem; font-weight: 600; background: #fff9e6; }
+        .post-footer { padding: 12px; border-top: 1px solid #f0f0f0; }
+
+        /* --- Barra de Navegação --- */
+        nav {
+            position: fixed; bottom: 0; width: 100%;
+            background: var(--white); display: flex;
+            justify-content: space-around; padding: 15px;
+            border-top: 1px solid var(--gray);
+        }
+        .nav-btn { font-size: 1.5rem; cursor: pointer; border: none; background: none; }
+        .btn-add { font-size: 2.2rem; color: var(--coral); transform: translateY(-5px); }
+
+        /* --- Modal de Postagem --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+            z-index: 1000; align-items: flex-end;
+        }
+        .modal-content {
+            background: white; width: 100%; max-width: 500px;
+            margin: 0 auto; border-radius: 20px 20px 0 0;
+            padding: 20px; animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        <div class="modal-footer">
-            <button class="btn-post" onclick="publicarPost()">Lançar Voz</button>
+        textarea { width: 100%; height: 120px; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin: 15px 0; outline: none; font-size: 1rem; }
+        
+        .btn-send { width: 100%; padding: 12px; background: var(--turquesa); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">VOZ<span>ATIVA</span></div>
+    <div>🔥 7 Dias</div>
+</header>
+
+<div class="stories">
+    <div class="story"><div class="circle"><div class="inner">✨</div></div><span>Luma IA</span></div>
+    <div class="story"><div class="circle"><div class="inner">🎤</div></div><span>Desafio</span></div>
+    <div class="story"><div class="circle"><div class="inner">💡</div></div><span>Ideias</span></div>
+</div>
+
+<main class="feed" id="feedPosts">
+    <article class="post">
+        <div class="post-header"><div class="avatar">L</div> <span>Luma IA</span></div>
+        <div class="post-content" style="background: var(--turquesa); color: white;">
+            Qual é a sua maior meta para essa semana? 🚀
         </div>
+        <div class="post-footer"><b>vozativa</b> Comente sua meta e ganhe XP!</div>
+    </article>
+</main>
+
+<nav>
+    <button class="nav-btn">🏠</button>
+    <button class="nav-btn">🔍</button>
+    <button class="nav-btn btn-add" onclick="abrirModal()">+</button>
+    <button class="nav-btn">📈</button>
+    <button class="nav-btn">👤</button>
+</nav>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3>Lançar minha Voz 📢</h3>
+        <textarea id="textoPost" placeholder="Escreva sua ideia ou opinião aqui..."></textarea>
+        <button class="btn-send" onclick="publicar()">Publicar no Feed</button>
+        <button onclick="fecharModal()" style="width: 100%; background: none; border: none; margin-top: 10px; color: #666; cursor: pointer;">Cancelar</button>
     </div>
 </div>
 
-<style>
-    /* --- Estilos do Modal (Interface de Escrita) --- */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5);
-        align-items: flex-end; /* Abre de baixo para cima no mobile */
-    }
-
-    .modal-content {
-        background-color: white;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-        border-radius: 20px 20px 0 0;
-        padding: 20px;
-        animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-    }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .close-btn { font-size: 28px; cursor: pointer; color: #666; }
-
-    .mood-selector {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        overflow-x: auto;
-        padding-bottom: 5px;
-    }
-
-    .mood-chip {
-        padding: 8px 16px;
-        border-radius: 20px;
-        border: 2px solid var(--gray-light);
-        font-size: 0.9rem;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: 0.3s;
-    }
-
-    .mood-chip.active {
-        background: var(--turquesa);
-        color: white;
-        border-color: var(--turquesa);
-    }
-
-    textarea {
-        width: 100%;
-        height: 150px;
-        border: none;
-        outline: none;
-        font-size: 1.1rem;
-        resize: none;
-        color: var(--text);
-    }
-
-    .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        padding-top: 15px;
-        border-top: 1px solid #EEE;
-    }
-
-    .btn-post {
-        background: var(--coral);
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 12px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    /* Ajuste no botão (+) da barra inferior para chamar a função */
-    .nav-item-add {
-        font-size: 2rem !important;
-        color: var(--coral) !important;
-    }
-</style>
-
 <script>
-    function toggleModal() {
-        const modal = document.getElementById('modalPost');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    function abrirModal() {
+        document.getElementById('modal').style.display = 'flex';
     }
 
-    // Troca o estilo do botão da barra inferior para abrir o modal
-    document.querySelector('.bottom-nav .nav-item:nth-child(3)').onclick = toggleModal;
-
-    function selectMood(el) {
-        document.querySelectorAll('.mood-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
+    function fecharModal() {
+        document.getElementById('modal').style.display = 'none';
     }
 
-    function publicarPost() {
-        const texto = document.getElementById('postText').value;
-        if(texto.trim() === "") {
-            alert("Escreva algo antes de lançar sua voz!");
-            return;
-        }
+    function publicar() {
+        const texto = document.getElementById('textoPost').value;
+        if(texto.trim() === "") return alert("Escreva algo!");
+
+        const feed = document.getElementById('feedPosts');
+        const novoPost = document.createElement('article');
+        novoPost.className = 'post';
+        novoPost.innerHTML = `
+            <div class="post-header"><div class="avatar">M</div> <span>Você (Mateus)</span></div>
+            <div class="post-content">${texto}</div>
+            <div class="post-footer"><b>Acabou de postar</b> • +10 XP de Voz</div>
+        `;
         
-        alert("Incrível! Sua voz foi lançada no feed. +15 XP de Criatividade!");
-        toggleModal();
-        document.getElementById('postText').value = ""; // Limpa o campo
+        feed.prepend(novoPost); // Coloca o post no topo
+        document.getElementById('textoPost').value = "";
+        fecharModal();
     }
 </script>
+
+</body>
+</html>

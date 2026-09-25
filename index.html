@@ -9,19 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --v-dark: #188607;
-      --v-bright: #40B615;
-      --r-dark: #230A80;
-      --r-mid: #4E22A5;
-      --blue-accent: #64C6ED;
-      --gold-accent: #F1DC22;
-      --bg-light: #F8FAF7;
+      --navy-dark: #0D1B2A;
+      --navy-mid: #1B263B;
+      --navy-light: #415A77;
+      --accent-blue: #0077B6;
+      --accent-cyan: #00B4D8;
+      --bg-light: #F4F7F6;
       --card-bg: #FFFFFF;
-      --text-main: #1A1D20;
-      --text-muted: #6C757D;
+      --text-main: #1D2D44;
+      --text-muted: #6C7A89;
       --border-color: #E2E8F0;
-      --grad-main: linear-gradient(135deg, #188607 0%, #40B615 35%, #4E22A5 70%, #230A80 100%);
-      --grad-subtle: linear-gradient(135deg, rgba(24, 134, 7, 0.05) 0%, rgba(78, 34, 165, 0.05) 100%);
+      --grad-main: linear-gradient(135deg, #0D1B2A 0%, #1B263B 50%, #0077B6 100%);
+      --grad-subtle: linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(13, 27, 42, 0.05) 100%);
+      --sidebar-width: 260px;
+      --sidebar-collapsed-width: 75px;
     }
 
     * {
@@ -37,9 +38,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
-    /* Header / Topbar */
+    /* Header */
     header {
       background: var(--grad-main);
       color: white;
@@ -47,7 +49,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(35, 10, 128, 0.15);
+      box-shadow: 0 4px 20px rgba(13, 27, 42, 0.2);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -60,17 +62,17 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: white;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      color: var(--r-dark);
-      font-size: 1.2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      color: var(--navy-dark);
+      font-size: 1.3rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
     .brand-text h1 {
@@ -82,12 +84,12 @@
 
     .brand-text span {
       font-size: 0.75rem;
-      opacity: 0.9;
+      opacity: 0.85;
       font-weight: 500;
     }
 
     .auth-badge {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       padding: 0.5rem 1rem;
       border-radius: 30px;
@@ -96,30 +98,61 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    /* Portal Container */
+    /* App Container Layout */
     .app-container {
       display: flex;
       flex: 1;
+      position: relative;
     }
 
     /* Sidebar Navigation */
     aside {
-      width: 260px;
+      width: var(--sidebar-width);
       background: var(--card-bg);
       border-right: 1px solid var(--border-color);
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 0.75rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      transition: width 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    aside.collapsed {
+      width: var(--sidebar-collapsed-width);
+    }
+
+    .toggle-sidebar-btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      background: transparent;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--navy-light);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+    }
+
+    .toggle-sidebar-btn:hover {
+      background: var(--bg-light);
+      color: var(--navy-dark);
+    }
+
+    aside.collapsed .toggle-sidebar-btn {
+      justify-content: center;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       padding: 0.85rem 1rem;
       border-radius: 12px;
       color: var(--text-muted);
@@ -128,24 +161,42 @@
       font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .nav-item .icon {
+      font-size: 1.2rem;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .nav-item .label {
+      transition: opacity 0.2s;
+    }
+
+    aside.collapsed .nav-item .label {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
     }
 
     .nav-item:hover {
       background: var(--bg-light);
-      color: var(--r-mid);
+      color: var(--accent-blue);
     }
 
     .nav-item.active {
       background: var(--grad-subtle);
-      color: var(--r-dark);
-      border-left: 4px solid var(--r-mid);
+      color: var(--navy-dark);
+      border-left: 4px solid var(--accent-blue);
+      font-weight: 700;
     }
 
     .role-switch-btn {
       margin-top: auto;
       background: var(--bg-light);
-      border: 1px dashed var(--r-mid);
-      color: var(--r-mid);
+      border: 1px dashed var(--navy-light);
+      color: var(--navy-mid);
       padding: 0.85rem;
       border-radius: 12px;
       font-weight: 700;
@@ -155,11 +206,16 @@
       justify-content: center;
       gap: 0.5rem;
       transition: all 0.2s;
+      overflow: hidden;
     }
 
     .role-switch-btn:hover {
-      background: var(--r-mid);
+      background: var(--navy-mid);
       color: white;
+    }
+
+    aside.collapsed .role-switch-btn span:not(.icon) {
+      display: none;
     }
 
     /* Main Area */
@@ -169,6 +225,7 @@
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      transition: all 0.3s ease;
     }
 
     .view-section {
@@ -189,16 +246,16 @@
     .card {
       background: var(--card-bg);
       border-radius: 16px;
-      padding: 1.5rem;
+      padding: 1.75rem;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 12px rgba(13, 27, 42, 0.04);
       margin-bottom: 1.5rem;
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      color: var(--r-dark);
+      color: var(--navy-dark);
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
@@ -209,22 +266,22 @@
       background: var(--grad-main);
       color: white;
       border-radius: 20px;
-      padding: 2.5rem;
+      padding: 3rem 2rem;
       text-align: center;
       margin-bottom: 2rem;
-      box-shadow: 0 8px 24px rgba(24, 134, 7, 0.2);
+      box-shadow: 0 8px 24px rgba(13, 27, 42, 0.2);
     }
 
     .hero-banner h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       margin-bottom: 0.5rem;
     }
 
     .hero-banner p {
-      font-size: 1.1rem;
-      opacity: 0.95;
-      margin-bottom: 1.5rem;
+      font-size: 1.15rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
       font-style: italic;
     }
 
@@ -244,7 +301,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
       font-size: 0.95rem;
     }
 
@@ -255,18 +312,22 @@
 
     .btn-primary {
       background: white;
-      color: var(--r-dark);
+      color: var(--navy-dark);
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.15);
       color: white;
-      border: 1px solid rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.3);
     }
 
     .btn-action {
-      background: var(--grad-main);
+      background: var(--accent-blue);
       color: white;
+    }
+
+    .btn-action:hover {
+      background: #005f93;
     }
 
     /* Forms */
@@ -279,6 +340,7 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
       font-size: 0.9rem;
+      color: var(--navy-dark);
     }
 
     .form-control, select, textarea {
@@ -289,15 +351,15 @@
       background: #FAFAFA;
       font-size: 0.95rem;
       outline: none;
-      transition: border 0.2s;
+      transition: border 0.2s, background 0.2s;
     }
 
     .form-control:focus, select:focus, textarea:focus {
-      border-color: var(--r-mid);
+      border-color: var(--accent-blue);
       background: white;
     }
 
-    /* Espaço Respire Interactive */
+    /* Interactive Breath Space */
     .respire-container {
       display: flex;
       flex-direction: column;
@@ -311,14 +373,14 @@
       width: 180px;
       height: 180px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--v-bright), var(--r-mid));
+      background: linear-gradient(135deg, var(--accent-cyan), var(--navy-mid));
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 800;
       font-size: 1.1rem;
-      box-shadow: 0 0 30px rgba(64, 182, 21, 0.3);
+      box-shadow: 0 0 30px rgba(0, 180, 216, 0.3);
       transition: transform 4s ease-in-out;
       margin-bottom: 2rem;
       text-transform: uppercase;
@@ -327,7 +389,7 @@
 
     .respire-circle.expand {
       transform: scale(1.4);
-      box-shadow: 0 0 50px rgba(78, 34, 165, 0.5);
+      box-shadow: 0 0 50px rgba(0, 119, 182, 0.5);
     }
 
     .respire-circle.hold {
@@ -352,13 +414,13 @@
       padding: 1.25rem;
       border: 1px solid var(--border-color);
       text-align: center;
-      border-top: 4px solid var(--v-bright);
+      border-top: 4px solid var(--accent-cyan);
     }
 
     .stat-number {
       font-size: 2.2rem;
       font-weight: 800;
-      color: var(--r-dark);
+      color: var(--navy-dark);
       margin: 0.25rem 0;
     }
 
@@ -388,7 +450,7 @@
     th {
       background: var(--bg-light);
       font-weight: 700;
-      color: var(--r-dark);
+      color: var(--navy-dark);
     }
 
     .status-badge {
@@ -415,16 +477,16 @@
     }
 
     .tip-card.orange { border-color: #FF9800; }
-    .tip-card.blue { border-color: #2196F3; }
-    .tip-card.purple { border-color: #9C27B0; }
-    .tip-card.green { border-color: #4CAF50; }
-    .tip-card.red { border-color: #F44336; }
+    .tip-card.blue { border-color: var(--accent-blue); }
+    .tip-card.purple { border-color: #7B2CBF; }
+    .tip-card.green { border-color: #2EC4B6; }
+    .tip-card.red { border-color: #E63946; }
 
     /* Modal Login */
     .modal-overlay {
       position: fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.6);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(13, 27, 42, 0.6);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -456,12 +518,25 @@
       }
 
       aside {
-        width: 100%;
+        width: 100% !important;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
         flex-direction: row;
         overflow-x: auto;
         padding: 0.75rem;
+      }
+
+      aside.collapsed {
+        width: 100% !important;
+      }
+
+      .toggle-sidebar-btn {
+        display: none;
+      }
+
+      .nav-item .label {
+        display: inline !important;
+        opacity: 1 !important;
       }
 
       .nav-item {
@@ -490,57 +565,78 @@
       </div>
     </div>
     <div class="auth-badge" id="currentRoleBadge">
-      <span id="roleIcon">👤</span>
-      <span id="roleText">Modo Aluno</span>
+      <span id="roleIcon">🔒</span>
+      <span id="roleText">Não Autenticado</span>
     </div>
   </header>
 
   <div class="app-container">
     <!-- Sidebar Navigation -->
-    <aside>
+    <aside id="sidebar">
+      <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Recolher / Expandir Menu">
+        <span id="toggleIcon">◀</span>
+      </button>
+
       <div class="nav-item active" onclick="switchNav('inicio', this)">
-        <span>🏠</span> Início
+        <span class="icon">🏠</span>
+        <span class="label">Início / Login</span>
       </div>
       <div class="nav-item" onclick="switchNav('conversar', this)">
-        <span>💬</span> Conversar
+        <span class="icon">💬</span>
+        <span class="label">Conversar</span>
       </div>
       <div class="nav-item" onclick="switchNav('relato', this)">
-        <span>📝</span> Fazer Relato
+        <span class="icon">📝</span>
+        <span class="label">Fazer Relato</span>
       </div>
       <div class="nav-item" onclick="switchNav('respire', this)">
-        <span>🧘</span> Espaço Respire
+        <span class="icon">🧘</span>
+        <span class="label">Espaço Respire</span>
       </div>
       <div class="nav-item" onclick="switchNav('dicas', this)">
-        <span>💡</span> Dicas
+        <span class="icon">💡</span>
+        <span class="label">Dicas</span>
       </div>
       <div class="nav-item" onclick="switchNav('apoio', this)">
-        <span>☎️</span> Rede de Apoio
+        <span class="icon">☎️</span>
+        <span class="label">Rede de Apoio</span>
       </div>
       <div class="nav-item" onclick="switchNav('mural', this)">
-        <span>📢</span> Mural
+        <span class="icon">📢</span>
+        <span class="label">Mural</span>
       </div>
 
-      <!-- Visível para Admin -->
+      <!-- Visível apenas para Admin -->
       <div class="nav-item" id="adminDashboardNav" style="display: none;" onclick="switchNav('dashboard', this)">
-        <span>📊</span> Painel Geral
+        <span class="icon">📊</span>
+        <span class="label">Painel Geral</span>
       </div>
 
-      <button class="role-switch-btn" onclick="openLoginModal()">
-        <span id="switchBtnIcon">🛡️</span> <span id="switchBtnText">Área Admin</span>
+      <button class="role-switch-btn" id="logoutBtn" style="display: none;" onclick="logout()">
+        <span class="icon">🚪</span>
+        <span>Sair da Conta</span>
       </button>
     </aside>
 
     <!-- Main Content Area -->
     <main>
 
-      <!-- 🏠 TELA INICIAL -->
+      <!-- 🏠 TELA INICIAL / LOGIN -->
       <section id="inicio" class="view-section active">
         <div class="hero-banner">
           <h2>ABRAÇAR</h2>
           <p>“Você não precisa enfrentar tudo sozinho.”</p>
-          <div class="btn-group">
-            <button class="btn btn-primary" onclick="switchNav('conversar')">👤 Entrar como Aluno</button>
+          
+          <div id="loginActions" class="btn-group">
+            <button class="btn btn-primary" onclick="loginAsStudent()">👤 Entrar como Aluno</button>
             <button class="btn btn-secondary" onclick="openLoginModal()">🛡️ Entrar como Administrador</button>
+          </div>
+
+          <div id="loggedInWelcome" style="display: none;">
+            <p style="font-size: 1.2rem; font-style: normal; margin-bottom: 1rem;">
+              Bem-vindo(a)! Você está autenticado como <strong id="userTypeTitle">Aluno</strong>.
+            </p>
+            <button class="btn btn-secondary" onclick="logout()">Sair da Conta</button>
           </div>
         </div>
 
@@ -548,9 +644,9 @@
           <div class="card">
             <div class="card-title">💬 Conversa & Escuta</div>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-              Um canal direto para tirar dúvidas ou pedir orientação sem precisar se identificar.
+              Um canal direto para tirar dúvidas ou pedir orientação de forma segura.
             </p>
-            <button class="btn btn-action" onclick="switchNav('conversar')">Iniciar Conversa</button>
+            <button class="btn btn-action" onclick="switchNav('conversar')">Acessar Canal</button>
           </div>
 
           <div class="card">
@@ -609,10 +705,10 @@
           <button class="btn btn-action" onclick="window.submitChat()">➕ Iniciar Nova Conversa</button>
         </div>
 
-        <div id="chatResultCard" class="card" style="display: none; border-left: 5px solid var(--v-bright);">
+        <div id="chatResultCard" class="card" style="display: none; border-left: 5px solid var(--accent-cyan);">
           <div class="card-title">Conversa Registrada!</div>
           <p style="margin-bottom: 0.5rem;">Guarde o seu protocolo anônimo para consultar respostas:</p>
-          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--r-dark); display: inline-block; margin-bottom: 1rem;" id="generatedChatID">
+          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy-dark); display: inline-block; margin-bottom: 1rem;" id="generatedChatID">
             ABR-00000
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted);">
@@ -662,10 +758,10 @@
           <button class="btn btn-action" onclick="window.submitRelato()">Enviar Relato Anônimo</button>
         </div>
 
-        <div id="relatoResultCard" class="card" style="display: none; border-left: 5px solid var(--r-mid);">
+        <div id="relatoResultCard" class="card" style="display: none; border-left: 5px solid var(--accent-blue);">
           <div class="card-title">Relato Enviado com Sucesso</div>
           <p style="margin-bottom: 0.5rem;">Seu ID de acompanhamento é:</p>
-          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--r-mid); display: inline-block; margin-bottom: 1rem;" id="generatedRelatoID">
+          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy-mid); display: inline-block; margin-bottom: 1rem;" id="generatedRelatoID">
             ABR-00000
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted);">
@@ -684,7 +780,7 @@
 
           <div class="respire-container">
             <div class="respire-circle" id="respireCircle">PREPARAR</div>
-            <p style="font-weight: 600; color: var(--r-dark); margin-bottom: 1.5rem;" id="respireInstruction">
+            <p style="font-weight: 600; color: var(--navy-dark); margin-bottom: 1.5rem;" id="respireInstruction">
               Clique em "Começar" para iniciar o ciclo.
             </p>
             <div class="btn-group">
@@ -722,7 +818,7 @@
 
       <!-- 💡 DICAS DE PREVENÇÃO -->
       <section id="dicas" class="view-section">
-        <h2 style="margin-bottom: 1.5rem; color: var(--r-dark); font-size: 1.5rem;">Guia Prático e Dicas de Prevenção</h2>
+        <h2 style="margin-bottom: 1.5rem; color: var(--navy-dark); font-size: 1.5rem;">Guia Prático e Dicas de Prevenção</h2>
         
         <div class="cards-grid">
           <div class="card tip-card orange">
@@ -771,7 +867,7 @@
 
           <div class="cards-grid">
             <div class="card tip-card red" style="margin-bottom:0;">
-              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">CVV — Centro de Valorização da Vida</h3>
+              <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">CVV — Centro de Valorização da Vida</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
                 Apoio emocional e prevenção do suicídio. Atendimento gratuito, sigiloso e 24h por dia.
               </p>
@@ -779,7 +875,7 @@
             </div>
 
             <div class="card tip-card blue" style="margin-bottom:0;">
-              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Disque 100 — Direitos Humanos</h3>
+              <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Disque 100 — Direitos Humanos</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
                 Recebe denúncias de violações de direitos humanos contra crianças, adolescentes e vulneráveis.
               </p>
@@ -787,7 +883,7 @@
             </div>
 
             <div class="card tip-card purple" style="margin-bottom:0;">
-              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Pode Falar (UNICEF)</h3>
+              <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Pode Falar (UNICEF)</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
                 Canal de ajuda virtual em saúde mental para adolescentes e jovens entre 13 e 24 anos.
               </p>
@@ -826,7 +922,7 @@
       <!-- 📊 PAINEL GERAL (ADMIN) -->
       <section id="dashboard" class="view-section">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <h2 style="color: var(--r-dark); font-size: 1.5rem;">Painel Administrativo & Mediação</h2>
+          <h2 style="color: var(--navy-dark); font-size: 1.5rem;">Painel Administrativo & Mediação</h2>
           <span class="status-badge status-resolvido">Ambiente Restrito</span>
         </div>
 
@@ -835,11 +931,11 @@
             <div class="stat-label">Relatos Pendentes</div>
             <div class="stat-number" id="statPending">3</div>
           </div>
-          <div class="stat-card" style="border-top-color: var(--r-mid);">
+          <div class="stat-card" style="border-top-color: var(--navy-light);">
             <div class="stat-label">Em Mediação</div>
             <div class="stat-number" id="statMediation">2</div>
           </div>
-          <div class="stat-card" style="border-top-color: var(--r-dark);">
+          <div class="stat-card" style="border-top-color: var(--navy-dark);">
             <div class="stat-label">Casos Resolvidos</div>
             <div class="stat-number" id="statResolved">12</div>
           </div>
@@ -867,18 +963,18 @@
                 <tr>
                   <td><strong>ABR-83921</strong></td>
                   <td>Pátio Escola</td>
-                  <td>24/05/2024</td>
+                  <td>24/05/2026</td>
                   <td><span style="color: red; font-weight:700;">Sim</span></td>
                   <td><span class="status-badge status-analise">Em Análise</span></td>
-                  <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-83921')">Analisar</button></td>
+                  <td><button class="btn btn-secondary" style="background: var(--navy-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-83921')">Analisar</button></td>
                 </tr>
                 <tr>
                   <td><strong>ABR-40192</strong></td>
                   <td>Redes Sociais</td>
-                  <td>22/05/2024</td>
+                  <td>22/05/2026</td>
                   <td><span>Não</span></td>
                   <td><span class="status-badge status-mediacao">Em Mediação</span></td>
-                  <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-40192')">Analisar</button></td>
+                  <td><button class="btn btn-secondary" style="background: var(--navy-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-40192')">Analisar</button></td>
                 </tr>
               </tbody>
             </table>
@@ -892,7 +988,7 @@
   <!-- Modal Login Admin -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.25rem;">Acesso Administrativo</h3>
+      <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.25rem;">Acesso Administrativo</h3>
       <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">
         Digite a chave de acesso da coordenação ou grêmio.
       </p>
@@ -911,11 +1007,37 @@
 
   <script>
     // Estado da Aplicação
-    let isAdmin = false;
+    let currentRole = null; // null | 'student' | 'admin'
     let respireInterval = null;
 
-    // Navegação
+    // Toggle da Sidebar Lateral
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const toggleIcon = document.getElementById('toggleIcon');
+      sidebar.classList.toggle('collapsed');
+
+      if (sidebar.classList.contains('collapsed')) {
+        toggleIcon.innerText = '▶';
+      } else {
+        toggleIcon.innerText = '◀';
+      }
+    }
+
+    // Navegação com Controle de Acesso
     function switchNav(viewId, element) {
+      // Regra de Acesso: Usuário não autenticado só pode ver a tela de início/login
+      if (!currentRole && viewId !== 'inicio') {
+        alert('Por favor, faça login como Aluno ou Administrador na página inicial para acessar esta função.');
+        switchNav('inicio');
+        return;
+      }
+
+      // Bloqueia Dashboard para Alunos
+      if (viewId === 'dashboard' && currentRole !== 'admin') {
+        alert('Acesso restrito a Administradores.');
+        return;
+      }
+
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
@@ -930,17 +1052,15 @@
       }
     }
 
-    // Modal Admin
+    // Processo de Autenticação
+    function loginAsStudent() {
+      currentRole = 'student';
+      updateRoleUI();
+      alert('Acesso concedido como Aluno! Agora você pode utilizar as ferramentas.');
+    }
+
     function openLoginModal() {
-      if (isAdmin) {
-        // Se já for admin, desloga
-        isAdmin = false;
-        updateRoleUI();
-        switchNav('inicio');
-        alert('Sessão administrativa encerrada.');
-      } else {
-        document.getElementById('loginModal').classList.add('open');
-      }
+      document.getElementById('loginModal').classList.add('open');
     }
 
     function closeLoginModal() {
@@ -950,36 +1070,55 @@
 
     window.checkAdminAuth = function() {
       const pass = document.getElementById('adminPassword').value;
-      // Senha padrão para protótipo: 'admin' ou '1234'
       if (pass === 'admin' || pass === '1234') {
-        isAdmin = true;
+        currentRole = 'admin';
         closeLoginModal();
         updateRoleUI();
         switchNav('dashboard');
       } else {
-        alert('Senha incorreta! Tente "admin" para o teste.');
+        alert('Senha incorreta! Use "admin" para o protótipo.');
       }
     };
+
+    function logout() {
+      currentRole = null;
+      updateRoleUI();
+      switchNav('inicio');
+      alert('Você saiu do sistema.');
+    }
 
     function updateRoleUI() {
       const badgeText = document.getElementById('roleText');
       const badgeIcon = document.getElementById('roleIcon');
-      const switchBtnText = document.getElementById('switchBtnText');
-      const switchBtnIcon = document.getElementById('switchBtnIcon');
       const adminNav = document.getElementById('adminDashboardNav');
+      const loginActions = document.getElementById('loginActions');
+      const loggedInWelcome = document.getElementById('loggedInWelcome');
+      const userTypeTitle = document.getElementById('userTypeTitle');
+      const logoutBtn = document.getElementById('logoutBtn');
 
-      if (isAdmin) {
+      if (currentRole === 'admin') {
         badgeText.innerText = 'Modo Administrador';
         badgeIcon.innerText = '🛡️';
-        switchBtnText.innerText = 'Sair do Admin';
-        switchBtnIcon.innerText = '🚪';
         adminNav.style.display = 'flex';
-      } else {
+        loginActions.style.display = 'none';
+        loggedInWelcome.style.display = 'block';
+        userTypeTitle.innerText = 'Administrador';
+        logoutBtn.style.display = 'flex';
+      } else if (currentRole === 'student') {
         badgeText.innerText = 'Modo Aluno';
         badgeIcon.innerText = '👤';
-        switchBtnText.innerText = 'Área Admin';
-        switchBtnIcon.innerText = '🛡️';
         adminNav.style.display = 'none';
+        loginActions.style.display = 'none';
+        loggedInWelcome.style.display = 'block';
+        userTypeTitle.innerText = 'Aluno';
+        logoutBtn.style.display = 'flex';
+      } else {
+        badgeText.innerText = 'Não Autenticado';
+        badgeIcon.innerText = '🔒';
+        adminNav.style.display = 'none';
+        loginActions.style.display = 'flex';
+        loggedInWelcome.style.display = 'none';
+        logoutBtn.style.display = 'none';
       }
     }
 
@@ -996,7 +1135,6 @@
       document.getElementById('chatResultCard').style.display = 'block';
       document.getElementById('chatMsg').value = '';
 
-      // Atualiza contador admin visualmente
       const chatCount = document.getElementById('statChats');
       chatCount.innerText = parseInt(chatCount.innerText) + 1;
     };
@@ -1017,7 +1155,6 @@
       document.getElementById('relatoResultCard').style.display = 'block';
       document.getElementById('relatoText').value = '';
 
-      // Adiciona na tabela do Dashboard Dinamicamente
       const tbody = document.getElementById('relatosTableBody');
       const tr = document.createElement('tr');
       const today = new Date().toLocaleDateString('pt-BR');
@@ -1028,16 +1165,15 @@
         <td>${today}</td>
         <td><span style="${isDanger ? 'color: red; font-weight:700;' : ''}">${isDanger ? 'Sim' : 'Não'}</span></td>
         <td><span class="status-badge status-analise">Em Análise</span></td>
-        <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ${randomId}')">Analisar</button></td>
+        <td><button class="btn btn-secondary" style="background: var(--navy-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ${randomId}')">Analisar</button></td>
       `;
       tbody.prepend(tr);
 
-      // Atualiza contador
       const pendingStat = document.getElementById('statPending');
       pendingStat.innerText = parseInt(pendingStat.innerText) + 1;
     };
 
-    // Exercício de Respiração (Técnica 4-4-4)
+    // Exercício de Respiração
     window.startRespire = function() {
       if (respireInterval) clearInterval(respireInterval);
 

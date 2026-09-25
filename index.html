@@ -1,191 +1,1106 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voz Ativa | Sua ideia tem poder</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --amarelo: #FFD23F;
-            --turquesa: #2EC4B6;
-            --coral: #FF9F1C;
-            --bg: #F9FAFB;
-            --white: #FFFFFF;
-            --text: #2D3436;
-            --gray: #dbdbdb;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABRAÇAR — Escuta & Acolhimento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --v-dark: #188607;
+      --v-bright: #40B615;
+      --r-dark: #230A80;
+      --r-mid: #4E22A5;
+      --blue-accent: #64C6ED;
+      --gold-accent: #F1DC22;
+      --bg-light: #F8FAF7;
+      --card-bg: #FFFFFF;
+      --text-main: #1A1D20;
+      --text-muted: #6C757D;
+      --border-color: #E2E8F0;
+      --grad-main: linear-gradient(135deg, #188607 0%, #40B615 35%, #4E22A5 70%, #230A80 100%);
+      --grad-subtle: linear-gradient(135deg, rgba(24, 134, 7, 0.05) 0%, rgba(78, 34, 165, 0.05) 100%);
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
 
-        /* --- Header --- */
-        header {
-            background: var(--white); padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray);
-        }
-        .logo { font-weight: 800; font-size: 1.5rem; color: var(--turquesa); }
-        .logo span { color: var(--coral); }
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* --- Telas --- */
-        .tela { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.2s ease; }
-        .tela.ativa { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    /* Header / Topbar */
+    header {
+      background: var(--grad-main);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(35, 10, 128, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        /* --- Stories --- */
-        .stories {
-            background: var(--white); padding: 15px; display: flex;
-            gap: 15px; overflow-x: auto; border-bottom: 1px solid var(--gray);
-            scrollbar-width: none;
-        }
-        .story { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
-        .circle {
-            width: 65px; height: 65px; border-radius: 50%;
-            background: linear-gradient(45deg, var(--amarelo), var(--coral));
-            padding: 3px; margin-bottom: 5px;
-        }
-        .inner { background: white; width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
 
-        /* --- Posts --- */
-        .post { background: var(--white); border: 1px solid var(--gray); border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
-        .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--turquesa); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .post-content { padding: 30px; text-align: center; font-size: 1.1rem; font-weight: 600; line-height: 1.4; color: #2A9D8F; }
-        .post-footer { padding: 12px; border-top: 1px solid #f0f0f0; font-size: 0.8rem; color: #666; }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--r-dark);
+      font-size: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
 
-        /* --- Nav Inferior --- */
-        nav {
-            position: fixed; bottom: 0; width: 100%;
-            background: var(--white); display: flex;
-            justify-content: space-around; padding: 15px;
-            border-top: 1px solid var(--gray); z-index: 100;
-        }
-        .nav-btn { font-size: 1.6rem; cursor: pointer; border: none; background: none; }
-        .btn-add { font-size: 2.2rem; color: var(--coral); transform: translateY(-5px); }
+    .brand-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
 
-        /* --- Modais --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 25px; text-align: center; }
-        .btn-acao { width: 100%; padding: 15px; background: var(--turquesa); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: 10px; }
-        textarea { width: 100%; height: 120px; border: 1px solid #eee; padding: 15px; border-radius: 10px; margin: 15px 0; outline: none; font-size: 1rem; resize: none; }
-    </style>
+    .brand-text span {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .auth-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Portal Container */
+    .app-container {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Sidebar Navigation */
+    aside {
+      width: 260px;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: var(--bg-light);
+      color: var(--r-mid);
+    }
+
+    .nav-item.active {
+      background: var(--grad-subtle);
+      color: var(--r-dark);
+      border-left: 4px solid var(--r-mid);
+    }
+
+    .role-switch-btn {
+      margin-top: auto;
+      background: var(--bg-light);
+      border: 1px dashed var(--r-mid);
+      color: var(--r-mid);
+      padding: 0.85rem;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .role-switch-btn:hover {
+      background: var(--r-mid);
+      color: white;
+    }
+
+    /* Main Area */
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Components */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--r-dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-banner {
+      background: var(--grad-main);
+      color: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 24px rgba(24, 134, 7, 0.2);
+    }
+
+    .hero-banner h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-banner p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.85rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--r-dark);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .btn-action {
+      background: var(--grad-main);
+      color: white;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .form-control, select, textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: #FAFAFA;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-control:focus, select:focus, textarea:focus {
+      border-color: var(--r-mid);
+      background: white;
+    }
+
+    /* Espaço Respire Interactive */
+    .respire-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .respire-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--v-bright), var(--r-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 0 30px rgba(64, 182, 21, 0.3);
+      transition: transform 4s ease-in-out;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .respire-circle.expand {
+      transform: scale(1.4);
+      box-shadow: 0 0 50px rgba(78, 34, 165, 0.5);
+    }
+
+    .respire-circle.hold {
+      transform: scale(1.4);
+    }
+
+    .respire-circle.shrink {
+      transform: scale(1);
+    }
+
+    /* Dashboard Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.25rem;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      border-top: 4px solid var(--v-bright);
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--r-dark);
+      margin: 0.25rem 0;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Tables */
+    .data-table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg-light);
+      font-weight: 700;
+      color: var(--r-dark);
+    }
+
+    .status-badge {
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .status-analise { background: #FFF9C4; color: #827717; }
+    .status-mediacao { background: #E1F5FE; color: #0288D1; }
+    .status-resolvido { background: #E8F5E9; color: #2E7D32; }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tip-card {
+      border-left: 5px solid;
+    }
+
+    .tip-card.orange { border-color: #FF9800; }
+    .tip-card.blue { border-color: #2196F3; }
+    .tip-card.purple { border-color: #9C27B0; }
+    .tip-card.green { border-color: #4CAF50; }
+    .tip-card.red { border-color: #F44336; }
+
+    /* Modal Login */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+
+      aside {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.75rem;
+      }
+
+      .nav-item {
+        white-space: nowrap;
+      }
+
+      .role-switch-btn {
+        margin-top: 0;
+      }
+
+      main {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">VOZ<span>ATIVA</span></div>
-    <div>🔥 7 Dias</div>
-</header>
-
-<section id="home" class="tela ativa">
-    <div class="stories" style="margin: -15px -15px 15px -15px;">
-        <div class="story" onclick="abrirLuma('✨ Dica da Luma: Acredite no poder da sua comunicação!')"><div class="circle"><div class="inner">✨</div></div><span>Luma IA</span></div>
-        <div class="story" onclick="abrirLuma('🎤 Desafio: O que você mudaria na sua escola?')"><div class="circle"><div class="inner">🎤</div></div><span>Desafio</span></div>
-        <div class="story" onclick="abrirLuma('💡 Ideia: Use a criatividade para resolver um problema hoje!')"><div class="circle"><div class="inner">💡</div></div><span>Ideias</span></div>
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">A</div>
+      <div class="brand-text">
+        <h1>ABRAÇAR</h1>
+        <span>Escuta • Acolhimento • Respeito</span>
+      </div>
     </div>
-    <div id="feedPosts">
-        <p style="text-align: center; color: #999; margin-top: 20px;">Ouvindo as vozes da galera...</p>
+    <div class="auth-badge" id="currentRoleBadge">
+      <span id="roleIcon">👤</span>
+      <span id="roleText">Modo Aluno</span>
     </div>
-</section>
+  </header>
 
-<section id="buscar" class="tela"><h2>Explorar</h2><p style="margin-top:10px; color:#666;">Encontre debates interessantes.</p></section>
-<section id="evolucao" class="tela"><h2>Seu Progresso</h2><p style="margin-top:10px; color:#666;">Nível 5: Explorador de Voz</p></section>
-<section id="perfil" class="tela"><h2>Perfil</h2><p style="margin-top:10px; color:#666;">Olá, Mateus Silva!</p></section>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside>
+      <div class="nav-item active" onclick="switchNav('inicio', this)">
+        <span>🏠</span> Início
+      </div>
+      <div class="nav-item" onclick="switchNav('conversar', this)">
+        <span>💬</span> Conversar
+      </div>
+      <div class="nav-item" onclick="switchNav('relato', this)">
+        <span>📝</span> Fazer Relato
+      </div>
+      <div class="nav-item" onclick="switchNav('respire', this)">
+        <span>🧘</span> Espaço Respire
+      </div>
+      <div class="nav-item" onclick="switchNav('dicas', this)">
+        <span>💡</span> Dicas
+      </div>
+      <div class="nav-item" onclick="switchNav('apoio', this)">
+        <span>☎️</span> Rede de Apoio
+      </div>
+      <div class="nav-item" onclick="switchNav('mural', this)">
+        <span>📢</span> Mural
+      </div>
 
-<nav>
-    <button class="nav-btn" onclick="mudarTela('home')">🏠</button>
-    <button class="nav-btn" onclick="mudarTela('buscar')">🔍</button>
-    <button class="nav-btn btn-add" id="btnAbrirModal">+</button>
-    <button class="nav-btn" onclick="mudarTela('evolucao')">📈</button>
-    <button class="nav-btn" onclick="mudarTela('perfil')">👤</button>
-</nav>
+      <!-- Visível para Admin -->
+      <div class="nav-item" id="adminDashboardNav" style="display: none;" onclick="switchNav('dashboard', this)">
+        <span>📊</span> Painel Geral
+      </div>
 
-<div id="modalPost" class="modal">
-    <div class="modal-content">
-        <h3>Lançar sua Voz 📢</h3>
-        <textarea id="textoPost" placeholder="O que você está pensando agora?"></textarea>
-        <button class="btn-acao" id="btnPublicar">Publicar no Feed</button>
-        <p onclick="fecharModal()" style="margin-top:15px; color:#999; cursor:pointer;">Cancelar</p>
+      <button class="role-switch-btn" onclick="openLoginModal()">
+        <span id="switchBtnIcon">🛡️</span> <span id="switchBtnText">Área Admin</span>
+      </button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+
+      <!-- 🏠 TELA INICIAL -->
+      <section id="inicio" class="view-section active">
+        <div class="hero-banner">
+          <h2>ABRAÇAR</h2>
+          <p>“Você não precisa enfrentar tudo sozinho.”</p>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="switchNav('conversar')">👤 Entrar como Aluno</button>
+            <button class="btn btn-secondary" onclick="openLoginModal()">🛡️ Entrar como Administrador</button>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-title">💬 Conversa & Escuta</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+              Um canal direto para tirar dúvidas ou pedir orientação sem precisar se identificar.
+            </p>
+            <button class="btn btn-action" onclick="switchNav('conversar')">Iniciar Conversa</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📝 Relato Anônimo</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+              Registre denúncias ou situações delicadas com total garantia de acolhimento.
+            </p>
+            <button class="btn btn-action" onclick="switchNav('relato')">Fazer um Relato</button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🧘 Espaço Respire</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+              Pausa guiada, exercícios de respiração e estratégias rápidas de autocuidado.
+            </p>
+            <button class="btn btn-action" onclick="switchNav('respire')">Acessar Espaço</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 💬 CONVERSAR -->
+      <section id="conversar" class="view-section">
+        <div class="card">
+          <div class="card-title">💬 Conversa Anônima</div>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            Escolha o setor com quem deseja falar. Você receberá um código de identificação anônimo para acompanhar.
+          </p>
+
+          <div class="form-group">
+            <label>Selecione o Canal de Atendimento:</label>
+            <select id="chatChannel" class="form-control">
+              <option>Grêmio Estudantil</option>
+              <option>Coordenação</option>
+              <option>Mediação de Conflitos</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Assunto Principal:</label>
+            <select id="chatSubject" class="form-control">
+              <option>Bullying</option>
+              <option>Cyberbullying</option>
+              <option>Violência verbal</option>
+              <option>Conflitos</option>
+              <option>Discriminação</option>
+              <option>Problemas na escola</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Sua mensagem inicial:</label>
+            <textarea id="chatMsg" rows="4" class="form-control" placeholder="Escreva aqui como podemos te ajudar..."></textarea>
+          </div>
+
+          <button class="btn btn-action" onclick="window.submitChat()">➕ Iniciar Nova Conversa</button>
+        </div>
+
+        <div id="chatResultCard" class="card" style="display: none; border-left: 5px solid var(--v-bright);">
+          <div class="card-title">Conversa Registrada!</div>
+          <p style="margin-bottom: 0.5rem;">Guarde o seu protocolo anônimo para consultar respostas:</p>
+          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--r-dark); display: inline-block; margin-bottom: 1rem;" id="generatedChatID">
+            ABR-00000
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Nenhum dado pessoal foi atrelado a este atendimento.
+          </p>
+        </div>
+      </section>
+
+      <!-- 📝 FAZER UM RELATO -->
+      <section id="relato" class="view-section">
+        <div class="card">
+          <div class="card-title">📝 Registro de Relato ou Denúncia</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Atenção: O anonimato do sistema garante que seu nome não é exigido. Contudo, evite incluir dados pessoais na caixa de texto se desejar permanecer 100% anônimo.
+          </p>
+
+          <div class="form-group">
+            <label>O que aconteceu?</label>
+            <textarea id="relatoText" class="form-control" rows="4" placeholder="Descreva a situação em detalhes..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Onde aconteceu?</label>
+            <select id="relatoPlace" class="form-control">
+              <option>Sala de aula</option>
+              <option>Pátio</option>
+              <option>Banheiro</option>
+              <option>Internet / Redes Sociais</option>
+              <option>Transporte Escolar</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Quando aconteceu?</label>
+            <input type="date" id="relatoDate" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Você está em perigo imediato agora?</label>
+            <select class="form-control" id="dangerSelect">
+              <option value="nao">Não</option>
+              <option value="sim">SIM - Preciso de ajuda urgente</option>
+            </select>
+          </div>
+
+          <button class="btn btn-action" onclick="window.submitRelato()">Enviar Relato Anônimo</button>
+        </div>
+
+        <div id="relatoResultCard" class="card" style="display: none; border-left: 5px solid var(--r-mid);">
+          <div class="card-title">Relato Enviado com Sucesso</div>
+          <p style="margin-bottom: 0.5rem;">Seu ID de acompanhamento é:</p>
+          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--r-mid); display: inline-block; margin-bottom: 1rem;" id="generatedRelatoID">
+            ABR-00000
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            A equipe responsável analisará as informações. Guarde este código.
+          </p>
+        </div>
+      </section>
+
+      <!-- 🧘 ESPAÇO RESPIRE -->
+      <section id="respire" class="view-section">
+        <div class="card">
+          <div class="card-title">🌿 Exercício de Respiração Guiada</div>
+          <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem;">
+            Reserve alguns minutos para se desacelerar. Siga o ritmo do círculo visual abaixo.
+          </p>
+
+          <div class="respire-container">
+            <div class="respire-circle" id="respireCircle">PREPARAR</div>
+            <p style="font-weight: 600; color: var(--r-dark); margin-bottom: 1.5rem;" id="respireInstruction">
+              Clique em "Começar" para iniciar o ciclo.
+            </p>
+            <div class="btn-group">
+              <button class="btn btn-action" onclick="window.startRespire()">▶ Começar Exercício</button>
+              <button class="btn btn-secondary" style="background: var(--text-muted);" onclick="window.stopRespire()">⏸ Pausar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-title">🎧 Sons Tranquilos</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Sons suaves de natureza e chuva para foco e relaxamento no ambiente escolar.</p>
+            <audio controls style="width: 100%; margin-top: 1rem;">
+              <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy_loud.ogg" type="audio/ogg">
+              Seu navegador não suporta áudio HTML5.
+            </audio>
+          </div>
+
+          <div class="card">
+            <div class="card-title">✨ Acalme a Mente</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              <strong>Técnica dos 5 Sentidos (5-4-3-2-1):</strong>
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
+              <li><strong>5 coisas</strong> que você pode ver à sua volta.</li>
+              <li><strong>4 coisas</strong> que você pode tocar.</li>
+              <li><strong>3 coisas</strong> que você pode ouvir.</li>
+              <li><strong>2 coisas</strong> que você pode cheirar.</li>
+              <li><strong>1 coisa</strong> que você pode provar.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 💡 DICAS DE PREVENÇÃO -->
+      <section id="dicas" class="view-section">
+        <h2 style="margin-bottom: 1.5rem; color: var(--r-dark); font-size: 1.5rem;">Guia Prático e Dicas de Prevenção</h2>
+        
+        <div class="cards-grid">
+          <div class="card tip-card orange">
+            <div class="card-title">🚨 Bullying e Cyberbullying</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+              Brincadeiras só são engraçadas quando todos se divertem. Se fere, humilha ou exclui repetidamente, é bullying.
+              <br><br>
+              <strong>O que fazer no meio digital?</strong> Guarde prints como evidência, não responda aos agressores e bloqueie os perfis.
+            </p>
+          </div>
+
+          <div class="card tip-card blue">
+            <div class="card-title">🗣️ Como agir se presenciar algo?</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+              Não seja um espectador passivo. Rir ou compartilhar mensagens ofensivas fortalece a agressão.
+              <br><br>
+              <strong>Seja uma ponte:</strong> Ofereça apoio ao colega afetado e faça um relato anônimo aqui no portal para que a coordenação atue.
+            </p>
+          </div>
+
+          <div class="card tip-card purple">
+            <div class="card-title">🧠 Cuidando da Saúde Mental</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+              Guardar dores emocionais pode causar ansiedade e isolamento. Falar sobre o que sente é um ato de coragem, não de fraqueza.
+              <br><br>
+              Procure um adulto de confiança, um psicólogo ou use os canais do ABRAÇAR para desabafar.
+            </p>
+          </div>
+
+          <div class="card tip-card green">
+            <div class="card-title">🤝 Cultura de Paz na Escola</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+              Respeitar a diversidade e aceitar as diferenças são os pilares para um ambiente seguro. Pratique a empatia diariamente: coloque-se no lugar do outro antes de julgar.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ☎️ REDE DE APOIO -->
+      <section id="apoio" class="view-section">
+        <div class="card">
+          <div class="card-title">☎️ Canais Externos e Emergência</div>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            Se você ou alguém que você conhece precisa de apoio emocional imediato ou está em situação de risco, utilize estes serviços gratuitos:
+          </p>
+
+          <div class="cards-grid">
+            <div class="card tip-card red" style="margin-bottom:0;">
+              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">CVV — Centro de Valorização da Vida</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Apoio emocional e prevenção do suicídio. Atendimento gratuito, sigiloso e 24h por dia.
+              </p>
+              <a href="tel:188" class="btn btn-action" style="text-decoration: none; display: inline-block;">Ligar 188</a>
+            </div>
+
+            <div class="card tip-card blue" style="margin-bottom:0;">
+              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Disque 100 — Direitos Humanos</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Recebe denúncias de violações de direitos humanos contra crianças, adolescentes e vulneráveis.
+              </p>
+              <a href="tel:100" class="btn btn-action" style="text-decoration: none; display: inline-block;">Ligar 100</a>
+            </div>
+
+            <div class="card tip-card purple" style="margin-bottom:0;">
+              <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Pode Falar (UNICEF)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Canal de ajuda virtual em saúde mental para adolescentes e jovens entre 13 e 24 anos.
+              </p>
+              <a href="https://www.podefalar.org.br" target="_blank" class="btn btn-action" style="text-decoration: none; display: inline-block;">Acessar Site</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📢 MURAL POSITIVO -->
+      <section id="mural" class="view-section">
+        <div class="card">
+          <div class="card-title">📢 Mural do Acolhimento</div>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            Deixe uma mensagem de incentivo ou carinho para a comunidade escolar. Espalhe positividade!
+          </p>
+
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+            <input type="text" id="muralInput" class="form-control" placeholder="Escreva uma frase de incentivo..." maxLength="120">
+            <button class="btn btn-action" onclick="window.addMuralPost()">Publicar</button>
+          </div>
+
+          <div class="cards-grid" id="muralGrid">
+            <div class="card tip-card green" style="margin-bottom:0; background: var(--bg-light);">
+              <p style="font-style: italic; font-size: 0.95rem;">"Você é mais forte do que imagina. Tenha um ótimo dia!"</p>
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— Colega Anônimo</span>
+            </div>
+            <div class="card tip-card blue" style="margin-bottom:0; background: var(--bg-light);">
+              <p style="font-style: italic; font-size: 0.95rem;">"Erros são apenas passos no aprendizado. Não desista!"</p>
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— Grêmio Estudantil</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📊 PAINEL GERAL (ADMIN) -->
+      <section id="dashboard" class="view-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="color: var(--r-dark); font-size: 1.5rem;">Painel Administrativo & Mediação</h2>
+          <span class="status-badge status-resolvido">Ambiente Restrito</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Relatos Pendentes</div>
+            <div class="stat-number" id="statPending">3</div>
+          </div>
+          <div class="stat-card" style="border-top-color: var(--r-mid);">
+            <div class="stat-label">Em Mediação</div>
+            <div class="stat-number" id="statMediation">2</div>
+          </div>
+          <div class="stat-card" style="border-top-color: var(--r-dark);">
+            <div class="stat-label">Casos Resolvidos</div>
+            <div class="stat-number" id="statResolved">12</div>
+          </div>
+          <div class="stat-card" style="border-top-color: #FF9800;">
+            <div class="stat-label">Atendimentos Ativos</div>
+            <div class="stat-number" id="statChats">5</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📋 Relatos Recebidos</div>
+          <div class="data-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Local</th>
+                  <th>Data</th>
+                  <th>Urgência</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="relatosTableBody">
+                <tr>
+                  <td><strong>ABR-83921</strong></td>
+                  <td>Pátio Escola</td>
+                  <td>24/05/2024</td>
+                  <td><span style="color: red; font-weight:700;">Sim</span></td>
+                  <td><span class="status-badge status-analise">Em Análise</span></td>
+                  <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-83921')">Analisar</button></td>
+                </tr>
+                <tr>
+                  <td><strong>ABR-40192</strong></td>
+                  <td>Redes Sociais</td>
+                  <td>22/05/2024</td>
+                  <td><span>Não</span></td>
+                  <td><span class="status-badge status-mediacao">Em Mediação</span></td>
+                  <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ABR-40192')">Analisar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Login Admin -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <h3 style="color: var(--r-dark); margin-bottom: 0.5rem; font-size: 1.25rem;">Acesso Administrativo</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">
+        Digite a chave de acesso da coordenação ou grêmio.
+      </p>
+
+      <div class="form-group">
+        <label>Senha de Acesso:</label>
+        <input type="password" id="adminPassword" class="form-control" placeholder="••••••••">
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button class="btn btn-secondary" style="background: #E2E8F0; color: var(--text-main);" onclick="closeLoginModal()">Cancelar</button>
+        <button class="btn btn-action" onclick="window.checkAdminAuth()">Entrar</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <script>
+    // Estado da Aplicação
+    let isAdmin = false;
+    let respireInterval = null;
 
-  // Suas credenciais
-  const firebaseConfig = {
-    apiKey: "AIzaSyAsq5o-D_HKf8EJ5j5fJ_76Wo8yk7TVWu0",
-    authDomain: "voz-ativa-50ac8.firebaseapp.com",
-    databaseURL: "https://voz-ativa-50ac8-default-rtdb.firebaseio.com",
-    projectId: "voz-ativa-50ac8",
-    storageBucket: "voz-ativa-50ac8.firebasestorage.app",
-    messagingSenderId: "1019643084772",
-    appId: "1:1019643084772:web:7ad55417a546582a4751f1",
-    measurementId: "G-YFVGYX3F7S"
-  };
+    // Navegação
+    function switchNav(viewId, element) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const postsCol = collection(db, "posts");
+      const targetSection = document.getElementById(viewId);
+      if (targetSection) targetSection.classList.add('active');
 
-  // Abrir Modal
-  document.getElementById('btnAbrirModal').onclick = () => {
-    document.getElementById('modalPost').style.display = 'flex';
-  };
-
-  // Fechar Modal
-  window.fecharModal = () => {
-    document.getElementById('modalPost').style.display = 'none';
-  };
-
-  // Publicar no Firestore
-  document.getElementById('btnPublicar').onclick = async () => {
-    const texto = document.getElementById('textoPost').value;
-    if(!texto.trim()) return alert("Escreva algo antes de postar!");
-
-    try {
-        await addDoc(postsCol, {
-            texto: texto,
-            autor: "Mateus Silva",
-            data: serverTimestamp()
-        });
-        document.getElementById('textoPost').value = "";
-        fecharModal();
-    } catch (e) {
-        alert("Erro ao conectar com o banco de dados. Verifique se o Firestore está em modo de teste.");
+      if (element) {
+        element.classList.add('active');
+      } else {
+        const matchingNav = document.querySelector(`.nav-item[onclick*="'${viewId}'"]`);
+        if (matchingNav) matchingNav.classList.add('active');
+      }
     }
-  };
 
-  // Ler do Firestore em Tempo Real
-  const q = query(postsCol, orderBy("data", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const feed = document.getElementById('feedPosts');
-    feed.innerHTML = "";
-    snapshot.forEach((doc) => {
-        const data = doc.data();
-        const postHTML = `
-            <article class="post">
-                <div class="post-header"><div class="avatar">${data.autor.charAt(0)}</div> <span>${data.autor}</span></div>
-                <div class="post-content" style="background:#E8FBF9;">${data.texto}</div>
-                <div class="post-footer">Postado agora • +10 XP</div>
-            </article>`;
-        feed.innerHTML += postHTML;
-    });
-  });
+    // Modal Admin
+    function openLoginModal() {
+      if (isAdmin) {
+        // Se já for admin, desloga
+        isAdmin = false;
+        updateRoleUI();
+        switchNav('inicio');
+        alert('Sessão administrativa encerrada.');
+      } else {
+        document.getElementById('loginModal').classList.add('open');
+      }
+    }
 
-  // Funções Visuais
-  window.mudarTela = (id) => {
-    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
-    document.getElementById(id).classList.add('ativa');
-  };
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('open');
+      document.getElementById('adminPassword').value = '';
+    }
 
-  window.abrirLuma = (msg) => {
-    alert(msg);
-  };
-</script>
+    window.checkAdminAuth = function() {
+      const pass = document.getElementById('adminPassword').value;
+      // Senha padrão para protótipo: 'admin' ou '1234'
+      if (pass === 'admin' || pass === '1234') {
+        isAdmin = true;
+        closeLoginModal();
+        updateRoleUI();
+        switchNav('dashboard');
+      } else {
+        alert('Senha incorreta! Tente "admin" para o teste.');
+      }
+    };
 
+    function updateRoleUI() {
+      const badgeText = document.getElementById('roleText');
+      const badgeIcon = document.getElementById('roleIcon');
+      const switchBtnText = document.getElementById('switchBtnText');
+      const switchBtnIcon = document.getElementById('switchBtnIcon');
+      const adminNav = document.getElementById('adminDashboardNav');
+
+      if (isAdmin) {
+        badgeText.innerText = 'Modo Administrador';
+        badgeIcon.innerText = '🛡️';
+        switchBtnText.innerText = 'Sair do Admin';
+        switchBtnIcon.innerText = '🚪';
+        adminNav.style.display = 'flex';
+      } else {
+        badgeText.innerText = 'Modo Aluno';
+        badgeIcon.innerText = '👤';
+        switchBtnText.innerText = 'Área Admin';
+        switchBtnIcon.innerText = '🛡️';
+        adminNav.style.display = 'none';
+      }
+    }
+
+    // Submissão de Chat
+    window.submitChat = function() {
+      const msg = document.getElementById('chatMsg').value.trim();
+      if (!msg) {
+        alert('Por favor, escreva uma mensagem antes de iniciar.');
+        return;
+      }
+
+      const randomId = 'ABR-' + Math.floor(10000 + Math.random() * 90000);
+      document.getElementById('generatedChatID').innerText = randomId;
+      document.getElementById('chatResultCard').style.display = 'block';
+      document.getElementById('chatMsg').value = '';
+
+      // Atualiza contador admin visualmente
+      const chatCount = document.getElementById('statChats');
+      chatCount.innerText = parseInt(chatCount.innerText) + 1;
+    };
+
+    // Submissão de Relato
+    window.submitRelato = function() {
+      const desc = document.getElementById('relatoText').value.trim();
+      if (!desc) {
+        alert('Por favor, descreva a situação.');
+        return;
+      }
+
+      const randomId = 'ABR-' + Math.floor(10000 + Math.random() * 90000);
+      const isDanger = document.getElementById('dangerSelect').value === 'sim';
+      const place = document.getElementById('relatoPlace').value;
+
+      document.getElementById('generatedRelatoID').innerText = randomId;
+      document.getElementById('relatoResultCard').style.display = 'block';
+      document.getElementById('relatoText').value = '';
+
+      // Adiciona na tabela do Dashboard Dinamicamente
+      const tbody = document.getElementById('relatosTableBody');
+      const tr = document.createElement('tr');
+      const today = new Date().toLocaleDateString('pt-BR');
+
+      tr.innerHTML = `
+        <td><strong>${randomId}</strong></td>
+        <td>${place}</td>
+        <td>${today}</td>
+        <td><span style="${isDanger ? 'color: red; font-weight:700;' : ''}">${isDanger ? 'Sim' : 'Não'}</span></td>
+        <td><span class="status-badge status-analise">Em Análise</span></td>
+        <td><button class="btn btn-secondary" style="background: var(--r-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Abrindo detalhes do relato ${randomId}')">Analisar</button></td>
+      `;
+      tbody.prepend(tr);
+
+      // Atualiza contador
+      const pendingStat = document.getElementById('statPending');
+      pendingStat.innerText = parseInt(pendingStat.innerText) + 1;
+    };
+
+    // Exercício de Respiração (Técnica 4-4-4)
+    window.startRespire = function() {
+      if (respireInterval) clearInterval(respireInterval);
+
+      const circle = document.getElementById('respireCircle');
+      const instruction = document.getElementById('respireInstruction');
+      let step = 0;
+
+      const cycle = () => {
+        if (step === 0) {
+          circle.className = 'respire-circle expand';
+          circle.innerText = 'INSPIRE';
+          instruction.innerText = 'Puxe o ar suavemente pelo nariz...';
+          step = 1;
+        } else if (step === 1) {
+          circle.className = 'respire-circle hold';
+          circle.innerText = 'SEGURE';
+          instruction.innerText = 'Mantenha o ar nos pulmões...';
+          step = 2;
+        } else {
+          circle.className = 'respire-circle shrink';
+          circle.innerText = 'EXPIRE';
+          instruction.innerText = 'Solte o ar devagar pela boca...';
+          step = 0;
+        }
+      };
+
+      cycle();
+      respireInterval = setInterval(cycle, 4000);
+    };
+
+    window.stopRespire = function() {
+      if (respireInterval) clearInterval(respireInterval);
+      const circle = document.getElementById('respireCircle');
+      const instruction = document.getElementById('respireInstruction');
+      circle.className = 'respire-circle';
+      circle.innerText = 'PAUSADO';
+      instruction.innerText = 'Exercício em pausa. Clique em "Começar" quando quiser.';
+    };
+
+    // Mural Positivo
+    window.addMuralPost = function() {
+      const input = document.getElementById('muralInput');
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      const muralGrid = document.getElementById('muralGrid');
+      const colors = ['green', 'blue', 'purple', 'orange'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+      const card = document.createElement('div');
+      card.className = `card tip-card ${randomColor}`;
+      card.style.marginBottom = '0';
+      card.style.background = 'var(--bg-light)';
+
+      card.innerHTML = `
+        <p style="font-style: italic; font-size: 0.95rem;">"${text}"</p>
+        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— Mensagem Recente</span>
+      `;
+
+      muralGrid.prepend(card);
+      input.value = '';
+    };
+  </script>
 </body>
-    </html>
-    
+</html>

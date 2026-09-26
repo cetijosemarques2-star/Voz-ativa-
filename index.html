@@ -12,22 +12,18 @@
 
   <style>
     :root {
-      /* PALETA DE CORES CETI JOSÉ MARQUES */
       --green-dark: #188607;
       --green: #40B615;
       --purple: #4E22A5;
       --purple-dark: #230A80;
       --blue: #64C6ED;
       --gold: #F1DC22;
-
       --main-gradient: linear-gradient(135deg, #188607 0%, #40B615 38%, #4E22A5 72%, #230A80 100%);
-      
       --bg-light: #F8FAFC;
       --surface-white: #FFFFFF;
       --text-main: #1E293B;
       --text-muted: #64748B;
       --border-color: #E2E8F0;
-      
       --sidebar-width: 280px;
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
       --shadow-md: 0 10px 15px -3px rgba(35, 10, 128, 0.08);
@@ -36,431 +32,113 @@
       --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-    body {
-      background-color: var(--bg-light);
-      color: var(--text-main);
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* BARRA SUPERIOR PARA SMARTPHONES */
     .mobile-header {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: var(--surface-white);
-      border-bottom: 1px solid var(--border-color);
-      z-index: 90;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1rem;
+      display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--surface-white); border-bottom: 1px solid var(--border-color);
+      z-index: 90; align-items: center; justify-content: space-between; padding: 0 1rem;
     }
+    .mobile-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--purple-dark); }
+    .mobile-toggle-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--purple); padding: 0.5rem; }
 
-    .mobile-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 800;
-      color: var(--purple-dark);
-    }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(35, 10, 128, 0.4); backdrop-filter: blur(4px); z-index: 99; }
 
-    .mobile-toggle-btn {
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--purple);
-      padding: 0.5rem;
-    }
-
-    /* BACKDROP MOBILE */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(35, 10, 128, 0.4);
-      backdrop-filter: blur(4px);
-      z-index: 99;
-    }
-
-    /* SIDEBAR LATERAL */
     .sidebar {
-      width: var(--sidebar-width);
-      background: var(--surface-white);
-      border-right: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 100;
-      transition: var(--transition);
+      width: var(--sidebar-width); background: var(--surface-white); border-right: 1px solid var(--border-color);
+      display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: var(--transition);
     }
-
-    .sidebar-header {
-      padding: 1.5rem;
-      background: var(--main-gradient);
-      color: white;
-      position: relative;
-    }
-
-    .sidebar-brand {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .sidebar-sub {
-      font-size: 0.75rem;
-      opacity: 0.9;
-      margin-top: 0.25rem;
-      font-weight: 500;
-    }
-
+    .sidebar-header { padding: 1.5rem; background: var(--main-gradient); color: white; position: relative; }
+    .sidebar-brand { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; }
+    .sidebar-sub { font-size: 0.75rem; opacity: 0.9; margin-top: 0.25rem; font-weight: 500; }
     .user-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      margin-top: 0.75rem;
-      font-weight: 600;
+      display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.7rem; margin-top: 0.75rem; font-weight: 600;
     }
 
-    .nav-list {
-      list-style: none;
-      padding: 1rem 0.75rem;
-      flex: 1;
-      overflow-y: auto;
-    }
-
+    .nav-list { list-style: none; padding: 1rem 0.75rem; flex: 1; overflow-y: auto; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border-radius: var(--radius-md);
-      color: var(--text-muted);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-      transition: var(--transition);
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: var(--radius-md);
+      color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; transition: var(--transition);
     }
+    .nav-item:hover { background: #F1F5F9; color: var(--purple); }
+    .nav-item.active { background: #F3E8FF; color: var(--purple-dark); border-left: 4px solid var(--purple); }
+    .nav-item .icon { font-size: 1.2rem; }
+    .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border-color); }
 
-    .nav-item:hover {
-      background: #F1F5F9;
-      color: var(--purple);
-    }
+    .main-wrapper { margin-left: var(--sidebar-width); flex: 1; padding: 2rem; transition: var(--transition); max-width: 1200px; }
+    .view-section { display: none; animation: fadeIn 0.3s ease-out; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .nav-item.active {
-      background: #F3E8FF;
-      color: var(--purple-dark);
-      border-left: 4px solid var(--purple);
-    }
-
-    .nav-item .icon {
-      font-size: 1.2rem;
-    }
-
-    .sidebar-footer {
-      padding: 1rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    /* CONTEÚDO PRINCIPAL */
-    .main-wrapper {
-      margin-left: var(--sidebar-width);
-      flex: 1;
-      padding: 2rem;
-      transition: var(--transition);
-      max-width: 1200px;
-    }
-
-    .view-section {
-      display: none;
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    .view-section.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* CARDS E GRIDS */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1rem;
-    }
-
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
     .card {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
+      background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.5rem;
+      border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: var(--transition);
     }
+    .card:hover { box-shadow: var(--shadow-md); border-color: #CBD5E1; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
 
-    .card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: #CBD5E1;
-    }
+    .hero-banner { background: var(--main-gradient); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); }
+    .hero-banner h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
 
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--purple-dark);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .hero-banner {
-      background: var(--main-gradient);
-      color: white;
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-md);
-    }
-
-    .hero-banner h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    /* BOTÕES */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border: none;
-      transition: var(--transition);
-      width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: var(--transition); width: 100%;
     }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { background: var(--green-dark); }
+    .btn-purple { background: var(--purple); color: white; }
+    .btn-purple:hover { background: var(--purple-dark); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { background: #F8FAFC; border-color: var(--purple); color: var(--purple); }
+    .btn-danger { background: #EF4444; color: white; }
 
-    .btn-green {
-      background: var(--green);
-      color: white;
-    }
-
-    .btn-green:hover {
-      background: var(--green-dark);
-    }
-
-    .btn-purple {
-      background: var(--purple);
-      color: white;
-    }
-
-    .btn-purple:hover {
-      background: var(--purple-dark);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    .btn-outline:hover {
-      background: #F8FAFC;
-      border-color: var(--purple);
-      color: var(--purple);
-    }
-
-    .btn-danger {
-      background: #EF4444;
-      color: white;
-    }
-
-    /* FORMULÁRIOS */
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--text-main);
-    }
-
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
     .form-control {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--border-color);
-      font-size: 0.95rem;
-      outline: none;
-      transition: var(--transition);
+      width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color);
+      font-size: 0.95rem; outline: none; transition: var(--transition);
     }
+    .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1); }
+    textarea.form-control { min-height: 110px; resize: vertical; }
 
-    .form-control:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1);
-    }
+    .data-table-container { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 1rem; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    th { background: #F8FAFC; padding: 0.85rem 1rem; font-weight: 700; color: var(--purple-dark); border-bottom: 1px solid var(--border-color); }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
 
-    textarea.form-control {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    /* TABELAS */
-    .data-table-container {
-      overflow-x: auto;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      margin-top: 1rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.875rem;
-    }
-
-    th {
-      background: #F8FAFC;
-      padding: 0.85rem 1rem;
-      font-weight: 700;
-      color: var(--purple-dark);
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    /* BADGES DE STATUS */
-    .status-badge {
-      display: inline-block;
-      padding: 0.25rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
+    .status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
     .badge-analise { background: #FEF3C7; color: #D97706; }
     .badge-mediacao { background: #E0E7FF; color: #4338CA; }
     .badge-resolvido { background: #DCFCE7; color: #15803D; }
 
-    /* MODAL */
     .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
+      display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1rem;
     }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.75rem; width: 100%; max-width: 480px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
 
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal-box {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-
-    /* ESPAÇO RESPIRE */
     .respire-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem 1.5rem;
-      background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-color);
-      text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1.5rem;
+      background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%); border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;
     }
-
     .respire-circle {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: var(--green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 1.5rem 0;
-      transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear;
+      width: 140px; height: 140px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1.1rem; margin: 1.5rem 0; transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear;
       box-shadow: 0 0 20px rgba(64, 182, 21, 0.3);
     }
 
-    /* ADAPTAÇÕES RESPONSIVAS */
     @media (max-width: 768px) {
       .mobile-header { display: flex; }
-      .sidebar {
-        transform: translateX(-100%);
-        top: 0;
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .sidebar-overlay.open {
-        display: block;
-      }
-      .main-wrapper {
-        margin-left: 0;
-        padding: 1rem;
-        padding-top: 80px;
-      }
-      .hero-banner {
-        padding: 1.5rem;
-      }
-      .hero-banner h1 {
-        font-size: 1.5rem;
-      }
+      .sidebar { transform: translateX(-100%); top: 0; }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-wrapper { margin-left: 0; padding: 1rem; padding-top: 80px; }
+      .hero-banner { padding: 1.5rem; }
+      .hero-banner h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -468,9 +146,7 @@
 
   <!-- MOBILE HEADER -->
   <header class="mobile-header">
-    <div class="mobile-brand">
-      <span>🟢🟣</span> ABRAÇAR
-    </div>
+    <div class="mobile-brand"><span>🟢🟣</span> ABRAÇAR</div>
     <button class="mobile-toggle-btn" onclick="toggleSidebar()">☰</button>
   </header>
 
@@ -480,9 +156,7 @@
   <!-- SIDEBAR LATERAL -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-brand">
-        <span>🟢🟣</span> ABRAÇAR
-      </div>
+      <div class="sidebar-brand"><span>🟢🟣</span> ABRAÇAR</div>
       <div class="sidebar-sub">CETI José Marques</div>
       <div class="user-badge" id="userBadge">
         <span id="roleIcon">👤</span>
@@ -491,42 +165,20 @@
     </div>
 
     <ul class="nav-list">
-      <li class="nav-item active" onclick="switchNav('inicio', this)">
-        <span class="icon">🏠</span> Início
-      </li>
-      <li class="nav-item" onclick="switchNav('atendimento', this)">
-        <span class="icon">💬</span> Atendimento
-      </li>
-      <li class="nav-item" onclick="switchNav('relatos', this)">
-        <span class="icon">📝</span> Relato Anônimo
-      </li>
-      <li class="nav-item" onclick="switchNav('mediacao', this)">
-        <span class="icon">🤝</span> Mediação de Conflitos
-      </li>
-      <li class="nav-item" onclick="switchNav('respire', this)">
-        <span class="icon">🌿</span> Espaço Respire
-      </li>
-      <li class="nav-item" onclick="switchNav('dicas', this)">
-        <span class="icon">💡</span> Dicas e Guias
-      </li>
-      <li class="nav-item" onclick="switchNav('mural', this)">
-        <span class="icon">📢</span> Mural Acolhedor
-      </li>
-      <li class="nav-item" onclick="switchNav('apoio', this)">
-        <span class="icon">☎️</span> Rede de Apoio
-      </li>
-      <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)">
-        <span class="icon">🛡️</span> Painel Gestor
-      </li>
+      <li class="nav-item active" onclick="switchNav('inicio', this)"><span class="icon">🏠</span> Início</li>
+      <li class="nav-item" onclick="switchNav('atendimento', this)"><span class="icon">💬</span> Atendimento</li>
+      <li class="nav-item" onclick="switchNav('relatos', this)"><span class="icon">📝</span> Relato Anônimo</li>
+      <li class="nav-item" onclick="switchNav('mediacao', this)"><span class="icon">🤝</span> Mediação de Conflitos</li>
+      <li class="nav-item" onclick="switchNav('respire', this)"><span class="icon">🌿</span> Espaço Respire</li>
+      <li class="nav-item" onclick="switchNav('dicas', this)"><span class="icon">💡</span> Dicas e Guias</li>
+      <li class="nav-item" onclick="switchNav('mural', this)"><span class="icon">📢</span> Mural Acolhedor</li>
+      <li class="nav-item" onclick="switchNav('apoio', this)"><span class="icon">☎️</span> Rede de Apoio</li>
+      <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)"><span class="icon">🛡️</span> Painel Gestor</li>
     </ul>
 
     <div class="sidebar-footer">
-      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">
-        🔐 Acesso Gestor
-      </button>
-      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">
-        🚪 Sair do Sistema
-      </button>
+      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">🔐 Acesso Gestor</button>
+      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">🚪 Sair do Sistema</button>
     </div>
   </aside>
 
@@ -537,31 +189,23 @@
     <section id="inicio" class="view-section active">
       <div class="hero-banner">
         <h1>Escuta • Acolhimento • Respeito</h1>
-        <p>Um espaço seguro, totalmente integrado e confidencial para a comunidade do CETI José Marques.</p>
+        <p>Um espaço seguro, integrado e confidencial para a comunidade do CETI José Marques.</p>
       </div>
 
       <div class="cards-grid">
         <div class="card">
           <div class="card-title">💬 Conversa Direta</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação sem complicação.
-          </p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação.</p>
           <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
         </div>
-
         <div class="card">
           <div class="card-title">📝 Relato Anônimo</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Informe situações de bullying ou ocorrências com segurança. Nenhum dado pessoal é exigido.
-          </p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Informe ocorrências com segurança. O sistema não solicita seu nome.</p>
           <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
         </div>
-
         <div class="card">
           <div class="card-title">🌿 Despressurizar</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Acesse áudios relaxantes e um exercício guiado de respiração para momentos de ansiedade.
-          </p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Acesse sons relaxantes e exercícios guiados para momentos de ansiedade.</p>
           <button class="btn btn-outline" onclick="switchNav('respire')">Ir ao Espaço Respire</button>
         </div>
       </div>
@@ -570,44 +214,32 @@
     <!-- SEÇÃO: ATENDIMENTO -->
     <section id="atendimento" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais de Atendimento</h2>
-      
       <div class="cards-grid">
         <div class="card">
           <div class="card-title">🏛️ Coordenação Pedagógica</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Suporte para dúvidas escolares, orientação acadêmica e situações disciplinares.
-          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Suporte para dúvidas escolares e orientação acadêmica.</p>
           <button class="btn btn-purple" onclick="openChatForm('Coordenação')">Abrir Chamado</button>
         </div>
-
         <div class="card">
           <div class="card-title">🎓 Grêmio Estudantil</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Canal aberto para sugestões, eventos escolares e ideias dos estudantes.
-          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Canal aberto para sugestões, eventos e ideias dos estudantes.</p>
           <button class="btn btn-green" onclick="openChatForm('Grêmio Estudantil')">Falar com o Grêmio</button>
         </div>
-
         <div class="card">
           <div class="card-title">🤝 Mediação de Conflitos</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Ajuda profissional para resolver divergências ou atritos interpessoais de forma pacífica.
-          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Ajuda para resolver divergências de forma pacífica.</p>
           <button class="btn btn-purple" onclick="openChatForm('Mediação')">Solicitar Mediação</button>
         </div>
       </div>
 
-      <!-- FORMULÁRIO DE CHAT -->
       <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
         <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
         <form onsubmit="submitChat(event)">
           <input type="hidden" id="chatChannelInput">
-          
           <div class="form-group">
             <label>Sua Mensagem / Solicitação:</label>
             <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
           </div>
-
           <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
             <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
             <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
@@ -619,32 +251,27 @@
     <!-- SEÇÃO: RELATO ANÔNIMO -->
     <section id="relatos" class="view-section">
       <div class="card">
-        <div class="card-title">📝 Registrar Relato Anônimo</div>
+        <div class="card-title">📝 Registrar Relato Protegido</div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          Sua identidade permanece 100% protegida. O sistema gerará um ID exclusivo (ex: ABR-8X92) para acompanhamento interno.
+          O sistema não solicita seu nome ou outros dados pessoais no formulário. O acesso aos relatos é restrito à equipe responsável. Um código de ID exclusivo será gerado para acompanhamento.
         </p>
-
         <form onsubmit="submitRelato(event)">
           <div class="form-group">
             <label>Local da Ocorrência:</label>
-            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04, Redes Sociais...">
+            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04...">
           </div>
-
           <div class="form-group">
             <label>Data Aproximada:</label>
             <input type="date" id="reportDate" class="form-control" required>
           </div>
-
           <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
             <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px;">
             <label for="reportDanger" style="margin-bottom: 0; cursor: pointer;">Trata-se de uma urgência ou risco imediato?</label>
           </div>
-
           <div class="form-group">
             <label>Descrição Fatos:</label>
-            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes possível..."></textarea>
+            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes..."></textarea>
           </div>
-
           <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
         </form>
       </div>
@@ -654,13 +281,11 @@
     <section id="mediacao" class="view-section">
       <div class="card">
         <div class="card-title">🤝 Pedido de Mediação Escolar</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          A mediação é um processo voluntário onde um mediador neutro ajuda as partes a encontrarem um acordo respeitoso.
-        </p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">A mediação é um processo voluntário onde um mediador neutro ajuda as partes a encontrarem um acordo respeitoso.</p>
         <form onsubmit="submitMediacao(event)">
           <div class="form-group">
             <label>Tema ou Motivo do Conflito:</label>
-            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho em grupo">
+            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho">
           </div>
           <div class="form-group">
             <label>Resumo da Situação:</label>
@@ -675,158 +300,165 @@
     <section id="respire" class="view-section">
       <div class="respire-box">
         <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Espaço Respire</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">
-          Siga o ritmo do círculo para acalmar a mente e estabilizar a respiração.
-        </p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">Siga o ritmo do círculo para acalmar a mente e estabilizar a respiração.</p>
 
         <div class="respire-circle" id="respireCircle">
-          <span id="respireInstruction">Inspire</span>
+          <span id="respireInstruction">Pronto</span>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-          <button class="btn btn-green" onclick="startRespire()">▶ Iniciar</button>
-          <button class="btn btn-outline" onclick="stopRespire()">⏸ Pausar</button>
+          <button class="btn btn-green" onclick="startRespire()">Iniciar Ciclo</button>
+          <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
         </div>
 
-        <div style="width: 100%; max-width: 400px; text-align: left;">
-          <h4 style="color: var(--purple-dark); margin-bottom: 0.5rem;">🎧 Sons Suaves</h4>
-          <audio controls style="width: 100%;">
-            <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy_loud.ogg" type="audio/ogg">
-            Seu navegador não suporta o reprodutor de áudio.
-          </audio>
-        </div>
+        <audio id="relaxAudio" src="https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" loop></audio>
+        <button class="btn btn-purple" style="max-width: 250px;" onclick="toggleAudio()">🎵 Alternar Som Relaxante</button>
       </div>
     </section>
 
     <!-- SEÇÃO: DICAS E GUIAS -->
     <section id="dicas" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Guias Práticos e Dicas</h2>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Dicas e Guias de Bem-Estar</h2>
       <div class="cards-grid">
-        <div class="card" style="border-top: 4px solid var(--purple);">
-          <div class="card-title">🚨 Bullying e Cyberbullying</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Se causa sofrimento, exclusão ou humilhação contínua, não é brincadeira. Guarde evidências digitais e reporte imediatamente.
-          </p>
+        <div class="card">
+          <div class="card-title">🧠 Lidando com a Ansiedade</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Práticas simples para momentos de crise antes de avaliações.</p>
+          <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
+            <li>Técnica de aterramento 5-4-3-2-1.</li>
+            <li>Foco no momento presente.</li>
+            <li>Pausas ativas e alongamentos.</li>
+          </ul>
         </div>
-        <div class="card" style="border-top: 4px solid var(--green);">
-          <div class="card-title">🧠 Acolhimento Emocional</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-            Sentir-se sobrecarregado faz parte. Conversar sobre suas emoções com alguém de confiança é um ato de coragem e autocuidado.
-          </p>
+        <div class="card">
+          <div class="card-title">🛡️ Combate ao Cyberbullying</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Como se proteger e agir diante de ofensas digitais.</p>
+          <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
+            <li>Não retalie provocações online.</li>
+            <li>Salve provas tirando capturas de tela (prints).</li>
+            <li>Comunique imediatamente a coordenação.</li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- SEÇÃO: MURAL ACOLHEDOR -->
     <section id="mural" class="view-section">
-      <div class="card">
-        <div class="card-title">📢 Mural Acolhedor</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          Deixe uma mensagem positiva ou de incentivo para os seus colegas do CETI José Marques.
-        </p>
-
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
-          <input type="text" id="muralInput" class="form-control" placeholder="Escreva uma mensagem positiva..." maxlength="140">
-          <button class="btn btn-green" style="width: auto;" onclick="addMuralPost()">Publicar</button>
-        </div>
-
-        <div class="cards-grid" id="muralGrid">
-          <!-- Postagens carregadas dinamicamente -->
-        </div>
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-title">📢 Enviar Mensagem Positiva</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Deixe uma palavra de incentivo. Para preservar a segurança e evitar exposição, utilize a opção "Anônimo" ou seu primeiro nome.</p>
+        <form onsubmit="submitMural(event)">
+          <div class="form-group">
+            <input type="text" id="muralAuthor" class="form-control" placeholder="Seu nome ou 'Anônimo'" required maxlength="30">
+          </div>
+          <div class="form-group">
+            <textarea id="muralText" class="form-control" placeholder="Escreva sua mensagem positiva.          <div class="form-group">
+            <textarea id="muralText" class="form-control" placeholder="Escreva sua mensagem positiva..." required maxlength="200"></textarea>
+          </div>
+          <button type="submit" class="btn btn-purple">Publicar no Mural</button>
+        </form>
       </div>
+
+      <h3 style="color: var(--purple-dark); margin-bottom: 1rem;">Mural da Comunidade</h3>
+      <div class="cards-grid" id="muralGrid"></div>
     </section>
 
     <!-- SEÇÃO: REDE DE APOIO -->
     <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais Externos de Emergência</h2>
-      <div class="cards-grid" id="apoioGrid">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Redes de Apoio Externas e Internas</h2>
+      <div class="cards-grid">
         <div class="card">
-          <div class="card-title">📞 CVV — Centro de Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio. Atendimento gratuito 24h.</p>
-          <a href="tel:188" class="btn btn-outline" style="text-decoration:none;">Ligar 188</a>
+          <div class="card-title">📞 CVV - Centro de Valorização da Vida</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio, gratuito e sigiloso 24h.</p>
+          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Ligue 188</div>
         </div>
         <div class="card">
-          <div class="card-title">🛡️ Disque 100</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Violação de direitos humanos, crianças e adolescentes.</p>
-          <a href="tel:100" class="btn btn-outline" style="text-decoration:none;">Ligar 100</a>
+          <div class="card-title">🏫 Conselho Tutelar local</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Garantia de direitos e proteção infantojuvenil.</p>
+          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Disque 100</div>
         </div>
       </div>
     </section>
 
-    <!-- SEÇÃO: PAINEL ADMINISTRATIVO -->
+    <!-- SEÇÃO: PAINEL GESTOR (ADMIN) -->
     <section id="dashboard" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h2 style="color: var(--purple-dark);">Painel Gestor de Ocorrências</h2>
-        <span class="status-badge badge-resolvido">Painel Ativo</span>
+      <div class="hero-banner" style="background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 100%);">
+        <h1>Painel de Gestão e Escuta</h1>
+        <p>Gerenciamento centralizado em tempo real de chamados e relatos do CETI José Marques.</p>
       </div>
 
-      <div class="cards-grid" style="margin-bottom: 1.5rem;">
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <button class="btn btn-purple" onclick="switchTabAdmin('chamados')">Atendimentos</button>
+        <button class="btn btn-outline" onclick="switchTabAdmin('relatorios')">Relatos Anônimos</button>
+      </div>
+
+      <div id="adminChamados" class="admin-tab-content">
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Relatos Pendentes</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);" id="statRelatos">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Atendimentos Ativos</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: var(--green-dark);" id="statChats">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Mediações Abertas</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: var(--blue);" id="statMediacoes">0</div>
+          <div class="card-title">💬 Chamados Recebidos</div>
+          <div class="data-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Canal</th>
+                  <th>Mensagem</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tableChamadosBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">📋 Gerenciamento Unificado em Tempo Real</div>
-        <div class="data-table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Canal/Local</th>
-                <th>Data</th>
-                <th>Urgente?</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody">
-              <!-- Registros sincronizados dinamicamente -->
-            </tbody>
-          </table>
+      <div id="adminRelatorios" class="admin-tab-content" style="display: none;">
+        <div class="card">
+          <div class="card-title">📝 Relatos Protegidos</div>
+          <div class="data-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Local</th>
+                  <th>Data</th>
+                  <th>Urgência?</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody id="tableRelatosBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL ADMIN LOGIN -->
+  <!-- MODAL DE LOGIN GESTOR -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <div class="card-title">🔐 Acesso Administrativo</div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
-        Insira a senha de acesso da coordenação ou gestão escolar.
-      </p>
-      
-      <div class="form-group">
-        <label>Senha de Acesso:</label>
-        <input type="password" id="adminPassword" class="form-control" placeholder="••••••••">
-      </div>
-
-      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-        <button class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-        <button class="btn btn-purple" onclick="checkAdminAuth()">Acessar Painel</button>
-      </div>
+      <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Restrito - Gestão</div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Usuário Administrador:</label>
+          <input type="text" id="loginUser" class="form-control" required placeholder="Digite o usuário">
+        </div>
+        <div class="form-group">
+          <label>Senha:</label>
+          <input type="password" id="loginPass" class="form-control" required placeholder="Digite a senha">
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
+          <button type="submit" class="btn btn-purple">Entrar</button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- FIREBASE SDK CONFIGURAÇÃO DE PRODUÇÃO -->
+  <!-- FIREBASE SDKs & LÓGICA DO SISTEMA -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInAnonymously, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-    // CHAVES DO PROJETO INTEGRADOS
     const firebaseConfig = {
       apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
       authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
@@ -838,330 +470,320 @@
       measurementId: "G-WEQXQG0PHH"
     };
 
-    let app, auth, db;
-    try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-    } catch(e) {
-      console.error("Erro na inicialização do Firebase", e);
-    }
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    // EXPOSIÇÃO GLOBAL SEGURA PARA OPERAÇÕES DA INTERFACE
-    window.db = db;
-    window.auth = auth;
-    window.addDoc = addDoc;
-    window.collection = collection;
-    window.serverTimestamp = serverTimestamp;
-    window.updateDoc = updateDoc;
-    window.doc = doc;
+    window.appState = {
+      isAdmin: false,
+      chamados: {},
+      relatos: {},
+      mural: []
+    };
 
-    // CONEXÃO ANÔNIMA INICIAL
-    if (auth) {
-      signInAnonymously(auth).catch(err => console.error("Erro ao autenticar anonimamente:", err));
-      onAuthStateChanged(auth, (user) => {
-        if (user && db) {
-          setupRealtimeListeners();
-        }
-      });
-    }
+    // SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
+    onValue(ref(db, 'chamados'), (snapshot) => {
+      window.appState.chamados = snapshot.val() || {};
+      renderAdminData();
+    });
 
-    // LISTENER EM TEMPO REAL DAS COLEÇÕES
-    function setupRealtimeListeners() {
-      if (!db) return;
+    onValue(ref(db, 'relatos'), (snapshot) => {
+      window.appState.relatos = snapshot.val() || {};
+      renderAdminData();
+    });
 
-      // 1. ESCUTA DO MURAL
-      const muralQuery = query(collection(db, "mural"), orderBy("timestamp", "desc"));
-      onSnapshot(muralQuery, (snapshot) => {
-        const grid = document.getElementById('muralGrid');
-        if (!grid) return;
-        grid.innerHTML = '';
-        snapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.style.borderLeft = '4px solid var(--purple)';
-          card.innerHTML = `
-            <p style="font-style: italic; font-size: 0.9rem;">"${data.text}"</p>
-            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ID: ${data.authorId || 'Estudante'}</span>
-          `;
-          grid.appendChild(card);
-        });
-      });
+    onValue(ref(db, 'mural'), (snapshot) => {
+      const data = snapshot.val();
+      window.appState.mural = data ? Object.values(data).reverse() : [];
+      renderMural();
+    });
 
-      // 2. ESCUTA REGISTROS PARA O PAINEL ADMIN
-      const registrosQuery = query(collection(db, "registros"), orderBy("timestamp", "desc"));
-      onSnapshot(registrosQuery, (snapshot) => {
-        const tbody = document.getElementById('adminTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        let countRelatos = 0;
-        let countChats = 0;
-        let countMediacoes = 0;
-
-        snapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          const id = docSnap.id;
-
-          if (data.tipo === 'Relato') countRelatos++;
-          if (data.tipo === 'Atendimento') countChats++;
-          if (data.tipo === 'Mediação') countMediacoes++;
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><strong>${data.code || id.substring(0,6)}</strong></td>
-            <td>${data.tipo}</td>
-            <td>${data.canalOuLocal || 'Geral'}</td>
-            <td>${data.date || 'Hoje'}</td>
-            <td><span style="${data.isDanger ? 'color: red; font-weight:700;' : ''}">${data.isDanger ? 'Sim' : 'Não'}</span></td>
-            <td><span class="status-badge ${data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${data.status || 'Em Análise'}</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="alert('Detalhes: ${data.description ? data.description.replace(/'/g, "\\'") : 'Sem detalhes'}')">Ver</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        document.getElementById('statRelatos').innerText = countRelatos;
-        document.getElementById('statChats').innerText = countChats;
-        document.getElementById('statMediacoes').innerText = countMediacoes;
-      });
-    }
-  </script>
-
-  <!-- LÓGICA DE INTERFACE EM JAVASCRIPT -->
-  <script>
-    let currentRole = 'user';
-    let respireInterval = null;
-
-    // GERAR ID DE REGISTRO ANÔNIMO
-    function generateUniqueID() {
-      return 'ABR-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-    }
-
-    // ALTERNAR SIDEBAR NO SMARTPHONE
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      sidebar.classList.toggle('open');
-      overlay.classList.toggle('open');
-    }
-
-    // NAVEGAÇÃO ENTRE ABAS
-    function switchNav(viewId, element) {
-      if (viewId === 'dashboard' && currentRole !== 'admin') {
-        alert('Acesso restrito aos gestores.');
-        return;
-      }
-
+    window.switchNav = function(sectionId, element) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-
-      const target = document.getElementById(viewId);
-      if (target) target.classList.add('active');
-
-      if (element) {
+      document.getElementById(sectionId).classList.add('active');
+      if(element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         element.classList.add('active');
       }
-
-      // Fecha menu mobile ao selecionar
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
-      }
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+      window.scrollTo(0, 0);
     }
 
-    // ABRIR FORMULÁRIO DE ATENDIMENTO CANALIZADO
-    function openChatForm(channelName) {
-      document.getElementById('chatChannelInput').value = channelName;
-      document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channelName;
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+
+    window.openChatForm = function(canal) {
       document.getElementById('chatFormCard').style.display = 'block';
-      window.scrollTo({ top: document.getElementById('chatFormCard').offsetTop - 20, behavior: 'smooth' });
+      document.getElementById('chatFormTitle').innerText = 'Atendimento com ' + canal;
+      document.getElementById('chatChannelInput').value = canal;
+      document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ENVIO DE CHAT / ATENDIMENTO
-    async function submitChat(e) {
+    window.submitChat = function(e) {
       e.preventDefault();
-      const channel = document.getElementById('chatChannelInput').value;
-      const message = document.getElementById('chatMessageInput').value;
-      const code = generateUniqueID();
+      const canal = document.getElementById('chatChannelInput').value;
+      const mensagem = document.getElementById('chatMessageInput').value;
 
-      try {
-        if (window.db && window.addDoc && window.collection) {
-          await window.addDoc(window.collection(window.db, "registros"), {
-            code: code,
-            tipo: 'Atendimento',
-            canalOuLocal: channel,
-            description: message,
-            status: 'Em Análise',
-            isDanger: false,
-            timestamp: window.serverTimestamp()
-          });
-        }
-        alert(`Atendimento iniciado com sucesso!\nGuarde seu ID de acompanhamento: ${code}`);
-        document.getElementById('chatMessageInput').value = '';
+      const newRef = push(ref(db, 'chamados'));
+      set(newRef, {
+        canal: canal,
+        mensagem: mensagem,
+        status: 'Em Análise',
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Sua mensagem foi enviada com sucesso para a equipe de ' + canal + '!');
         document.getElementById('chatFormCard').style.display = 'none';
-      } catch(err) {
-        console.error(err);
-        alert(`Solicitação gerada no modo local.\nSeu ID: ${code}`);
-      }
+        e.target.reset();
+      }).catch(err => {
+        alert('Erro ao enviar mensagem. Verifique a conexão.');
+      });
     }
 
-    // ENVIO DE RELATO ANÔNIMO
-    async function submitRelato(e) {
+    window.submitRelato = function(e) {
       e.preventDefault();
-      const place = document.getElementById('reportPlace').value;
-      const date = document.getElementById('reportDate').value;
-      const isDanger = document.getElementById('reportDanger').checked;
-      const desc = document.getElementById('reportDesc').value;
-      const code = generateUniqueID();
+      const randomId = 'ABR-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      const novoRelato = {
+        id: randomId,
+        local: document.getElementById('reportPlace').value,
+        data: document.getElementById('reportDate').value,
+        urgencia: document.getElementById('reportDanger').checked ? 'Sim ⚠️' : 'Não',
+        desc: document.getElementById('reportDesc').value,
+        timestamp: Date.now()
+      };
 
-      try {
-        if (window.db && window.addDoc && window.collection) {
-          await window.addDoc(window.collection(window.db, "registros"), {
-            code: code,
-            tipo: 'Relato',
-            canalOuLocal: place,
-            date: date,
-            isDanger: isDanger,
-            description: desc,
-            status: 'Em Análise',
-            timestamp: window.serverTimestamp()
-          });
-        }
-        alert(`Relato enviado com sucesso e totalmente protegido!\nGuarde seu ID de registro: ${code}`);
+      const newRef = push(ref(db, 'relatos'));
+      set(newRef, novoRelato).then(() => {
+        alert('Relato enviado com segurança! Seu código de acompanhamento exclusivo é: ' + randomId);
         e.target.reset();
-      } catch(err) {
-        console.error(err);
-        alert(`Relato registrado!\nID: ${code}`);
-        e.target.reset();
-      }
+        window.switchNav('inicio');
+      }).catch(err => {
+        alert('Erro ao registrar relato.');
+      });
     }
 
-    // ENVIO DE MEDIAÇÃO
-    async function submitMediacao(e) {
+    window.submitMediacao = function(e) {
       e.preventDefault();
-      const topic = document.getElementById('mediacaoTopic').value;
+      const topico = document.getElementById('mediacaoTopic').value;
       const desc = document.getElementById('mediacaoDesc').value;
-      const code = generateUniqueID();
 
-      try {
-        if (window.db && window.addDoc && window.collection) {
-          await window.addDoc(window.collection(window.db, "registros"), {
-            code: code,
-            tipo: 'Mediação',
-            canalOuLocal: topic,
-            description: desc,
-            status: 'Em Análise',
-            isDanger: false,
-            timestamp: window.serverTimestamp()
-          });
-        }
-        alert(`Solicitação de mediação enviada!\nID: ${code}`);
+      const newRef = push(ref(db, 'chamados'));
+      set(newRef, {
+        canal: 'Mediação',
+        mensagem: 'Tema: ' + topico + ' | ' + desc,
+        status: 'Em Mediação',
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Solicitação de mediação registrada com confidencialidade.');
         e.target.reset();
-      } catch(err) {
-        console.error(err);
-        alert(`Mediação enviada!\nID: ${code}`);
+        window.switchNav('inicio');
+      });
+    }
+
+    let respireInterval = null;
+    window.startRespire = function() {
+      const circle = document.getElementById('respireCircle');
+      const instruction = document.getElementById('respireInstruction');
+      if(respireInterval) clearInterval(respireInterval);
+
+      const runCycle = () => {
+        instruction.innerText = "Inspire...";
+        circle.style.transform = "scale(1.35)";
+        circle.style.backgroundColor = "var(--green)";
+
+        setTimeout(() => {
+          instruction.innerText = "Segure...";
+        }, 4000);
+
+        setTimeout(() => {
+          instruction.innerText = "Expire...";
+          circle.style.transform = "scale(1)";
+          circle.style.backgroundColor = "var(--purple)";
+        }, 8000);
+      };
+
+      runCycle();
+      respireInterval = setInterval(runCycle, 12000);
+    }
+
+    window.stopRespire = function() {
+      if(respireInterval) clearInterval(respireInterval);
+      const circle = document.getElementById('respireCircle');
+      const instruction = document.getElementById('respireInstruction');
+      circle.style.transform = "scale(1)";
+      circle.style.backgroundColor = "var(--green)";
+      instruction.innerText = "Pronto";
+    }
+
+    window.toggleAudio = function() {
+      const audio = document.getElementById('relaxAudio');
+      if(audio.paused) audio.play(); else audio.pause();
+    }
+
+    window.submitMural = function(e) {
+      e.preventDefault();
+      const autor = document.getElementById('muralAuthor').value;
+      const texto = document.getElementById('muralText').value;
+
+      const newRef = push(ref(db, 'mural'));
+      set(newRef, { autor, texto, timestamp: Date.now() }).then(() => {
+        alert('Sua mensagem foi publicada no mural com sucesso!');
         e.target.reset();
+      });
+    }
+
+    function renderMural() {
+      const grid = document.getElementById('muralGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      window.appState.mural.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        
+        const p = document.createElement('p');
+        p.style.cssText = "font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;";
+        p.textContent = `"${item.texto}"`;
+
+        const small = document.createElement('div');
+        small.style.cssText = "font-size: 0.8rem; font-weight: 700; color: var(--purple);";
+        small.textContent = `— ${item.autor}`;
+
+        div.appendChild(p);
+        div.appendChild(small);
+        grid.appendChild(div);
+      });
+    }
+
+    window.openLoginModal = function() { document.getElementById('loginModal').classList.add('open'); }
+    window.closeLoginModal = function() { document.getElementById('loginModal').classList.remove('open'); }
+
+    window.handleLogin = function(e) {
+      e.preventDefault();
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+
+      if(user === 'admin' && pass === 'ceti2026') {
+        window.appState.isAdmin = true;
+        closeLoginModal();
+        updateAuthUI();
+        window.switchNav('dashboard');
+        renderAdminData();
+      } else {
+        alert('Usuário ou senha incorretos!');
       }
     }
 
-    // MURAL POSITIVO
-    async function addMuralPost() {
-      const input = document.getElementById('muralInput');
-      const text = input.value.trim();
-      if (!text) return alert('Escreva uma mensagem antes de publicar.');
-
-      const anonID = generateUniqueID();
-
-      try {
-        if (window.db && window.addDoc && window.collection) {
-          await window.addDoc(window.collection(window.db, "mural"), {
-            text: text,
-            authorId: anonID,
-            timestamp: window.serverTimestamp()
-          });
-        }
-        input.value = '';
-      } catch(err) {
-        console.error(err);
-        input.value = '';
-      }
+    window.logout = function() {
+      window.appState.isAdmin = false;
+      updateAuthUI();
+      window.switchNav('inicio');
     }
 
-    // ESPAÇO RESPIRE
-    function startRespire() {
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      if (!circle || !text) return;
-
-      if (respireInterval) clearInterval(respireInterval);
-
-      let step = 0;
-      const steps = [
-        { label: 'Inspire...', scale: 'scale(1.4)', bg: '#40B615' },
-        { label: 'Segure...', scale: 'scale(1.4)', bg: '#4E22A5' },
-        { label: 'Expire...', scale: 'scale(1)', bg: '#64C6ED' }
-      ];
-
-      function runStep() {
-        const current = steps[step];
-        text.innerText = current.label;
-        circle.style.transform = current.scale;
-        circle.style.backgroundColor = current.bg;
-        step = (step + 1) % steps.length;
-      }
-
-      runStep();
-      respireInterval = setInterval(runStep, 4000);
-    }
-
-    function stopRespire() {
-      if (respireInterval) clearInterval(respireInterval);
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      if (circle && text) {
-        circle.style.transform = 'scale(1)';
-        circle.style.backgroundColor = 'var(--green)';
-        text.innerText = 'Inspire';
-      }
-    }
-
-    // AUTENTICAÇÃO E MODAL ADMIN
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('open');
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('open');
-      document.getElementById('adminPassword').value = '';
-    }
-
-    function checkAdminAuth() {
-      const pass = document.getElementById('adminPassword').value;
-      if (pass === '123456') {
-        currentRole = 'admin';
-        document.getElementById('roleText').innerText = 'Modo Gestor';
-        document.getElementById('roleIcon').innerText = '🛡️';
+    function updateAuthUI() {
+      if(window.appState.isAdmin) {
         document.getElementById('adminNavBtn').style.display = 'flex';
         document.getElementById('btnLoginModal').style.display = 'none';
         document.getElementById('btnLogoutBtn').style.display = 'block';
-        closeLoginModal();
-        switchNav('dashboard');
+        document.getElementById('roleIcon').innerText = '🛡️';
+        document.getElementById('roleText').innerText = 'Modo Gestor';
       } else {
-        alert('Senha incorreta!');
+        document.getElementById('adminNavBtn').style.display = 'none';
+        document.getElementById('btnLoginModal').style.display = 'block';
+        document.getElementById('btnLogoutBtn').style.display = 'none';
+        document.getElementById('roleIcon').innerText = '👤';
+        document.getElementById('roleText').innerText = 'Modo Visitante';
       }
     }
 
-    function logout() {
-      currentRole = 'user';
-      document.getElementById('roleText').innerText = 'Modo Visitante';
-      document.getElementById('roleIcon').innerText = '👤';
-      document.getElementById('adminNavBtn').style.display = 'none';
-      document.getElementById('btnLoginModal').style.display = 'block';
-      document.getElementById('btnLogoutBtn').style.display = 'none';
-      switchNav('inicio');
+    window.switchTabAdmin = function(tab) {
+      if(tab === 'chamados') {
+        document.getElementById('adminChamados').style.display = 'block';
+        document.getElementById('adminRelatorios').style.display = 'none';
+      } else {
+        document.getElementById('adminChamados').style.display = 'none';
+        document.getElementById('adminRelatorios').style.display = 'block';
+      }
+    }
+
+    function renderAdminData() {
+      const tbodyChamados = document.getElementById('tableChamadosBody');
+      if(tbodyChamados) {
+        tbodyChamados.innerHTML = '';
+        Object.entries(window.appState.chamados).forEach(([key, c]) => {
+          let badgeClass = c.status === 'Resolvido' ? 'badge-resolvido' : (c.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-analise');
+          
+          const tr = document.createElement('tr');
+          
+          const tdCanal = document.createElement('td');
+          const strongCanal = document.createElement('strong');
+          strongCanal.textContent = c.canal;
+          tdCanal.appendChild(strongCanal);
+
+          const tdMsg = document.createElement('td');
+          tdMsg.textContent = c.mensagem;
+
+          const tdStatus = document.createElement('td');
+          const spanStatus = document.createElement('span');
+          spanStatus.className = `status-badge ${badgeClass}`;
+          spanStatus.textContent = c.status;
+          tdStatus.appendChild(spanStatus);
+
+          const tdAcao = document.createElement('td');
+          if(c.status !== 'Resolvido') {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-outline';
+            btn.style.cssText = "padding: 0.25rem 0.5rem; font-size: 0.75rem;";
+            btn.textContent = "Marcar Resolvido";
+            btn.onclick = () => window.resolverChamado(key);
+            tdAcao.appendChild(btn);
+          }
+
+          tr.appendChild(tdCanal);
+          tr.appendChild(tdMsg);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAcao);
+          tbodyChamados.appendChild(tr);
+        });
+      }
+
+      const tbodyRelatos = document.getElementById('tableRelatosBody');
+      if(tbodyRelatos) {
+        tbodyRelatos.innerHTML = '';
+        Object.values(window.appState.relatos).forEach(r => {
+          const tr = document.createElement('tr');
+          
+          const tdId = document.createElement('td');
+          const code = document.createElement('code');
+          code.textContent = r.id;
+          tdId.appendChild(code);
+
+          const tdLocal = document.createElement('td');
+          tdLocal.textContent = r.local;
+
+          const tdData = document.createElement('td');
+          tdData.textContent = r.data;
+
+          const tdUrg = document.createElement('td');
+          const strongUrg = document.createElement('strong');
+          strongUrg.textContent = r.urgencia;
+          tdUrg.appendChild(strongUrg);
+
+          const tdDesc = document.createElement('td');
+          tdDesc.textContent = r.desc;
+
+          tr.appendChild(tdId);
+          tr.appendChild(tdLocal);
+          tr.appendChild(tdData);
+          tr.appendChild(tdUrg);
+          tr.appendChild(tdDesc);
+          tbodyRelatos.appendChild(tr);
+        });
+      }
+    }
+
+    window.resolverChamado = function(firebaseKey) {
+      update(ref(db, 'chamados/' + firebaseKey), { status: 'Resolvido' });
     }
   </script>
 </body>

@@ -2,20 +2,21 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Plataforma ABRAÇAR — CETI</title>
   <style>
     :root {
-      --purple-dark: #2E1A47;
-      --purple: #6B46C1;
-      --purple-light: #9F7AEA;
-      --green: #10B981;
-      --green-light: #D1FAE5;
-      --bg-main: #F7FAFC;
+      --purple-dark: #200E35;
+      --purple: #5B21B6;
+      --purple-light: #7C3AED;
+      --teal-gradient: linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #2DD4BF 100%);
+      --teal-solid: #0D9488;
+      --teal-light: #CCFBF1;
+      --bg-main: #F4F5F7;
       --card-bg: #FFFFFF;
-      --text-main: #2D3748;
-      --text-muted: #718096;
-      --border-color: #E2E8F0;
+      --text-main: #1F2937;
+      --text-muted: #6B7280;
+      --border-color: #E5E7EB;
     }
 
     * {
@@ -23,6 +24,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -30,39 +32,44 @@
       color: var(--text-main);
       display: flex;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* BARRA LATERAL (SIDEBAR) */
+    /* BARRA LATERAL (SIDEBAR RESPONSIVA) */
     .sidebar {
-      width: 260px;
-      background-color: var(--purple-dark);
+      width: 270px;
+      background: var(--purple-dark);
       color: #FFF;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem;
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       z-index: 100;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 4px 0 15px rgba(0,0,0,0.1);
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       padding: 0 0.5rem;
     }
 
     .brand-icon {
-      font-size: 1.8rem;
+      font-size: 2rem;
+      background: var(--teal-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: 0.5px;
       color: #FFF;
@@ -72,28 +79,43 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.35rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 220px);
+      padding-right: 4px;
+    }
+
+    .nav-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .nav-list::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      color: #CBD5E0;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      color: #D1D5DB;
       cursor: pointer;
       transition: all 0.2s ease;
       font-weight: 500;
+      font-size: 0.95rem;
     }
 
-    .nav-item:hover, .nav-item.active {
-      background-color: rgba(255, 255, 255, 0.1);
+    .nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.08);
       color: #FFF;
     }
 
     .nav-item.active {
-      background-color: var(--purple);
+      background: var(--teal-gradient);
+      color: #FFF;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
     }
 
     .user-profile {
@@ -109,14 +131,16 @@
       align-items: center;
       gap: 0.5rem;
       font-size: 0.85rem;
+      color: #9CA3AF;
     }
 
     /* CONTEÚDO PRINCIPAL */
     .main-content {
-      margin-left: 260px;
+      margin-left: 270px;
       flex: 1;
       padding: 2rem;
       max-width: 1200px;
+      width: calc(100% - 270px);
     }
 
     .header-mobile {
@@ -125,10 +149,11 @@
       align-items: center;
       background: var(--purple-dark);
       color: #FFF;
-      padding: 1rem;
+      padding: 1rem 1.25rem;
       position: sticky;
       top: 0;
       z-index: 90;
+      border-bottom: 2px solid var(--teal-solid);
     }
 
     .view-section {
@@ -137,28 +162,28 @@
 
     .view-section.active {
       display: block;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.25s ease-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* CARDS E GRIDS */
+    /* CARDS E GRIDS ADAPTADOS */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
       margin-top: 1rem;
     }
 
     .card {
       background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1.5rem;
+      border-radius: 14px;
+      padding: 1.25rem;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
     .card-title {
@@ -168,7 +193,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* FORMULÁRIOS E BOTÕES */
+    /* FORMULÁRIOS E BOTÕES OTIMIZADOS PARA TOUCH */
     .form-group {
       margin-bottom: 1rem;
       text-align: left;
@@ -178,26 +203,30 @@
       display: block;
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
       color: var(--text-main);
     }
 
     .form-control {
       width: 100%;
-      padding: 0.65rem;
+      padding: 0.75rem;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 1rem; /* Evita zoom automático em iOS */
       outline: none;
+      background: #FAFAFA;
+      transition: border-color 0.2s;
     }
 
     .form-control:focus {
-      border-color: var(--purple);
+      border-color: var(--teal-solid);
+      background: #FFF;
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
     }
 
     textarea.form-control {
       resize: vertical;
-      min-height: 80px;
+      min-height: 90px;
     }
 
     .btn {
@@ -205,28 +234,31 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      padding: 0.65rem 1.25rem;
-      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       border: none;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
       width: 100%;
+      font-size: 0.95rem;
     }
 
+    .btn-teal { background: var(--teal-gradient); color: #FFF; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2); }
+    .btn-teal:hover { opacity: 0.95; }
     .btn-purple { background: var(--purple); color: #FFF; }
-    .btn-purple:hover { background: var(--purple-dark); }
-    .btn-green { background: var(--green); color: #FFF; }
+    .btn-purple:hover { background: var(--purple-light); }
     .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-    .btn-outline:hover { background: #EDF2F7; }
+    .btn-outline:hover { background: #F3F4F6; }
 
-    /* TABELAS */
+    /* TABELAS RESPONSIVAS */
     .data-table-container {
       overflow-x: auto;
       background: #FFF;
-      border-radius: 8px;
+      border-radius: 12px;
       border: 1px solid var(--border-color);
       margin-top: 1rem;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
@@ -234,39 +266,42 @@
       border-collapse: collapse;
       text-align: left;
       font-size: 0.85rem;
+      white-space: nowrap;
     }
 
     th, td {
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1rem;
       border-bottom: 1px solid var(--border-color);
     }
 
     th {
-      background: #F7FAFC;
+      background: #F9FAFB;
       color: var(--text-muted);
       font-weight: 700;
     }
 
     .status-badge {
-      padding: 0.25rem 0.5rem;
-      border-radius: 12px;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 700;
     }
 
     .badge-analise { background: #FEF3C7; color: #D97706; }
     .badge-mediacao { background: #E0E7FF; color: #4338CA; }
-    .badge-resolvido { background: #D1FAE5; color: #059669; }
+    .badge-resolvido { background: var(--teal-light); color: var(--teal-solid); }
 
-    /* MODAL */
+    /* MODAIS */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 200;
+      padding: 1rem;
     }
 
     .modal-overlay.open { display: flex; }
@@ -274,9 +309,16 @@
     .modal-box {
       background: #FFF;
       padding: 1.5rem;
-      border-radius: 12px;
+      border-radius: 16px;
       width: 100%;
-      max-width: 450px;
+      max-width: 440px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      animation: modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     .sidebar-overlay {
@@ -287,12 +329,29 @@
       z-index: 95;
     }
 
+    /* ADAPTAÇÃO TOTAL PARA DISPOSITIVOS MÓVEIS (TELAS PEQUENAS) */
     @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-overlay.open { display: block; }
-      .main-content { margin-left: 0; padding: 1rem; }
-      .header-mobile { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+      .header-mobile {
+        display: flex;
+      }
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -300,8 +359,10 @@
 
   <!-- HEADER MOBILE -->
   <div class="header-mobile">
-    <div style="font-weight: 800;">🤝 ABRAÇAR</div>
-    <button class="btn btn-outline" style="width: auto; color: #FFF; border-color: #FFF;" onclick="toggleSidebar()">☰ Menu</button>
+    <div style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+      <span style="background: var(--teal-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🤝</span> ABRAÇAR CETI
+    </div>
+    <button class="btn btn-outline" style="width: auto; color: #FFF; border-color: rgba(255,255,255,0.4); padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="toggleSidebar()">☰ Menu</button>
   </div>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -328,7 +389,7 @@
     <div class="user-profile">
       <div class="user-info">
         <span id="roleIcon">👤</span>
-        <span id="roleText">Modo Visitante</span>
+        <span id="roleText">Visitante</span>
       </div>
       <button class="btn btn-outline" id="btnLoginModal" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="openLoginModal()">Entrar</button>
       <button class="btn btn-outline" id="btnLogoutBtn" style="display: none; width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="logout()">Sair</button>
@@ -340,14 +401,14 @@
 
     <!-- SEÇÃO: INÍCIO -->
     <section id="inicio" class="view-section active">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Bem-vindo à Plataforma ABRAÇAR</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Espaço de acolhimento, escuta ativa e mediação escolar.</p>
+      <h2 style="color: var(--purple-dark); margin-bottom: 0.3rem;">Plataforma ABRAÇAR</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.25rem; font-size: 0.9rem;">Ambiente seguro de acolhimento e mediação escolar.</p>
 
       <div class="cards-grid">
         <div class="card">
           <div class="card-title">💬 Atendimento Individual</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Converse diretamente com a equipe do CETI em um canal reservado.</p>
-          <button class="btn btn-purple" onclick="openChatForm('Atendimento Geral')">Iniciar Conversa</button>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Converse de forma 100% isolada e confidencial com a equipe.</p>
+          <button class="btn btn-teal" onclick="openChatForm('Atendimento Geral')">Iniciar Conversa</button>
         </div>
         <div class="card">
           <div class="card-title">🛡️ Enviar Relato Anônimo</div>
@@ -356,17 +417,17 @@
         </div>
       </div>
 
-      <div id="chatFormCard" class="card" style="display: none; margin-top: 1.5rem; border-left: 4px solid var(--purple);">
+      <div id="chatFormCard" class="card" style="display: none; margin-top: 1.25rem; border-left: 4px solid var(--teal-solid);">
         <h4 id="chatFormTitle" style="color: var(--purple-dark); margin-bottom: 0.75rem;">Atendimento Privado</h4>
         <form onsubmit="submitChat(event)">
           <input type="hidden" id="chatChannelInput">
           <div class="form-group">
             <label>Sua Mensagem:</label>
-            <textarea id="chatMessageInput" class="form-control" required placeholder="Digite sua dúvida, desabafo ou solicitação..."></textarea>
+            <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva sua mensagem..."></textarea>
           </div>
           <div style="display: flex; gap: 0.5rem;">
             <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
-            <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
+            <button type="submit" class="btn btn-teal">Enviar</button>
           </div>
         </form>
       </div>
@@ -375,11 +436,11 @@
     <!-- SEÇÃO: RELATO ANÔNIMO -->
     <section id="relato" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Relato Anônimo</h2>
-      <div class="card" style="max-width: 600px;">
+      <div class="card">
         <form onsubmit="submitRelato(event)">
           <div class="form-group">
             <label>Local / Contexto:</label>
-            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala de aula, Online...">
+            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala de Aula...">
           </div>
           <div class="form-group">
             <label>Data aproximada:</label>
@@ -387,13 +448,13 @@
           </div>
           <div class="form-group">
             <label>Descrição detalhada:</label>
-            <textarea id="reportDesc" class="form-control" required placeholder="Descreva o ocorrido com o máximo de detalhes..."></textarea>
+            <textarea id="reportDesc" class="form-control" required placeholder="Descreva o ocorrido..."></textarea>
           </div>
           <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-            <input type="checkbox" id="reportDanger" style="width: auto;">
+            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px; accent-color: var(--teal-solid);">
             <label for="reportDanger" style="margin: 0; cursor: pointer;">Caso urgente / risco imediato</label>
           </div>
-          <button type="submit" class="btn btn-purple">Enviar Relato</button>
+          <button type="submit" class="btn btn-teal">Enviar Relato</button>
         </form>
       </div>
     </section>
@@ -401,17 +462,17 @@
     <!-- SEÇÃO: MEDIAÇÃO -->
     <section id="mediacao" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Solicitação de Mediação</h2>
-      <div class="card" style="max-width: 600px;">
+      <div class="card">
         <form onsubmit="submitMediacao(event)">
           <div class="form-group">
             <label>Assunto / Motivo:</label>
-            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em grupo, Relação interpessoal...">
+            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em grupo...">
           </div>
           <div class="form-group">
             <label>Resumo do caso:</label>
-            <textarea id="mediacaoDesc" class="form-control" required placeholder="Explique como a equipe pode ajudar na mediação..."></textarea>
+            <textarea id="mediacaoDesc" class="form-control" required placeholder="Explique como a equipe pode ajudar..."></textarea>
           </div>
-          <button type="submit" class="btn btn-purple">Solicitar Mediação</button>
+          <button type="submit" class="btn btn-teal">Solicitar Mediação</button>
         </form>
       </div>
     </section>
@@ -419,15 +480,15 @@
     <!-- SEÇÃO: ESPAÇO RESPIRE -->
     <section id="respire" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Espaço Respire</h2>
-      <div class="card" style="text-align: center; max-width: 500px; margin: 0 auto;">
-        <div id="respireCircle" style="width: 120px; height: 120px; border-radius: 50%; background: var(--green); margin: 1.5rem auto; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold; transition: transform 3.5s ease, background 3.5s ease;">
+      <div class="card" style="text-align: center;">
+        <div id="respireCircle" style="width: 110px; height: 110px; border-radius: 50%; background: var(--teal-gradient); margin: 1.25rem auto; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold; transition: transform 3.5s ease;">
           <span id="respireInstruction">Inspire</span>
         </div>
         <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem;">
-          <button class="btn btn-purple" style="width: auto;" onclick="startRespire()">Iniciar Exercício</button>
+          <button class="btn btn-teal" style="width: auto;" onclick="startRespire()">Iniciar</button>
           <button class="btn btn-outline" style="width: auto;" onclick="stopRespire()">Parar</button>
         </div>
-        <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem; text-align: left;">Sons Relaxantes Cadastrados</h4>
+        <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem; text-align: left;">Músicas e Sons Relaxantes</h4>
         <div id="audioListContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
       </div>
     </section>
@@ -438,11 +499,11 @@
       <div class="cards-grid">
         <div class="card">
           <div class="card-title">🛡️ Bullying e Cyberbullying</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Práticas repetidas de violência interpessoal não devem ser silenciadas. Busque mediação.</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Práticas repetidas de violência não devem ser silenciadas. Busque apoio.</p>
         </div>
         <div class="card">
           <div class="card-title">🧠 Gestão da Ansiedade</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Estratégias de respiração e organização de rotina auxiliam nos períodos de avaliações.</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Estratégias de respiração e pausas ativas auxiliam na concentração.</p>
         </div>
       </div>
     </section>
@@ -451,18 +512,18 @@
     <section id="mural" class="view-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2 style="color: var(--purple-dark);">Mural Acolhedor</h2>
-        <button class="btn btn-green" onclick="openPostModal()" style="width: auto;">+ Publicar</button>
+        <button class="btn btn-teal" onclick="openPostModal()" style="width: auto;">+ Publicar</button>
       </div>
       <div class="cards-grid" id="muralContainer"></div>
     </section>
 
     <!-- SEÇÃO: REDE DE APOIO -->
     <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Rede de Apoio Externa</h2>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Rede de Apoio</h2>
       <div class="cards-grid" id="apoioGridContainer">
         <div class="card">
           <div class="card-title">💛 CVV — Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Atendimento gratuito e confidencial de suporte emocional.</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Atendimento gratuito e sigiloso de apoio emocional.</p>
           <a href="tel:188" class="btn btn-outline" style="text-decoration: none;">📞 Ligar 188</a>
         </div>
       </div>
@@ -470,27 +531,27 @@
 
     <!-- SEÇÃO: PAINEL GESTOR (ADMIN) -->
     <section id="dashboard" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
         <h2 style="color: var(--purple-dark);">Painel de Gestão</h2>
-        <span class="status-badge badge-resolvido">Acesso Restrito: Gestão CETI</span>
+        <span class="status-badge badge-resolvido">Admin Autorizado</span>
       </div>
 
-      <div class="cards-grid" style="margin-bottom: 2rem;">
+      <div class="cards-grid" style="margin-bottom: 1.5rem;">
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TOTAL REGISTROS</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);" id="statTotalRelatos">0</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL</div>
+          <div style="font-size: 1.6rem; font-weight: 800; color: var(--purple-dark);" id="statTotalRelatos">0</div>
         </div>
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">EM ANÁLISE</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: #D97706;" id="statAnalise">0</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">EM ANÁLISE</div>
+          <div style="font-size: 1.6rem; font-weight: 800; color: #D97706;" id="statAnalise">0</div>
         </div>
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">EM MEDIAÇÃO</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: #4338CA;" id="statMediacao">0</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">EM MEDIAÇÃO</div>
+          <div style="font-size: 1.6rem; font-weight: 800; color: #4338CA;" id="statMediacao">0</div>
         </div>
       </div>
 
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.75rem;">Ocorrências e Registros</h3>
+      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Registros Recebidos</h3>
       <div class="data-table-container">
         <table>
           <thead>
@@ -508,524 +569,432 @@
         </table>
       </div>
 
-      <!-- PAINEL DE ADIÇÃO DE CONTEÚDOS -->
-      <h3 style="color: var(--purple-dark); margin-top: 2rem; margin-bottom: 0.75rem;">Gerenciar Conteúdos da Plataforma</h3>
+      <h3 style="color: var(--purple-dark); margin-top: 2rem; margin-bottom: 0.75rem;">Ferramentas do Gestor</h3>
 
-      <div class="cards-grid" style="margin-bottom: 2rem;">
+      <div class="cards-grid">
+        <!-- REDE DE APOIO -->
         <div class="card">
-          <div class="card-title">📞 Adicionar Rede de Apoio</div>
+          <div class="card-title">📞 Add Rede de Apoio</div>
           <form onsubmit="submitApoio(event)">
             <div class="form-group">
               <label>Título / Órgão:</label>
-              <input type="text" id="apoioTitle" class="form-control" required placeholder="Ex: Conselho Tutelar">
-            </div>
-            <div class="form-group">
-              <label>Descrição:</label>
-              <textarea id="apoioDesc" class="form-control" required placeholder="Apoio emergencial..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Telefone ou Link:</label>
-              <input type="text" id="apoioContact" class="form-control" required placeholder="Ex: 188 ou https://...">
-            </div>
-            <div class="form-group">
-              <label>Imagem (Opcional):</label>
-              <input type="file" id="apoioImg" class="form-control" accept="image/*">
-            </div>
-            <button type="submit" class="btn btn-purple">Cadastrar Apoio</button>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🎵 Adicionar Som Relaxante</div>
-          <form onsubmit="submitAudio(event)">
-            <div class="form-group">
-              <label>Nome do Som:</label>
-              <input type="text" id="audioName" class="form-control" required placeholder="Ex: Ondas do Mar">
-            </div>
-            <div class="form-group">
-              <label>Link direto do Áudio (URL MP3):</label>
-              <input type="url" id="audioUrl" class="form-control" required placeholder="https://exemplo.com/audio.mp3">
-            </div>
-            <button type="submit" class="btn btn-purple">Adicionar Som</button>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="card-title">📢 Postar Aviso Oficial</div>
-          <form onsubmit="submitAviso(event)">
-            <div class="form-group">
-              <label>Título do Aviso:</label>
-              <input type="text" id="avisoTitle" class="form-control" required placeholder="Ex: Comunicado do Grêmio">
-            </div>
-            <div class="form-group">
-            <label>Descrição:</label>
-            <textarea id="avisoDesc" class="form-control" required placeholder="Detalhes sobre o aviso..."></textarea>
-          </div>
-          <div class="form-group">
-            <label>Imagem Informativa (Galeria):</label>
-            <input type="file" id="avisoImg" class="form-control" accept="image/*">
-          </div>
-          <button type="submit" class="btn btn-green">Publicar Aviso</button>
-        </form>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- MODAL DE LOGIN GESTOR -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Acesso do Gestor</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Área restrita à coordenação e equipe de mediação.</p>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label>Usuário:</label>
-          <input type="text" id="loginUser" class="form-control" required placeholder="Digite seu usuário">
-        </div>
-        <div class="form-group">
-          <label>Senha:</label>
-          <input type="password" id="loginPass" class="form-control" required placeholder="••••••••">
-        </div>
-        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-          <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-          <button type="submit" class="btn btn-purple">Autenticar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL MURAL -->
-  <div class="modal-overlay" id="postModal">
-    <div class="modal-box">
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Publicar no Mural</h3>
-      <form onsubmit="submitPost(event)">
-        <div class="form-group">
-          <label>Mensagem de Apoio:</label>
-          <textarea id="postText" class="form-control" required placeholder="Escreva uma mensagem construtiva..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Assinatura (Opcional):</label>
-          <input type="text" id="postAuthor" class="form-control" placeholder="Ex: Anônimo, Aluno do 2º Ano...">
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closePostModal()">Cancelar</button>
-          <button type="submit" class="btn btn-green">Publicar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- FIREBASE E INTEGRALIZAÇÃO DE LÓGICA -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
-      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
-      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
-      projectId: "escutaacolhimento-a9f15",
-      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
-      messagingSenderId: "639476751207",
-      appId: "1:639476751207:web:571f32f893f4156176adc2",
-      measurementId: "G-WEQXQG0PHH"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    const relatosRef = ref(database, 'relatos');
-    const muralRef = ref(database, 'mural');
-    const apoioRef = ref(database, 'rede_apoio');
-    const audiosRef = ref(database, 'audios_relaxantes');
-
-    /* GERADOR DE ID EXCLUSIVO PARA ATENDIMENTO ISOLADO POR DISPOSITIVO */
-    let userId = localStorage.getItem('user_unique_id');
-    if (!userId) {
-      userId = 'USER-' + Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem('user_unique_id', userId);
-    }
-
-    window.isAdmin = false;
-    let respireInterval = null;
-    let dynamicAudios = {};
-
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
-    }
-
-    /* LISTENERS DO DATABASE */
-    onValue(relatosRef, (snapshot) => {
-      const data = snapshot.val();
-      const tbody = document.getElementById('adminTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      let countTotal = 0, countAnalise = 0, countMediacao = 0;
-
-      if (data) {
-        Object.keys(data).forEach((key) => {
-          const item = data[key];
-          countTotal++;
-          if (item.status === 'Em Análise') countAnalise++;
-          if (item.status === 'Em Mediação') countMediacao++;
-
-          const badgeClass = item.status === 'Em Análise' ? 'badge-analise' : (item.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-resolvido');
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><b>${item.id}</b></td>
-            <td>${item.tipo}</td>
-            <td>${item.local}</td>
-            <td>${item.data}</td>
-            <td>${item.urgente ? '<span style="color: red; font-weight: 700;">SIM</span>' : 'Não'}</td>
-            <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="toggleStatus('${key}', '${item.status}')">
-                Alterar Status
-              </button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      document.getElementById('statTotalRelatos').innerText = countTotal;
-      document.getElementById('statAnalise').innerText = countAnalise;
-      document.getElementById('statMediacao').innerText = countMediacao;
-    });
-
-    onValue(muralRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('muralContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (data) {
-        Object.values(data).reverse().forEach((post) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.style.borderLeft = post.isAviso ? '4px solid #D97706' : '4px solid var(--purple)';
-          
-          let imgTag = post.img ? `<img src="${post.img}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-top: 0.5rem;">` : '';
-          
-          card.innerHTML = `
-            ${post.isAviso ? '<span style="font-size: 0.7rem; background: #FEF3C7; color: #D97706; padding: 2px 6px; border-radius: 4px; font-weight: bold;">AVISO OFICIAL</span>' : ''}
-            <h4 style="color: var(--purple-dark); margin-top: 0.25rem;">${post.title || ''}</h4>
-            <p style="color: var(--text-main); margin-bottom: 0.5rem;">"${post.text}"</p>
-            ${imgTag}
-            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem;">— ${post.author}</div>
-          `;
-          container.appendChild(card);
-        });
-      }
-    });
-
-    onValue(audiosRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('audioListContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (data) {
-        Object.keys(data).forEach((key) => {
-          const item = data[key];
-          dynamicAudios[key] = new Audio(item.url);
-          dynamicAudios[key].loop = true;
-
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-outline';
-          btn.style.justifyContent = 'space-between';
-          btn.onclick = () => toggleDynamicAudio(key);
-          btn.innerHTML = `
-            <span>🎵 ${item.name}</span>
-            <span id="label-audio-${key}">Play</span>
-          `;
-          container.appendChild(btn);
-        });
-      }
-    });
-
-    onValue(apoioRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('apoioGridContainer');
-      if (!container) return;
-
-      if (data) {
-        Object.values(data).forEach((item) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          let imgTag = item.img ? `<img src="${item.img}" style="width:100%; max-height:150px; object-fit:cover; border-radius:6px; margin-bottom:0.75rem;">` : '';
-          let actionBtn = item.contact.startsWith('http') 
-            ? `<a href="${item.contact}" target="_blank" class="btn btn-outline" style="text-decoration:none;">🌐 Acessar Link</a>`
-            : `<a href="tel:${item.contact}" class="btn btn-outline" style="text-decoration:none;">📞 Ligar ${item.contact}</a>`;
-
-          card.innerHTML = `
-            ${imgTag}
-            <div class="card-title">🛡️ ${item.title}</div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${item.desc}</p>
-            ${actionBtn}
-          `;
-          container.appendChild(card);
-        });
-      }
-    });
-
-    /* SENHA AJUSTADA PARA "12345" */
-    window.handleLogin = function(e) {
-      e.preventDefault();
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
-
-      if (user === 'admin' && pass === '12345') {
-        window.isAdmin = true;
-        document.getElementById('roleIcon').innerText = '🛡️';
-        document.getElementById('roleText').innerText = 'Modo Gestor';
-        document.getElementById('adminNavBtn').style.display = 'flex';
-        document.getElementById('btnLoginModal').style.display = 'none';
-        document.getElementById('btnLogoutBtn').style.display = 'flex';
-        closeLoginModal();
-        switchNav('dashboard');
-      } else {
-        alert('Credenciais incorretas!');
-      }
-    };
-
-    window.submitRelato = function(e) {
-      e.preventDefault();
-      const place = document.getElementById('reportPlace').value;
-      const date = document.getElementById('reportDate').value;
-      const danger = document.getElementById('reportDanger').checked;
-      const desc = document.getElementById('reportDesc').value;
-
-      push(relatosRef, {
-        id: userId,
-        tipo: 'Relato Anônimo',
-        local: place,
-        data: date,
-        urgente: danger,
-        status: 'Em Análise',
-        desc: desc,
-        timestamp: Date.now()
-      }).then(() => {
-        alert(`Relato registrado com sucesso!\nSeu Código de acompanhamento: ${userId}`);
-        e.target.reset();
-        switchNav('inicio');
-      });
-    };
-
-    window.submitMediacao = function(e) {
-      e.preventDefault();
-      const topic = document.getElementById('mediacaoTopic').value;
-      const desc = document.getElementById('mediacaoDesc').value;
-
-      push(relatosRef, {
-        id: userId,
-        tipo: 'Mediação',
-        local: topic,
-        data: new Date().toISOString().split('T')[0],
-        urgente: false,
-        status: 'Em Mediação',
-        desc: desc,
-        timestamp: Date.now()
-      }).then(() => {
-        alert(`Solicitação registrada com sucesso!\nSeu Código: ${userId}`);
-        e.target.reset();
-        switchNav('inicio');
-      });
-    };
-
-    window.submitChat = function(e) {
-      e.preventDefault();
-      const channel = document.getElementById('chatChannelInput').value;
-      const msg = document.getElementById('chatMessageInput').value;
-
-      push(relatosRef, {
-        id: userId,
-        tipo: 'Chat Individual: ' + channel,
-        local: 'Atendimento Online',
-        data: new Date().toISOString().split('T')[0],
-        urgente: false,
-        status: 'Em Análise',
-        desc: msg,
-        timestamp: Date.now()
-      }).then(() => {
-        alert(`Mensagem enviada com sucesso!\nSeu ID de Atendimento: ${userId}`);
-        document.getElementById('chatMessageInput').value = '';
-        document.getElementById('chatFormCard').style.display = 'none';
-      });
-    };
-
-    window.submitPost = function(e) {
-      e.preventDefault();
-      const text = document.getElementById('postText').value;
-      const author = document.getElementById('postAuthor').value || 'Anônimo';
-
-      push(muralRef, {
-        text: text,
-        author: author,
-        timestamp: Date.now()
-      }).then(() => {
-        closePostModal();
-        e.target.reset();
-      });
-    };
-
-    window.submitApoio = async function(e) {
-      e.preventDefault();
-      const title = document.getElementById('apoioTitle').value;
-      const desc = document.getElementById('apoioDesc').value;
-      const contact = document.getElementById('apoioContact').value;
-      const imgFile = document.getElementById('apoioImg').files[0];
-
-      let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
-
-      push(apoioRef, { title, desc, contact, img: imgBase64 }).then(() => {
-        alert('Item adicionado!');
-        e.target.reset();
-      });
-    };
-
-    window.submitAudio = function(e) {
-      e.preventDefault();
-      const name = document.getElementById('audioName').value;
-      const url = document.getElementById('audioUrl').value;
-
-      push(audiosRef, { name, url }).then(() => {
-        alert('Som adicionado!');
-        e.target.reset();
-      });
-    };
-
-    window.submitAviso = async function(e) {
-      e.preventDefault();
-      const title = document.getElementById('avisoTitle').value;
-      const text = document.getElementById('avisoDesc').value;
-      const imgFile = document.getElementById('avisoImg').files[0];
-
-      let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
-
-      push(muralRef, {
-        title,
-        text,
-        img: imgBase64,
-        author: 'Gestão CETI',
-        isAviso: true,
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Aviso publicado!');
-        e.target.reset();
-      });
-    };
-
-    window.toggleStatus = function(key, currentStatus) {
-      const statuses = ['Em Análise', 'Em Mediação', 'Resolvido'];
-      const currentIndex = statuses.indexOf(currentStatus);
-      const nextStatus = statuses[(currentIndex + 1) % statuses.length];
-
-      const recordRef = ref(database, `relatos/${key}`);
-      update(recordRef, { status: nextStatus });
-    };
-
-    window.toggleDynamicAudio = function(key) {
-      const audio = dynamicAudios[key];
-      const label = document.getElementById(`label-audio-${key}`);
-
-      if (audio.paused) {
-        audio.play().catch(() => alert('Clique na página antes de reproduzir áudios.'));
-        label.innerText = 'Pause';
-      } else {
-        audio.pause();
-        label.innerText = 'Play';
-      }
-    };
-
-    window.startRespire = function() {
-      stopRespire();
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      let state = 0;
-
-      const cycle = () => {
-        if (state === 0) {
-          text.innerText = 'Inspire...';
-          circle.style.transform = 'scale(1.35)';
-          circle.style.backgroundColor = 'var(--purple)';
-          state = 1;
-        } else if (state === 1) {
-          text.innerText = 'Segure...';
-          state = 2;
-        } else {
-          text.innerText = 'Expire...';
-          circle.style.transform = 'scale(1)';
-          circle.style.backgroundColor = 'var(--green)';
-          state = 0;
-        }
-      };
-
-      cycle();
-      respireInterval = setInterval(cycle, 4000);
-    };
-
-    window.stopRespire = function() {
-      if (respireInterval) clearInterval(respireInterval);
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      if (circle && text) {
-        circle.style.transform = 'scale(1)';
-        circle.style.backgroundColor = 'var(--green)';
-        text.innerText = 'Inspire';
-      }
-    };
-
-    window.switchNav = function(targetId, element = null) {
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) targetSection.classList.add('active');
-
-      if (element) {
-        element.classList.add('active');
-      }
-
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    window.toggleSidebar = function() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('open');
-    };
-
-    window.openChatForm = function(channel) {
-      document.getElementById('chatFormCard').style.display = 'block';
-      document.getElementById('chatFormTitle').innerText = 'Atendimento Privado (' + userId + ')';
-      document.getElementById('chatChannelInput').value = channel;
-      document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
-    };
-
-    window.openPostModal = () => document.getElementById('postModal').classList.add('open');
-    window.closePostModal = () => document.getElementById('postModal').classList.remove('open');
-    window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
-    window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('open');
-
-    window.logout = function() {
-      window.isAdmin = false;
-      document.getElementById('roleIcon').innerText = '👤';
-      document.getElementById('roleText').innerText = 'Modo Visitante';
-      document.getElementById('adminNavBtn').style.display = 'none';
-      document.getElementById('btnLoginModal').style.display = 'flex';
-      document.getElementById('btnLogoutBtn').style.display = 'none';
-      switchNav('inicio');
-    };
-  </script>
+              <input type="text" id="apoioTitle" class="form-control" required placeholder="Ex: Conselho Ttutelar">
+</div>
+<div class="form-group">
+<label>Descrição:</label>
+<textarea id="apoioDesc" class="form-control" required placeholder="Detalhes do apoio..."></textarea>
+</div>
+<div class="form-group">
+<label>Contato (Tel ou Link):</label>
+<input type="text" id="apoioContact" class="form-control" required placeholder="188 ou https://...">
+</div>
+<div class="form-group">
+<label>Imagem (Galeria):</label>
+<input type="file" id="apoioImg" class="form-control" accept="image/*">
+</div>
+<button type="submit" class="btn btn-teal">Salvar Apoio</button>
+</form>
+</div>
+<!-- MÚSICA / ÁUDIO -->
+<div class="card">
+<div class="card-title">🎵 Add Música de Respiração</div>
+<form onsubmit="submitAudio(event)">
+<div class="form-group">
+<label>Nome da Música:</label>
+<input type="text" id="audioName" class="form-control" required placeholder="Ex: Calmaria Relaxante">
+</div>
+<div class="form-group">
+<label>Link Direto do Áudio (MP3):</label>
+<input type="url" id="audioUrl" class="form-control" required placeholder="https://.../som.mp3">
+</div>
+<button type="submit" class="btn btn-teal">Salvar Música</button>
+</form>
+</div>
+<!-- MURAL DE AVISOS -->
+<div class="card">
+<div class="card-title">📢 Postar Aviso Oficial</div>
+<form onsubmit="submitAviso(event)">
+<div class="form-group">
+<label>Título do Aviso:</label>
+<input type="text" id="avisoTitle" class="form-control" required placeholder="Ex: Comunicado Geral">
+</div>
+<div class="form-group">
+<label>Descrição:</label>
+<textarea id="avisoDesc" class="form-control" required placeholder="Informações do aviso..."></textarea>
+</div>
+<div class="form-group">
+<label>Imagem (Galeria):</label>
+<input type="file" id="avisoImg" class="form-control" accept="image/*">
+</div>
+<button type="submit" class="btn btn-teal">Publicar Aviso</button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- MODAL DE LOGIN (SENHA 12345 OCULTA) -->
+<div class="modal-overlay" id="loginModal">
+<div class="modal-box">
+<h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Acesso do Gestor</h3>
+<p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Área restrita à coordenação escolar.</p>
+<form onsubmit="handleLogin(event)">
+<div class="form-group">
+<label>Usuário:</label>
+<input type="text" id="loginUser" class="form-control" required placeholder="Usuário">
+</div>
+<div class="form-group">
+<label>Senha:</label>
+<input type="password" id="loginPass" class="form-control" required placeholder="••••••••">
+</div>
+<div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+<button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
+<button type="submit" class="btn btn-teal">Entrar</button>
+</div>
+</form>
+</div>
+</div>
+<!-- MODAL MURAL ALUNO -->
+<div class="modal-overlay" id="postModal">
+<div class="modal-box">
+<h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Publicar no Mural</h3>
+<form onsubmit="submitPost(event)">
+<div class="form-group">
+<label>Mensagem de Apoio:</label>
+<textarea id="postText" class="form-control" required placeholder="Escreva algo inspirador..."></textarea>
+</div>
+<div class="form-group">
+<label>Assinatura (Opcional):</label>
+<input type="text" id="postAuthor" class="form-control" placeholder="Ex: Anônimo, Turma 3º Ano...">
+</div>
+<div style="display: flex; gap: 0.5rem;">
+<button type="button" class="btn btn-outline" onclick="closePostModal()">Cancelar</button>
+<button type="submit" class="btn btn-teal">Publicar</button>
+</div>
+</form>
+</div>
+</div>
+<!-- LOGICA FIREBASE E SISTEMA -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig = {
+apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+projectId: "escutaacolhimento-a9f15",
+storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+messagingSenderId: "639476751207",
+appId: "1:639476751207:web:571f32f893f4156176adc2",
+measurementId: "G-WEQXQG0PHH"
+};
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const relatosRef = ref(database, 'relatos');
+const muralRef = ref(database, 'mural');
+const apoioRef = ref(database, 'rede_apoio');
+const audiosRef = ref(database, 'audios_relaxantes');
+/* ID EXCLUSIVO POR DISPOSITIVO (CHATS 100% INDIVIDUAIS) */
+let userId = localStorage.getItem('user_unique_id');
+if (!userId) {
+userId = 'USER-' + Math.floor(100000 + Math.random() * 900000);
+localStorage.setItem('user_unique_id', userId);
+}
+window.isAdmin = false;
+let respireInterval = null;
+let dynamicAudios = {};
+function fileToBase64(file) {
+return new Promise((resolve, reject) => {
+const reader = new FileReader();
+reader.readAsDataURL(file);
+reader.onload = () => resolve(reader.result);
+reader.onerror = error => reject(error);
+});
+}
+onValue(relatosRef, (snapshot) => {
+const data = snapshot.val();
+const tbody = document.getElementById('adminTableBody');
+if (!tbody) return;
+tbody.innerHTML = '';
+let countTotal = 0, countAnalise = 0, countMediacao = 0;
+if (data) {
+Object.keys(data).forEach((key) => {
+const item = data[key];
+countTotal++;
+if (item.status === 'Em Análise') countAnalise++;
+if (item.status === 'Em Mediação') countMediacao++;
+const badgeClass = item.status === 'Em Análise' ? 'badge-analise' : (item.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-resolvido');
+const tr = document.createElement('tr');
+tr.innerHTML = <td><b>${item.id}</b></td> <td>${item.tipo}</td> <td>${item.local}</td> <td>${item.data}</td> <td>${item.urgente ? '<span style="color: red; font-weight: 700;">SIM</span>' : 'Não'}</td> <td><span class="status-badge ${badgeClass}">${item.status}</span></td> <td> <button class="btn btn-outline" style="padding: 0.2rem 0.4rem; font-size: 0.75rem;" onclick="toggleStatus('${key}', '${item.status}')"> Mudar Status </button> </td>;
+tbody.appendChild(tr);
+});
+}
+document.getElementById('statTotalRelatos').innerText = countTotal;
+document.getElementById('statAnalise').innerText = countAnalise;
+document.getElementById('statMediacao').innerText = countMediacao;
+});
+onValue(muralRef, (snapshot) => {
+const data = snapshot.val();
+const container = document.getElementById('muralContainer');
+if (!container) return;
+container.innerHTML = '';
+if (data) {
+Object.values(data).reverse().forEach((post) => {
+const card = document.createElement('div');
+card.className = 'card';
+card.style.borderLeft = post.isAviso ? '4px solid var(--teal-solid)' : '4px solid var(--purple)';
+let imgTag = post.img ? <img src="${post.img}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-top: 0.5rem;"> : '';
+card.innerHTML = ${post.isAviso ? '<span style="font-size: 0.65rem; background: var(--teal-light); color: var(--teal-solid); padding: 2px 6px; border-radius: 4px; font-weight: bold;">AVISO OFICIAL</span>' : ''} <h4 style="color: var(--purple-dark); margin-top: 0.25rem;">${post.title || ''}</h4> <p style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 0.9rem;">"${post.text}"</p> ${imgTag} <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem;">— ${post.author}</div>;
+container.appendChild(card);
+});
+}
+});
+onValue(audiosRef, (snapshot) => {
+const data = snapshot.val();
+const container = document.getElementById('audioListContainer');
+if (!container) return;
+container.innerHTML = '';
+if (data) {
+Object.keys(data).forEach((key) => {
+const item = data[key];
+dynamicAudios[key] = new Audio(item.url);
+dynamicAudios[key].loop = true;
+const btn = document.createElement('button');
+btn.className = 'btn btn-outline';
+btn.style.justifyContent = 'space-between';
+btn.onclick = () => toggleDynamicAudio(key);
+btn.innerHTML = <span>🎵 ${item.name}</span> <span id="label-audio-${key}" style="font-weight:700; color:var(--teal-solid);">Play</span>;
+container.appendChild(btn);
+});
+}
+});
+onValue(apoioRef, (snapshot) => {
+const data = snapshot.val();
+const container = document.getElementById('apoioGridContainer');
+if (!container) return;
+if (data) {
+Object.values(data).forEach((item) => {
+const card = document.createElement('div');
+card.className = 'card';
+let imgTag = item.img ? <img src="${item.img}" style="width:100%; max-height:140px; object-fit:cover; border-radius:8px; margin-bottom:0.75rem;"> : '';
+let actionBtn = item.contact.startsWith('http')
+? <a href="${item.contact}" target="_blank" class="btn btn-outline" style="text-decoration:none;">🌐 Acessar Link</a>
+: <a href="tel:${item.contact}" class="btn btn-outline" style="text-decoration:none;">📞 Ligar ${item.contact}</a>;
+card.innerHTML = ${imgTag} <div class="card-title">🛡️ ${item.title}</div> <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${item.desc}</p> ${actionBtn};
+container.appendChild(card);
+});
+}
+});
+/* SENHA 12345 CONFIGURADA */
+window.handleLogin = function(e) {
+e.preventDefault();
+const user = document.getElementById('loginUser').value;
+const pass = document.getElementById('loginPass').value;
+if (user === 'admin' && pass === '12345') {
+window.isAdmin = true;
+document.getElementById('roleIcon').innerText = '🛡️';
+document.getElementById('roleText').innerText = 'Gestor';
+document.getElementById('adminNavBtn').style.display = 'flex';
+document.getElementById('btnLoginModal').style.display = 'none';
+document.getElementById('btnLogoutBtn').style.display = 'flex';
+closeLoginModal();
+switchNav('dashboard');
+} else {
+alert('Usuário ou senha incorretos!');
+}
+};
+window.submitRelato = function(e) {
+e.preventDefault();
+const place = document.getElementById('reportPlace').value;
+const date = document.getElementById('reportDate').value;
+const danger = document.getElementById('reportDanger').checked;
+const desc = document.getElementById('reportDesc').value;
+push(relatosRef, {
+id: userId,
+tipo: 'Relato Anônimo',
+local: place,
+data: date,
+urgente: danger,
+status: 'Em Análise',
+desc: desc,
+timestamp: Date.now()
+}).then(() => {
+alert(Relato enviado com sucesso!\nSeu ID de acompanhamento: ${userId});
+e.target.reset();
+switchNav('inicio');
+});
+};
+window.submitMediacao = function(e) {
+e.preventDefault();
+const topic = document.getElementById('mediacaoTopic').value;
+const desc = document.getElementById('mediacaoDesc').value;
+push(relatosRef, {
+id: userId,
+tipo: 'Mediação',
+local: topic,
+data: new Date().toISOString().split('T')[0],
+urgente: false,
+status: 'Em Mediação',
+desc: desc,
+timestamp: Date.now()
+}).then(() => {
+alert(Mediação solicitada com sucesso!\nSeu ID: ${userId});
+e.target.reset();
+switchNav('inicio');
+});
+};
+window.submitChat = function(e) {
+e.preventDefault();
+const channel = document.getElementById('chatChannelInput').value;
+const msg = document.getElementById('chatMessageInput').value;
+push(relatosRef, {
+id: userId,
+tipo: 'Chat Individual: ' + channel,
+local: 'Chat Online',
+data: new Date().toISOString().split('T')[0],
+urgente: false,
+status: 'Em Análise',
+desc: msg,
+timestamp: Date.now()
+}).then(() => {
+alert(Mensagem enviada com sucesso no seu canal privado (${userId})!);
+document.getElementById('chatMessageInput').value = '';
+document.getElementById('chatFormCard').style.display = 'none';
+});
+};
+window.submitPost = function(e) {
+e.preventDefault();
+const text = document.getElementById('postText').value;
+const author = document.getElementById('postAuthor').value || 'Anônimo';
+push(muralRef, {
+text: text,
+author: author,
+timestamp: Date.now()
+}).then(() => {
+closePostModal();
+e.target.reset();
+});
+};
+window.submitApoio = async function(e) {
+e.preventDefault();
+const title = document.getElementById('apoioTitle').value;
+const desc = document.getElementById('apoioDesc').value;
+const contact = document.getElementById('apoioContact').value;
+const imgFile = document.getElementById('apoioImg').files[0];
+let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
+push(apoioRef, { title, desc, contact, img: imgBase64 }).then(() => {
+alert('Rede de apoio adicionada!');
+e.target.reset();
+});
+};
+window.submitAudio = function(e) {
+e.preventDefault();
+const name = document.getElementById('audioName').value;
+const url = document.getElementById('audioUrl').value;
+push(audiosRef, { name, url }).then(() => {
+alert('Música adicionada com sucesso!');
+e.target.reset();
+});
+};
+window.submitAviso = async function(e) {
+e.preventDefault();
+const title = document.getElementById('avisoTitle').value;
+const text = document.getElementById('avisoDesc').value;
+const imgFile = document.getElementById('avisoImg').files[0];
+let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
+push(muralRef, {
+title,
+text,
+img: imgBase64,
+author: 'Gestão CETI',
+isAviso: true,
+timestamp: Date.now()
+}).then(() => {
+alert('Aviso institucional publicado!');
+e.target.reset();
+});
+};
+window.toggleStatus = function(key, currentStatus) {
+const statuses = ['Em Análise', 'Em Mediação', 'Resolvido'];
+const nextStatus = statuses[(statuses.indexOf(currentStatus) + 1) % statuses.length];
+update(ref(database, relatos/${key}), { status: nextStatus });
+};
+window.toggleDynamicAudio = function(key) {
+const audio = dynamicAudios[key];
+const label = document.getElementById(label-audio-${key});
+if (audio.paused) {
+audio.play().catch(() => alert('Toque na tela para liberar a reprodução de áudio.'));
+label.innerText = 'Pause';
+} else {
+audio.pause();
+label.innerText = 'Play';
+}
+};
+window.startRespire = function() {
+stopRespire();
+const circle = document.getElementById('respireCircle');
+const text = document.getElementById('respireInstruction');
+let state = 0;
+const cycle = () => {
+if (state === 0) {
+text.innerText = 'Inspire...';
+circle.style.transform = 'scale(1.3)';
+state = 1;
+} else if (state === 1) {
+text.innerText = 'Segure...';
+state = 2;
+} else {
+text.innerText = 'Expire...';
+circle.style.transform = 'scale(1)';
+state = 0;
+}
+};
+cycle();
+respireInterval = setInterval(cycle, 4000);
+};
+window.stopRespire = function() {
+if (respireInterval) clearInterval(respireInterval);
+const circle = document.getElementById('respireCircle');
+const text = document.getElementById('respireInstruction');
+if (circle && text) {
+circle.style.transform = 'scale(1)';
+text.innerText = 'Inspire';
+}
+};
+window.switchNav = function(targetId, element = null) {
+document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+const targetSection = document.getElementById(targetId);
+if (targetSection) targetSection.classList.add('active');
+if (element) element.classList.add('active');
+if (window.innerWidth <= 768) {
+document.getElementById('sidebar').classList.remove('open');
+document.getElementById('sidebarOverlay').classList.remove('open');
+}
+window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+window.toggleSidebar = function() {
+document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('sidebarOverlay').classList.toggle('open');
+};
+window.openChatForm = function(channel) {
+document.getElementById('chatFormCard').style.display = 'block';
+document.getElementById('chatFormTitle').innerText = Atendimento Privado (${userId});
+document.getElementById('chatChannelInput').value = channel;
+document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
+};
+window.openPostModal = () => document.getElementById('postModal').classList.add('open');
+window.closePostModal = () => document.getElementById('postModal').classList.remove('open');
+window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
+window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('open');
+window.logout = function() {
+window.isAdmin = false;
+document.getElementById('roleIcon').innerText = '👤';
+document.getElementById('roleText').innerText = 'Visitante';
+document.getElementById('adminNavBtn').style.display = 'none';
+document.getElementById('btnLoginModal').style.display = 'flex';
+document.getElementById('btnLogoutBtn').style.display = 'none';
+switchNav('inicio');
+};
+</script>
 </body>
 </html>

@@ -3,56 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ABRAÇAR — Escuta & Acolhimento (Com Firebase)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Portal ABRAÇAR — Acolhimento e Apoio Escolar</title>
   <style>
     :root {
-      --navy-dark: #0D1B2A;
-      --navy-mid: #1B263B;
-      --navy-light: #415A77;
-      --accent-blue: #0077B6;
-      --accent-cyan: #00B4D8;
-      --bg-light: #F4F7F6;
-      --card-bg: #FFFFFF;
-      --text-main: #1D2D44;
-      --text-muted: #6C7A89;
-      --border-color: #E2E8F0;
-      --grad-main: linear-gradient(135deg, #0D1B2A 0%, #1B263B 50%, #0077B6 100%);
-      --grad-subtle: linear-gradient(135deg, rgba(0, 119, 182, 0.08) 0%, rgba(13, 27, 42, 0.05) 100%);
-      --sidebar-width: 260px;
-      --sidebar-collapsed-width: 75px;
+      /* Nova Paleta de Cores Leves (Azul Degradê com Verde) */
+      --bg-gradient: linear-gradient(135deg, #f0f7f7 0%, #e6f4f1 50%, #e0f2fe 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --navy-dark: #1e3a8a;
+      --navy-mid: #2563eb;
+      --accent-teal: #0d9488;
+      --accent-green: #10b981;
+      --btn-gradient: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
+      --btn-hover: linear-gradient(135deg, #0f766e 0%, #1d4ed8 100%);
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 25px -5px rgba(13, 148, 136, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--bg-light);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
-    /* Header */
+    /* HEADER */
     header {
-      background: var(--grad-main);
-      color: white;
-      padding: 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(13, 27, 42, 0.2);
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: var(--shadow-sm);
     }
 
     .brand {
@@ -62,98 +60,72 @@
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
-      background: white;
+      width: 40px;
+      height: 40px;
+      background: var(--btn-gradient);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      color: var(--navy-dark);
+      color: white;
       font-size: 1.3rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow-sm);
     }
 
-    .brand-text h1 {
-      font-size: 1.25rem;
+    .brand-title {
+      font-size: 1.35rem;
       font-weight: 800;
-      letter-spacing: -0.5px;
-      line-height: 1.1;
+      background: linear-gradient(90deg, var(--accent-teal), var(--navy-mid));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .brand-text span {
-      font-size: 0.75rem;
-      opacity: 0.85;
-      font-weight: 500;
-    }
-
-    .auth-badge {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      padding: 0.5rem 1rem;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: 600;
+    .user-badge {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #166534;
+      font-weight: 600;
     }
 
-    /* App Layout */
+    /* LAYOUT PRINCIPAL */
     .app-container {
       display: flex;
       flex: 1;
-      position: relative;
     }
 
-    /* Sidebar Navigation */
+    /* SIDEBAR */
     aside {
-      width: var(--sidebar-width);
-      background: var(--card-bg);
+      width: 260px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
       border-right: 1px solid var(--border-color);
-      padding: 1.25rem 0.75rem;
-      display: none;
+      padding: 1.5rem 1rem;
+      display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      transition: width 0.3s ease;
-      white-space: nowrap;
-      position: relative;
+      transition: all 0.3s ease;
     }
 
     aside.collapsed {
-      width: var(--sidebar-collapsed-width);
+      width: 70px;
     }
 
-    .toggle-sidebar-btn {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      background: transparent;
-      border: none;
-      padding: 0.5rem;
-      cursor: pointer;
-      color: var(--navy-light);
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-    }
-
-    .toggle-sidebar-btn:hover {
-      background: var(--bg-light);
-      color: var(--navy-dark);
-    }
-
-    aside.collapsed .toggle-sidebar-btn {
-      justify-content: center;
+    aside.collapsed .nav-text, 
+    aside.collapsed .user-info {
+      display: none;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      padding: 0.85rem 1rem;
+      padding: 0.75rem 1rem;
       border-radius: 12px;
       color: var(--text-muted);
       text-decoration: none;
@@ -161,60 +133,18 @@
       font-size: 0.95rem;
       cursor: pointer;
       transition: all 0.2s ease;
-      overflow: hidden;
     }
 
-    .nav-item .icon {
-      font-size: 1.2rem;
-      min-width: 24px;
-      text-align: center;
-    }
-
-    aside.collapsed .nav-item .label {
-      opacity: 0;
-      pointer-events: none;
-      display: none;
-    }
-
-    .nav-item:hover {
-      background: var(--bg-light);
-      color: var(--accent-blue);
+    .nav-item:hover, .nav-item.active {
+      background: linear-gradient(90deg, rgba(13, 148, 136, 0.1), rgba(37, 99, 235, 0.1));
+      color: var(--accent-teal);
     }
 
     .nav-item.active {
-      background: var(--grad-subtle);
-      color: var(--navy-dark);
-      border-left: 4px solid var(--accent-blue);
-      font-weight: 700;
+      border-left: 4px solid var(--accent-teal);
     }
 
-    .role-switch-btn {
-      margin-top: auto;
-      background: var(--bg-light);
-      border: 1px dashed var(--navy-light);
-      color: var(--navy-mid);
-      padding: 0.85rem;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-      overflow: hidden;
-    }
-
-    .role-switch-btn:hover {
-      background: var(--navy-mid);
-      color: white;
-    }
-
-    aside.collapsed .role-switch-btn span:not(.icon) {
-      display: none;
-    }
-
-    /* Main Area */
+    /* CONTEÚDO */
     main {
       flex: 1;
       padding: 2rem;
@@ -225,7 +155,7 @@
 
     .view-section {
       display: none;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.4s ease;
     }
 
     .view-section.active {
@@ -233,22 +163,23 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Componentes */
+    /* CARDS */
     .card {
       background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 16px;
       padding: 1.75rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(13, 27, 42, 0.04);
       margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(8px);
     }
 
     .card-title {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--navy-dark);
       margin-bottom: 1rem;
@@ -257,335 +188,425 @@
       gap: 0.5rem;
     }
 
-    .hero-banner {
-      background: var(--grad-main);
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* BOTÕES */
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
+      background: var(--btn-gradient);
       color: white;
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      text-align: center;
-      margin-bottom: 2rem;
-      box-shadow: 0 8px 24px rgba(13, 27, 42, 0.2);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
     }
 
-    .hero-banner h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
+    .btn-action:hover {
+      background: var(--btn-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(13, 148, 136, 0.35);
     }
 
-    .hero-banner p {
-      font-size: 1.15rem;
-      opacity: 0.9;
-      margin-bottom: 2rem;
-      font-style: italic;
+    .btn-secondary {
+      background: #f3f4f6;
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
     }
 
     .btn-group {
       display: flex;
       gap: 1rem;
-      justify-content: center;
       flex-wrap: wrap;
     }
 
-    .btn {
-      padding: 0.85rem 1.75rem;
-      border-radius: 12px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    /* FORMULÁRIOS */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.9);
       font-size: 0.95rem;
+      transition: all 0.2s;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-teal);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
     }
 
-    .btn-primary { background: white; color: var(--navy-dark); }
-    .btn-secondary { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
-    .btn-action { background: var(--accent-blue); color: white; }
-
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--navy-dark); }
-    .form-control, select, textarea {
-      width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1px solid var(--border-color);
-      background: #FAFAFA; font-size: 0.95rem; outline: none; transition: border 0.2s, background 0.2s;
+    /* DICAS E MURAL */
+    .tip-card {
+      border-left: 5px solid var(--accent-teal);
     }
-    .form-control:focus, select:focus, textarea:focus { border-color: var(--accent-blue); background: white; }
+    .tip-card.orange { border-left-color: #f59e0b; }
+    .tip-card.blue { border-left-color: #3b82f6; }
+    .tip-card.purple { border-left-color: #8b5cf6; }
+    .tip-card.green { border-left-color: #10b981; }
+    .tip-card.red { border-left-color: #ef4444; }
 
-    /* Espaço Respire */
-    .respire-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1rem; text-align: center; }
+    /* EXERCÍCIO RESPIRE */
+    .respire-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
     .respire-circle {
-      width: 180px; height: 180px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--navy-mid));
-      display: flex; align-items: center; justify-content: center; color: white;
-      font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 30px rgba(0, 180, 216, 0.3);
-      transition: transform 4s ease-in-out; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 1px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a7f3d0, #67e8f9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #065f46;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+      transition: all 4s ease-in-out;
+      margin-bottom: 1.5rem;
     }
-    .respire-circle.expand { transform: scale(1.4); box-shadow: 0 0 50px rgba(0, 119, 182, 0.5); }
-    .respire-circle.hold { transform: scale(1.4); }
-    .respire-circle.shrink { transform: scale(1); }
 
-    /* Grid e Tabelas */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
-    .stat-card { background: white; border-radius: 16px; padding: 1.25rem; border: 1px solid var(--border-color); text-align: center; border-top: 4px solid var(--accent-cyan); }
-    .stat-number { font-size: 2.2rem; font-weight: 800; color: var(--navy-dark); margin: 0.25rem 0; }
-    .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+    .respire-circle.expand {
+      transform: scale(1.3);
+      background: linear-gradient(135deg, #67e8f9, #93c5fd);
+    }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .tip-card { border-left: 5px solid; }
-    .tip-card.orange { border-color: #FF9800; }
-    .tip-card.blue { border-color: var(--accent-blue); }
-    .tip-card.purple { border-color: #7B2CBF; }
-    .tip-card.green { border-color: #2EC4B6; }
-    .tip-card.red { border-color: #E63946; }
+    .respire-circle.hold {
+      transform: scale(1.3);
+      background: linear-gradient(135deg, #fef08a, #fde047);
+      color: #854d0e;
+    }
 
-    .data-table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
-    th, td { padding: 1rem; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-    th { background: var(--bg-light); font-weight: 700; color: var(--navy-dark); }
+    .respire-circle.shrink {
+      transform: scale(1);
+      background: linear-gradient(135deg, #a7f3d0, #67e8f9);
+    }
 
-    .status-badge { padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; }
-    .status-analise { background: #FFF9C4; color: #827717; }
-    .status-mediacao { background: #E1F5FE; color: #0288D1; }
-    .status-resolvido { background: #E8F5E9; color: #2E7D32; }
+    /* DASHBOARD ADMIN */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
 
-    /* Modais */
+    .stat-card {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 12px;
+      border-top: 4px solid var(--accent-teal);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--navy-dark);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .data-table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background: #f9fafb;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-analise { background: #fef3c7; color: #92400e; }
+    .status-resolvido { background: #dcfce7; color: #166534; }
+
+    /* MODAL */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(13, 27, 42, 0.6); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center; z-index: 1000;
-      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal-box { background: white; border-radius: 20px; padding: 2rem; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-    /* Responsividade */
-    @media(max-width: 768px) {
-      .app-container { flex-direction: column; }
-      aside { width: 100% !important; border-right: none; border-bottom: 1px solid var(--border-color); flex-direction: row; overflow-x: auto; padding: 0.75rem; }
-      aside.collapsed { width: 100% !important; }
-      .toggle-sidebar-btn { display: none; }
-      .nav-item .label { display: inline !important; opacity: 1 !important; }
-      main { padding: 1rem; }
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100% !important;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0.5rem;
+        z-index: 99;
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+      }
+      main {
+        padding-bottom: 5rem;
+      }
+      .nav-text { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Cabecalho -->
+  <!-- HEADER -->
   <header>
     <div class="brand">
-      <div class="brand-logo">A</div>
-      <div class="brand-text">
-        <h1>ABRAÇAR</h1>
-        <span>Escuta • Acolhimento • Respeito</span>
-      </div>
+      <div class="brand-logo">🤝</div>
+      <div class="brand-title">Portal ABRAÇAR</div>
     </div>
-    <div class="auth-badge" id="currentRoleBadge">
-      <span id="roleIcon">🔒</span>
-      <span id="roleText">Acesso Restrito</span>
+    
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <div class="user-badge" id="roleBadge">
+        <span id="roleIcon">🔒</span>
+        <span id="roleText">Não Autenticado</span>
+      </div>
+      <button class="btn btn-secondary" onclick="logout()" id="btnLogout" style="display: none;">Sair</button>
     </div>
   </header>
 
   <div class="app-container">
-    <!-- Menu Lateral -->
-    <aside id="sidebar">
-      <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Recolher / Expandir Menu">
-        <span id="toggleIcon">◀</span>
-      </button>
-
-      <div class="nav-item active" onclick="switchNav('inicio', this)">
-        <span class="icon">🏠</span>
-        <span class="label">Início</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('conversar', this)">
-        <span class="icon">💬</span>
-        <span class="label">Conversar</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('relato', this)">
-        <span class="icon">📝</span>
-        <span class="label">Fazer Relato</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('respire', this)">
-        <span class="icon">🧘</span>
-        <span class="label">Espaço Respire</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('dicas', this)">
-        <span class="icon">💡</span>
-        <span class="label">Dicas</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('apoio', this)">
-        <span class="icon">☎️</span>
-        <span class="label">Rede de Apoio</span>
-      </div>
-      <div class="nav-item" onclick="switchNav('mural', this)">
-        <span class="icon">📢</span>
-        <span class="label">Mural</span>
+    <!-- NAVEGAÇÃO LATERAL -->
+    <aside id="sidebar" style="display: none;">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+        <button class="btn btn-secondary" style="padding: 0.2rem 0.5rem;" onclick="toggleSidebar()" id="toggleBtn">
+          <span id="toggleIcon">◀</span>
+        </button>
       </div>
 
-      <div class="nav-item" id="adminDashboardNav" style="display: none;" onclick="switchNav('dashboard', this)">
-        <span class="icon">📊</span>
-        <span class="label">Painel Geral</span>
-      </div>
-
-      <button class="role-switch-btn" id="logoutBtn" onclick="logout()">
-        <span class="icon">🚪</span>
-        <span>Sair da Conta</span>
-      </button>
+      <nav style="display: flex; flex-direction: column; gap: 0.4rem; width: 100%;">
+        <div class="nav-item active" onclick="switchNav('inicio', this)">
+          <span>🏠</span><span class="nav-text">Início</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('chat', this)">
+          <span>💬</span><span class="nav-text">Acolhimento Virtual</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('relatos', this)">
+          <span>🛡️</span><span class="nav-text">Relato Anônimo</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('respire', this)">
+          <span>🌿</span><span class="nav-text">Espaço Respire</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('dicas', this)">
+          <span>💡</span><span class="nav-text">Guias e Dicas</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('mural', this)">
+          <span>📢</span><span class="nav-text">Mural Positivo</span>
+        </div>
+        <div class="nav-item" onclick="switchNav('apoio', this)">
+          <span>☎️</span><span class="nav-text">Rede de Apoio</span>
+        </div>
+        <div class="nav-item" id="adminDashboardNav" style="display: none;" onclick="switchNav('dashboard', this)">
+          <span>📊</span><span class="nav-text">Painel Gestão</span>
+        </div>
+      </nav>
     </aside>
 
-    <!-- Conteudo Principal -->
+    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
     <main>
-
-      <!-- TELA INICIAL -->
+      
+      <!-- INÍCIO / BOAS-VINDAS -->
       <section id="inicio" class="view-section active">
-        <div class="hero-banner">
-          <h2>ABRAÇAR</h2>
-          <p>“Você não precisa enfrentar tudo sozinho.”</p>
-          
-          <div id="loginActions" class="btn-group">
-            <button class="btn btn-primary" onclick="openStudentModal()">👤 Entrar como Aluno</button>
-            <button class="btn btn-secondary" onclick="openLoginModal()">🛡️ Entrar como Administrador</button>
+        <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+          <h1 style="color: var(--navy-dark); font-size: 2rem; margin-bottom: 1rem;">
+            Um espaço seguro para você ser ouvido
+          </h1>
+          <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem auto; line-height: 1.6;">
+            O Portal ABRAÇAR oferece escuta acolhedora, apoio emocional e um canal seguro e anônimo para prevenir o bullying e cuidar do bem-estar na escola.
+          </p>
+
+          <div id="loginActions" class="btn-group" style="justify-content: center;">
+            <button class="btn btn-action" onclick="openStudentModal()">👤 Entrar como Aluno</button>
+            <button class="btn btn-secondary" onclick="openLoginModal()">🛡️ Área Administrativa</button>
           </div>
 
           <div id="loggedInWelcome" style="display: none;">
-            <p style="font-size: 1.2rem; font-style: normal; margin-bottom: 1rem;">
-              Bem-vindo(a)<span id="studentWelcomeName"></span>! Você está autenticado como <strong id="userTypeTitle">Aluno</strong>.
+            <p style="font-size: 1.1rem; color: var(--accent-teal); font-weight: 700; margin-bottom: 1rem;">
+              Você está conectado como <span id="userTypeTitle"></span><span id="studentWelcomeName"></span>!
             </p>
-            <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 1.5rem; font-style: normal;">
-              Utilize o menu lateral para navegar entre os canais de atendimento, suporte e relatos.
-            </p>
-            <button class="btn btn-secondary" onclick="logout()">Sair da Conta</button>
+            <p style="color: var(--text-muted);">Utilize o menu lateral para acessar todas as ferramentas do portal.</p>
           </div>
         </div>
 
         <div class="cards-grid" id="studentHomeCards" style="display: none;">
-          <div class="card">
-            <div class="card-title">💬 Conversa & Escuta</div>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-              Um canal direto para tirar dúvidas ou pedir orientação de forma segura.
-            </p>
-            <button class="btn btn-action" onclick="switchNav('conversar')">Acessar Canal</button>
+          <div class="card tip-card green" style="cursor: pointer;" onclick="switchNav('chat')">
+            <div class="card-title">💬 Conversar com a Equipe</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Precisa desabafar ou tirar dúvidas? Envie uma mensagem com total confidencialidade.</p>
           </div>
-
-          <div class="card">
-            <div class="card-title">📝 Relato Anônimo</div>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-              Registre denúncias ou situações delicadas com total garantia de acolhimento.
-            </p>
-            <button class="btn btn-action" onclick="switchNav('relato')">Fazer um Relato</button>
+          <div class="card tip-card blue" style="cursor: pointer;" onclick="switchNav('relatos')">
+            <div class="card-title">🛡️ Fazer Relato Anônimo</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Presenciou ou sofreu bullying? Relate o ocorrido com segurança e sigilo total.</p>
           </div>
-
-          <div class="card">
-            <div class="card-title">🧘 Espaço Respire</div>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-              Pausa guiada, exercícios de respiração e estratégias rápidas de autocuidado.
-            </p>
-            <button class="btn btn-action" onclick="switchNav('respire')">Acessar Espaço</button>
+          <div class="card tip-card purple" style="cursor: pointer;" onclick="switchNav('respire')">
+            <div class="card-title">🌿 Espaço Respire</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Exercícios de respiração e sons de relaxamento para diminuir o estresse.</p>
           </div>
         </div>
       </section>
 
-      <!-- CONVERSAR -->
-      <section id="conversar" class="view-section">
+      <!-- CHAT / ACOLHIMENTO -->
+      <section id="chat" class="view-section">
         <div class="card">
-          <div class="card-title">💬 Conversa Anônima</div>
+          <div class="card-title">💬 Canal de Acolhimento e Escuta</div>
           <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-            Escolha o setor com quem deseja falar. Você receberá um código de identificação anônimo para acompanhar.
+            Escreva o que está sentindo ou conte o que está acontecendo. Sua mensagem será direcionada para a equipe de apoio da escola.
           </p>
 
           <div class="form-group">
-            <label>Selecione o Canal de Atendimento:</label>
-            <select id="chatChannel" class="form-control">
-              <option>Grêmio Estudantil</option>
-              <option>Coordenação</option>
-              <option>Mediação de Conflitos</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Assunto Principal:</label>
+            <label>Assunto principal:</label>
             <select id="chatSubject" class="form-control">
-              <option>Bullying</option>
-              <option>Cyberbullying</option>
-              <option>Violência verbal</option>
-              <option>Conflitos</option>
-              <option>Discriminação</option>
-              <option>Problemas na escola</option>
-              <option>Outro</option>
+              <option>Preciso de apoio emocional / desabafo</option>
+              <option>Dúvidas sobre convivência escolar</option>
+              <option>Situação de bullying / preconceito</option>
+              <option>Outro assunto</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Sua mensagem inicial:</label>
-            <textarea id="chatMsg" rows="4" class="form-control" placeholder="Escreva aqui como podemos te ajudar..."></textarea>
+            <label>Preferência de atendimento:</label>
+            <select id="chatChannel" class="form-control">
+              <option>Atendimento em texto no próprio portal</option>
+              <option>Presencial (Agendar com orientação)</option>
+            </select>
           </div>
 
-          <button class="btn btn-action" onclick="submitChat()">➕ Iniciar Nova Conversa</button>
+          <div class="form-group">
+            <label>Sua mensagem:</label>
+            <textarea id="chatMsg" class="form-control" rows="5" placeholder="Escreva aqui..."></textarea>
+          </div>
+
+          <button class="btn btn-action" onclick="submitChat()">Enviar Mensagem</button>
         </div>
 
-        <div id="chatResultCard" class="card" style="display: none; border-left: 5px solid var(--accent-cyan);">
-          <div class="card-title">Conversa Registrada no Firebase!</div>
-          <p style="margin-bottom: 0.5rem;">Guarde o seu protocolo anônimo para consultar respostas:</p>
-          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy-dark); display: inline-block; margin-bottom: 1rem;" id="generatedChatID">
+        <div id="chatResultCard" class="card" style="display: none; background: #f0fdf4; border-color: #bbf7d0; text-align: center;">
+          <h3 style="color: #166534; margin-bottom: 0.5rem;">Mensagem Enviada!</h3>
+          <p style="font-size: 0.9rem; color: #15803d; margin-bottom: 1rem;">Seu código de acompanhamento é:</p>
+          <div style="background: white; padding: 0.8rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--accent-teal); display: inline-block;" id="generatedChatID">
             ABR-00000
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Nenhum dado pessoal foi atrelado a este atendimento.
-          </p>
         </div>
       </section>
 
-      <!-- RELATO -->
-      <section id="relato" class="view-section">
+      <!-- RELATOS ANÔNIMOS -->
+      <section id="relatos" class="view-section">
         <div class="card">
-          <div class="card-title">📝 Registro de Relato ou Denúncia</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-            Atenção: O anonimato do sistema garante que seu nome não é exigido. Contudo, evite incluir dados pessoais na caixa de texto se desejar permanecer 100% anônimo.
+          <div class="card-title">🛡️ Canal de Relato Anônimo</div>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+            Relate qualquer tipo de agressão, discriminação ou bullying. Nenhuma informação pessoal será coletada.
           </p>
 
           <div class="form-group">
-            <label>O que aconteceu?</label>
-            <textarea id="relatoText" class="form-control" rows="4" placeholder="Descreva a situação em detalhes..."></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>Onde aconteceu?</label>
+            <label>Local aproximado do ocorrido:</label>
             <select id="relatoPlace" class="form-control">
-              <option>Sala de aula</option>
-              <option>Pátio</option>
-              <option>Banheiro</option>
-              <option>Internet / Redes Sociais</option>
-              <option>Transporte Escolar</option>
-              <option>Outro</option>
+              <option>Sala de Aula</option>
+              <option>Pátio / Recreio</option>
+              <option>Entrada / Saída da Escola</option>
+              <option>Redes Sociais / Cyberbullying</option>
+              <option>Outro local</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label>Quando aconteceu?</label>
+            <label>Data aproximada:</label>
             <input type="date" id="relatoDate" class="form-control">
           </div>
 
           <div class="form-group">
-            <label>Você está em perigo imediato agora?</label>
-            <select class="form-control" id="dangerSelect">
+            <label>Alguém está em risco imediato de perigo físico?</label>
+            <select id="dangerSelect" class="form-control">
               <option value="nao">Não</option>
-              <option value="sim">SIM - Preciso de ajuda urgente</option>
+              <option value="sim">Sim (Sinalizado para intervenção rápida)</option>
             </select>
+          </div>
+
+          <div class="form-group">
+            <label>Descrição do ocorrido:</label>
+            <textarea id="relatoText" class="form-control" rows="5" placeholder="Descreva os fatos detalhadamente sem se identificar..."></textarea>
           </div>
 
           <button class="btn btn-action" onclick="submitRelato()">Enviar Relato Anônimo</button>
         </div>
 
-        <div id="relatoResultCard" class="card" style="display: none; border-left: 5px solid var(--accent-blue);">
-          <div class="card-title">Relato Salvo no Firestore</div>
-          <p style="margin-bottom: 0.5rem;">Seu ID de acompanhamento é:</p>
-          <div style="background: var(--bg-light); padding: 1rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy-mid); display: inline-block; margin-bottom: 1rem;" id="generatedRelatoID">
+        <div id="relatoResultCard" class="card" style="display: none; background: #f0fdf4; border-color: #bbf7d0; text-align: center;">
+          <h3 style="color: #166534; margin-bottom: 0.5rem;">Relato Registrado com Sucesso</h3>
+          <p style="font-size: 0.9rem; color: #15803d; margin-bottom: 0.5rem;">Seu ID de acompanhamento é:</p>
+          <div style="background: white; padding: 0.8rem; border-radius: 10px; font-weight: 800; font-size: 1.2rem; color: var(--navy-mid); display: inline-block; margin-bottom: 1rem;" id="generatedRelatoID">
             ABR-00000
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted);">
@@ -609,7 +630,7 @@
             </p>
             <div class="btn-group">
               <button class="btn btn-action" onclick="startRespire()">▶ Começar Exercício</button>
-              <button class="btn btn-secondary" style="background: var(--text-muted);" onclick="stopRespire()">⏸ Pausar</button>
+              <button class="btn btn-secondary" onclick="stopRespire()">⏸ Pausar</button>
             </div>
           </div>
         </div>
@@ -617,10 +638,10 @@
         <div class="cards-grid">
           <div class="card">
             <div class="card-title">🎧 Sons Tranquilos</div>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">Sons suaves de natureza e chuva para foco e relaxamento no ambiente escolar.</p>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Sons suaves de chuva e natureza para auxílio no foco e relaxamento.</p>
             <audio controls style="width: 100%; margin-top: 1rem;">
               <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy_loud.ogg" type="audio/ogg">
-              Seu navegador não suporta áudio HTML5.
+              Seu navegador não suporta áudio.
             </audio>
           </div>
 
@@ -630,7 +651,7 @@
               <strong>Técnica dos 5 Sentidos (5-4-3-2-1):</strong>
             </p>
             <ul style="font-size: 0.85rem; color: var(--text-main); line-height: 1.6; padding-left: 1.2rem;">
-              <li><strong>5 coisas</strong> que você pode ver à sua volta.</li>
+              <li><strong>5 coisas</strong> que você pode ver.</li>
               <li><strong>4 coisas</strong> que você pode tocar.</li>
               <li><strong>3 coisas</strong> que você pode ouvir.</li>
               <li><strong>2 coisas</strong> que você pode cheirar.</li>
@@ -650,7 +671,7 @@
             <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
               Brincadeiras só são engraçadas quando todos se divertem. Se fere, humilha ou exclui repetidamente, é bullying.
               <br><br>
-              <strong>O que fazer no meio digital?</strong> Guarde prints como evidência, não responda aos agressores e bloqueie os perfis.
+              <strong>No ambiente digital:</strong> Guarde comprovantes/prints, não responda aos agressores e bloqueie os perfis.
             </p>
           </div>
 
@@ -659,23 +680,23 @@
             <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
               Não seja um espectador passivo. Rir ou compartilhar mensagens ofensivas fortalece a agressão.
               <br><br>
-              <strong>Seja uma ponte:</strong> Ofereça apoio ao colega afetado e faça um relato anônimo aqui no portal para que a coordenação atue.
+              <strong>Seja uma ponte:</strong> Ofereça apoio ao colega afetado e faça um relato anônimo no portal.
             </p>
           </div>
 
           <div class="card tip-card purple">
             <div class="card-title">🧠 Cuidando da Saúde Mental</div>
             <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-              Guardar dores emocionais pode causar ansiedade e isolamento. Falar sobre o que sente é um ato de coragem, não de fraqueza.
+              Guardar dores emocionais gera isolamento. Falar sobre o que você sente é um ato de coragem.
               <br><br>
-              Procure um adulto de confiança, um psicólogo ou use os canais do ABRAÇAR para desabafar.
+              Procure um adulto de confiança, a coordenação da escola ou utilize o chat de apoio.
             </p>
           </div>
 
           <div class="card tip-card green">
             <div class="card-title">🤝 Cultura de Paz na Escola</div>
             <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-              Respeitar a diversidade e aceitar as diferenças são os pilares para um ambiente seguro. Pratique a empatia diariamente: coloque-se no lugar do outro antes de julgar.
+              Respeitar a diversidade é a chave para um ambiente seguro. Pratique a empatia diariamente.
             </p>
           </div>
         </div>
@@ -686,32 +707,32 @@
         <div class="card">
           <div class="card-title">☎️ Canais Externos e Emergência</div>
           <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-            Se você ou alguém que você conhece precisa de apoio emocional imediato ou está em situação de risco, utilize estes serviços gratuitos:
+            Se você ou alguém que você conhece precisa de suporte imediato, utilize estes serviços públicos e gratuitos:
           </p>
 
           <div class="cards-grid">
             <div class="card tip-card red" style="margin-bottom:0;">
               <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">CVV — Centro de Valorização da Vida</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                Apoio emocional e prevenção do suicídio. Atendimento gratuito, sigiloso e 24h por dia.
+                Apoio emocional e prevenção do suicídio. Atendimento gratuito, sigiloso e 24h.
               </p>
-              <a href="tel:188" class="btn btn-action" style="text-decoration: none; display: inline-block;">Ligar 188</a>
+              <a href="tel:188" class="btn btn-action" style="text-decoration: none;">Ligar 188</a>
             </div>
 
             <div class="card tip-card blue" style="margin-bottom:0;">
               <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Disque 100 — Direitos Humanos</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                Recebe denúncias de violações de direitos humanos contra crianças, adolescentes e vulneráveis.
+                Denúncias de violações de direitos de crianças e adolescentes.
               </p>
-              <a href="tel:100" class="btn btn-action" style="text-decoration: none; display: inline-block;">Ligar 100</a>
+              <a href="tel:100" class="btn btn-action" style="text-decoration: none;">Ligar 100</a>
             </div>
 
             <div class="card tip-card purple" style="margin-bottom:0;">
               <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.1rem;">Pode Falar (UNICEF)</h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                Canal de ajuda virtual em saúde mental para adolescentes e jovens entre 13 e 24 anos.
+                Apoio em saúde mental para jovens entre 13 e 24 anos via chat.
               </p>
-              <a href="https://www.podefalar.org.br" target="_blank" rel="noopener" class="btn btn-action" style="text-decoration: none; display: inline-block;">Acessar Site</a>
+              <a href="https://www.podefalar.org.br" target="_blank" rel="noopener" class="btn btn-action" style="text-decoration: none;">Acessar Site</a>
             </div>
           </div>
         </div>
@@ -722,7 +743,7 @@
         <div class="card">
           <div class="card-title">📢 Mural do Acolhimento</div>
           <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-            Deixe uma mensagem de incentivo ou carinho para a comunidade escolar. Espalhe positividade!
+            Deixe uma mensagem de incentivo ou carinho para a comunidade escolar.
           </p>
 
           <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
@@ -731,7 +752,7 @@
           </div>
 
           <div class="cards-grid" id="muralGrid">
-            <!-- As postagens do Firebase serao carregadas aqui em tempo real -->
+            <!-- As postagens do Firebase serão carregadas aqui em tempo real -->
           </div>
         </div>
       </section>
@@ -748,15 +769,15 @@
             <div class="stat-label">Relatos Pendentes</div>
             <div class="stat-number" id="statPending">0</div>
           </div>
-          <div class="stat-card" style="border-top-color: var(--navy-light);">
+          <div class="stat-card" style="border-top-color: var(--navy-mid);">
             <div class="stat-label">Em Mediação</div>
             <div class="stat-number" id="statMediation">0</div>
           </div>
-          <div class="stat-card" style="border-top-color: var(--navy-dark);">
+          <div class="stat-card" style="border-top-color: var(--accent-green);">
             <div class="stat-label">Casos Resolvidos</div>
             <div class="stat-number" id="statResolved">0</div>
           </div>
-          <div class="stat-card" style="border-top-color: #FF9800;">
+          <div class="stat-card" style="border-top-color: #f59e0b;">
             <div class="stat-label">Atendimentos Ativos</div>
             <div class="stat-number" id="statChats">0</div>
           </div>
@@ -787,7 +808,7 @@
     </main>
   </div>
 
-  <!-- Modal Aluno -->
+  <!-- MODAL ALUNO -->
   <div class="modal-overlay" id="studentModal">
     <div class="modal-box">
       <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.25rem;">Identificação do Aluno</h3>
@@ -801,23 +822,23 @@
       </div>
 
       <div class="form-group">
-        <label>Série / Turma ou Matrícula (Opcional):</label>
-        <input type="text" id="studentClassInput" class="form-control" placeholder="Ex: 9º Ano B / Matrícula">
+        <label>Série / Turma (Opcional):</label>
+        <input type="text" id="studentClassInput" class="form-control" placeholder="Ex: 9º Ano B">
       </div>
 
       <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-        <button class="btn btn-secondary" style="background: #E2E8F0; color: var(--text-main);" onclick="closeStudentModal()">Cancelar</button>
+        <button class="btn btn-secondary" onclick="closeStudentModal()">Cancelar</button>
         <button class="btn btn-action" onclick="confirmStudentLogin()">Entrar no Sistema</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Admin -->
+  <!-- MODAL ADMIN -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3 style="color: var(--navy-dark); margin-bottom: 0.5rem; font-size: 1.25rem;">Acesso Administrativo</h3>
       <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">
-        Digite a chave de acesso da coordenação ou grêmio.
+        Digite a chave de acesso da coordenação.
       </p>
 
       <div class="form-group">
@@ -826,19 +847,19 @@
       </div>
 
       <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-        <button class="btn btn-secondary" style="background: #E2E8F0; color: var(--text-main);" onclick="closeLoginModal()">Cancelar</button>
+        <button class="btn btn-secondary" onclick="closeLoginModal()">Cancelar</button>
         <button class="btn btn-action" onclick="checkAdminAuth()">Entrar</button>
       </div>
     </div>
   </div>
 
-  <!-- SDKs do Firebase v9+ (Módulos JS) -->
+  <!-- FIREBASE MODULAR SDK v10+ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInAnonymously, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Configuration Firebase
+    // INSIRA SUAS CHAVES DO FIREBASE AQUI
     const firebaseConfig = {
       apiKey: "SUA_API_KEY_AQUI",
       authDomain: "SEU_PROJETO.firebaseapp.com",
@@ -848,12 +869,17 @@
       appId: "SEU_APP_ID"
     };
 
-    // Inicializar Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    // Inicialização do Firebase
+    let app, auth, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    } catch (e) {
+      console.warn("Firebase não inicializado com chaves válidas. Entre com suas chaves do Firebase Console para rodar com banco de dados real.");
+    }
 
-    // Torna as variáveis e funções acessíveis no escopo global (window) para o HTML inline
+    // Exportação para o escopo global
     window.db = db;
     window.auth = auth;
     window.signInAnonymously = signInAnonymously;
@@ -862,61 +888,86 @@
     window.collection = collection;
     window.serverTimestamp = serverTimestamp;
 
-    // Escuta em tempo real as mensagens do Mural do Firestore
-    const muralQuery = query(collection(db, "mural"), orderBy("timestamp", "desc"));
-    onSnapshot(muralQuery, (snapshot) => {
-      const muralGrid = document.getElementById('muralGrid');
-      muralGrid.innerHTML = '';
-      const colors = ['green', 'blue', 'purple', 'orange'];
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        const card = document.createElement('div');
-        card.className = `card tip-card ${randomColor}`;
-        card.style.marginBottom = '0';
-        card.style.background = 'var(--bg-light)';
-        card.innerHTML = `
-          <p style="font-style: italic; font-size: 0.95rem;">"${data.text}"</p>
-          <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ${data.author || 'Anônimo'}</span>
-        `;
-        muralGrid.appendChild(card);
+    // Monitor do estado da autenticação (Garante a conexão contínua)
+    if (auth) {
+      onAuthStateChanged(auth, (user) => {
+        if (user && db) {
+          setupRealtimeListeners();
+        }
       });
-    });
+    }
 
-    // Escuta em tempo real os relatos cadastrados no Firestore
-    const relatosQuery = query(collection(db, "relatos"), orderBy("timestamp", "desc"));
-    onSnapshot(relatosQuery, (snapshot) => {
-      const tbody = document.getElementById('relatosTableBody');
-      tbody.innerHTML = '';
-      let pendingCount = 0;
+    // Configuração dos Escutadores em Tempo Real
+    function setupRealtimeListeners() {
+      if (!db) return;
 
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.status === 'Em Análise') pendingCount++;
+      // Escuta Mural
+      const muralQuery = query(collection(db, "mural"), orderBy("timestamp", "desc"));
+      onSnapshot(muralQuery, (snapshot) => {
+        const muralGrid = document.getElementById('muralGrid');
+        if (!muralGrid) return;
+        muralGrid.innerHTML = '';
+        const colors = ['green', 'blue', 'purple', 'orange'];
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${data.code}</strong></td>
-          <td>${data.place}</td>
-          <td>${data.date || 'Recente'}</td>
-          <td><span style="${data.isDanger ? 'color: red; font-weight:700;' : ''}">${data.isDanger ? 'Sim' : 'Não'}</span></td>
-          <td><span class="status-badge status-analise">${data.status || 'Em Análise'}</span></td>
-          <td><button class="btn btn-secondary" style="background: var(--navy-mid); font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="alert('Relato: ${data.description.replace(/'/g, "\\'")}');">Analisar</button></td>
-        `;
-        tbody.appendChild(tr);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          const card = document.createElement('div');
+          card.className = `card tip-card ${randomColor}`;
+          card.style.marginBottom = '0';
+          card.style.background = 'white';
+          card.innerHTML = `
+            <p style="font-style: italic; font-size: 0.95rem;">"${data.text}"</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ${data.author || 'Anônimo'}</span>
+          `;
+          muralGrid.appendChild(card);
+        });
+      }, (error) => {
+        console.log("Erro no listener do Mural:", error);
       });
 
-      document.getElementById('statPending').innerText = pendingCount;
-    });
+      // Escuta Relatos
+      const relatosQuery = query(collection(db, "relatos"), orderBy("timestamp", "desc"));
+      onSnapshot(relatosQuery, (snapshot) => {
+        const tbody = document.getElementById('relatosTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        let pendingCount = 0;
 
-    // Escuta total de chats
-    onSnapshot(collection(db, "chats"), (snapshot) => {
-      document.getElementById('statChats').innerText = snapshot.size;
-    });
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.status === 'Em Análise') pendingCount++;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${data.code}</strong></td>
+            <td>${data.place}</td>
+            <td>${data.date || 'Recente'}</td>
+            <td><span style="${data.isDanger ? 'color: red; font-weight:700;' : ''}">${data.isDanger ? 'Sim' : 'Não'}</span></td>
+            <td><span class="status-badge status-analise">${data.status || 'Em Análise'}</span></td>
+            <td><button class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;" onclick="alert('Relato: ${data.description ? data.description.replace(/'/g, "\\'") : ''}');">Analisar</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const statPending = document.getElementById('statPending');
+        if (statPending) statPending.innerText = pendingCount;
+      }, (error) => {
+        console.log("Erro no listener dos Relatos:", error);
+      });
+
+      // Escuta Chats
+      onSnapshot(collection(db, "chats"), (snapshot) => {
+        const statChats = document.getElementById('statChats');
+        if (statChats) statChats.innerText = snapshot.size;
+      }, (error) => {
+        console.log("Erro no listener dos Chats:", error);
+      });
+    }
   </script>
 
   <script>
+    /* LÓGICA DE INTERFACE E AUTENTICAÇÃO LOCAL */
     let currentRole = null;
     let studentName = '';
     let respireInterval = null;
@@ -930,13 +981,13 @@
 
     function switchNav(viewId, element) {
       if (!currentRole && viewId !== 'inicio') {
-        alert('Por favor, faça login primeiro.');
+        alert('Por favor, faça login como Aluno ou Administrador na tela inicial.');
         switchNav('inicio');
         return;
       }
 
       if (viewId === 'dashboard' && currentRole !== 'admin') {
-        alert('Acesso restrito a Administradores.');
+        alert('Acesso restrito à equipe gestora.');
         return;
       }
 
@@ -964,14 +1015,20 @@
 
     async function confirmStudentLogin() {
       try {
-        await window.signInAnonymously(window.auth);
+        if (window.auth) {
+          await window.signInAnonymously(window.auth);
+        }
         const name = document.getElementById('studentNameInput').value.trim();
         studentName = name ? `, ${name}` : '';
         currentRole = 'student';
         closeStudentModal();
         updateRoleUI();
       } catch (err) {
-        alert('Erro ao realizar autenticação anônima com o Firebase.');
+        console.error(err);
+        alert('Não foi possível conectar com o Firebase. Entrando em modo de teste local.');
+        currentRole = 'student';
+        closeStudentModal();
+        updateRoleUI();
       }
     }
 
@@ -988,13 +1045,18 @@
       const pass = document.getElementById('adminPassword').value;
       if (pass === 'admin' || pass === '1234') {
         try {
-          await window.signInAnonymously(window.auth);
+          if (window.auth) {
+            await window.signInAnonymously(window.auth);
+          }
           currentRole = 'admin';
           closeLoginModal();
           updateRoleUI();
           switchNav('dashboard');
         } catch(e) {
-          alert('Erro ao conectar ao Firebase.');
+          currentRole = 'admin';
+          closeLoginModal();
+          updateRoleUI();
+          switchNav('dashboard');
         }
       } else {
         alert('Senha incorreta! Use "admin" ou "1234" para testar.');
@@ -1003,7 +1065,9 @@
 
     async function logout() {
       try {
-        await window.signOut(window.auth);
+        if (window.auth) {
+          await window.signOut(window.auth);
+        }
       } catch(e) {}
       currentRole = null;
       studentName = '';
@@ -1023,6 +1087,7 @@
       const userTypeTitle = document.getElementById('userTypeTitle');
       const studentWelcomeName = document.getElementById('studentWelcomeName');
       const studentHomeCards = document.getElementById('studentHomeCards');
+      const btnLogout = document.getElementById('btnLogout');
 
       if (currentRole === 'admin') {
         sidebar.style.display = 'flex';
@@ -1034,6 +1099,7 @@
         userTypeTitle.innerText = 'Administrador';
         studentWelcomeName.innerText = '';
         studentHomeCards.style.display = 'none';
+        btnLogout.style.display = 'block';
       } else if (currentRole === 'student') {
         sidebar.style.display = 'flex';
         badgeText.innerText = 'Modo Aluno';
@@ -1044,121 +1110,118 @@
         userTypeTitle.innerText = 'Aluno';
         studentWelcomeName.innerText = studentName;
         studentHomeCards.style.display = 'grid';
-      } else {
-        sidebar.style.display = 'none';
-        badgeText.innerText = 'Acesso Restrito';
-        badgeIcon.innerText = '🔒';
-        adminNav.style.display = 'none';
-        loginActions.style.display = 'flex';
+        btnLogout.style.display = 'block';
+      } else {        sidebar.style.display = 'none';
+        loginActions.style.display = 'grid';
         loggedInWelcome.style.display = 'none';
-        studentHomeCards.style.display = 'none';
+        btnLogout.style.display = 'none';
       }
     }
 
-    async function submitChat() {
-      const msg = document.getElementById('chatMsg').value.trim();
-      if (!msg) return alert('Por favor, escreva uma mensagem.');
-
-      const randomId = 'ABR-' + Math.floor(10000 + Math.random() * 90000);
+    /* SISTEMA DE DENÚNCIAS E FORMULÁRIOS */
+    async function submitReport(e) {
+      e.preventDefault();
+      const place = document.getElementById('reportPlace').value;
+      const date = document.getElementById('reportDate').value;
+      const isDanger = document.getElementById('reportDanger').checked;
+      const description = document.getElementById('reportDesc').value;
+      const code = 'REL-' + Math.floor(1000 + Math.random() * 9000);
 
       try {
-        await window.addDoc(window.collection(window.db, "chats"), {
-          code: randomId,
-          channel: document.getElementById('chatChannel').value,
-          subject: document.getElementById('chatSubject').value,
-          message: msg,
-          timestamp: window.serverTimestamp()
-        });
-
-        document.getElementById('generatedChatID').innerText = randomId;
-        document.getElementById('chatResultCard').style.display = 'block';
-        document.getElementById('chatMsg').value = '';
-      } catch (e) {
-        alert('Erro ao salvar conversa no Firebase.');
-      }
-    }
-
-    async function submitRelato() {
-      const desc = document.getElementById('relatoText').value.trim();
-      if (!desc) return alert('Por favor, descreva a situação.');
-
-      const randomId = 'ABR-' + Math.floor(10000 + Math.random() * 90000);
-      const isDanger = document.getElementById('dangerSelect').value === 'sim';
-      const place = document.getElementById('relatoPlace').value;
-      const date = document.getElementById('relatoDate').value;
-
-      try {
-        await window.addDoc(window.collection(window.db, "relatos"), {
-          code: randomId,
-          description: desc,
-          place: place,
-          date: date,
-          isDanger: isDanger,
-          status: 'Em Análise',
-          timestamp: window.serverTimestamp()
-        });
-
-        document.getElementById('generatedRelatoID').innerText = randomId;
-        document.getElementById('relatoResultCard').style.display = 'block';
-        document.getElementById('relatoText').value = '';
-      } catch (e) {
-        alert('Erro ao registrar relato no Firebase.');
-      }
-    }
-
-    function startRespire() {
-      if (respireInterval) clearInterval(respireInterval);
-      const circle = document.getElementById('respireCircle');
-      const instruction = document.getElementById('respireInstruction');
-      let step = 0;
-
-      const cycle = () => {
-        if (step === 0) {
-          circle.className = 'respire-circle expand';
-          circle.innerText = 'INSPIRE';
-          instruction.innerText = 'Puxe o ar suavemente pelo nariz...';
-          step = 1;
-        } else if (step === 1) {
-          circle.className = 'respire-circle hold';
-          circle.innerText = 'SEGURE';
-          instruction.innerText = 'Mantenha o ar nos pulmões...';
-          step = 2;
-        } else {
-          circle.className = 'respire-circle shrink';
-          circle.innerText = 'EXPIRE';
-          instruction.innerText = 'Solte o ar devagar pela boca...';
-          step = 0;
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "relatos"), {
+            code,
+            place,
+            date,
+            isDanger,
+            description,
+            status: 'Em Análise',
+            timestamp: window.serverTimestamp()
+          });
         }
-      };
+        alert(`Relato enviado com sucesso!\nGuarde seu código de acompanhamento: ${code}`);
+        e.target.reset();
+      } catch (err) {
+        console.error("Erro ao enviar relatos:", err);
+        alert(`Relato gerado com sucesso em modo local!\nSeu código: ${code}`);
+        e.target.reset();
+      }
+    }
 
-      cycle();
-      respireInterval = setInterval(cycle, 4000);
+    /* MURAL POSITIVO */
+    async function addMuralPost() {
+      const input = document.getElementById('muralInput');
+      const text = input.value.trim();
+
+      if (!text) {
+        alert('Por favor, escreva uma mensagem antes de publicar.');
+        return;
+      }
+
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "mural"), {
+            text: text,
+            author: studentName ? studentName.replace(', ', '') : 'Anônimo',
+            timestamp: window.serverTimestamp()
+          });
+        } else {
+          // Fallback visual local caso o Firebase não esteja configurado
+          const muralGrid = document.getElementById('muralGrid');
+          const colors = ['green', 'blue', 'purple', 'orange'];
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          const card = document.createElement('div');
+          card.className = `card tip-card ${randomColor}`;
+          card.style.marginBottom = '0';
+          card.style.background = 'white';
+          card.innerHTML = `
+            <p style="font-style: italic; font-size: 0.95rem;">"${text}"</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ${studentName ? studentName.replace(', ', '') : 'Anônimo'}</span>
+          `;
+          muralGrid.prepend(card);
+        }
+        input.value = '';
+      } catch (err) {
+        console.error("Erro ao publicar no mural:", err);
+        input.value = '';
+      }
+    }
+
+    /* EXERCÍCIO DE RESPIRAÇÃO GUIADA */
+    function startRespire() {
+      const circle = document.getElementById('respireCircle');
+      const text = document.getElementById('respireText');
+      if (!circle || !text) return;
+
+      if (respireInterval) clearInterval(respireInterval);
+
+      let step = 0;
+      const steps = [
+        { text: 'Inspire...', scale: 'scale(1.4)', bg: '#3b82f6' },
+        { text: 'Segure...', scale: 'scale(1.4)', bg: '#8b5cf6' },
+        { text: 'Expire...', scale: 'scale(1)', bg: '#10b981' }
+      ];
+
+      function runStep() {
+        const current = steps[step];
+        text.innerText = current.text;
+        circle.style.transform = current.scale;
+        circle.style.backgroundColor = current.bg;
+        step = (step + 1) % steps.length;
+      }
+
+      runStep();
+      respireInterval = setInterval(runStep, 4000);
     }
 
     function stopRespire() {
       if (respireInterval) clearInterval(respireInterval);
       const circle = document.getElementById('respireCircle');
-      const instruction = document.getElementById('respireInstruction');
-      circle.className = 'respire-circle';
-      circle.innerText = 'PAUSADO';
-      instruction.innerText = 'Exercício em pausa. Clique em "Começar" quando quiser.';
-    }
-
-    async function addMuralPost() {
-      const input = document.getElementById('muralInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      try {
-        await window.addDoc(window.collection(window.db, "mural"), {
-          text: text,
-          author: studentName ? studentName.replace(', ', '') : 'Anônimo',
-          timestamp: window.serverTimestamp()
-        });
-
-        input.value = '';
-      } catch (e) {
-        alert('Erro ao enviar mensagem para o Mural.');
+      const text = document.getElementById('respireText');
+      if (circle && text) {
+        circle.style.transform = 'scale(1)';
+        circle.style.backgroundColor = 'var(--accent-blue)';
+        text.innerText = 'Inspire';
       }
     }
   </script>

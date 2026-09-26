@@ -3,209 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma ABRAÇAR — CETI José Marques</title>
-  
-  <!-- GOOGLE FONTS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <title>Plataforma ABRAÇAR — CETI</title>
   <style>
     :root {
-      /* PALETA DE CORES CETI JOSÉ MARQUES */
-      --green-dark: #188607;
-      --green: #40B615;
-      --purple: #4E22A5;
-      --purple-dark: #230A80;
-      --blue: #64C6ED;
-      --gold: #F1DC22;
-
-      --main-gradient: linear-gradient(135deg, #188607 0%, #40B615 38%, #4E22A5 72%, #230A80 100%);
-      
-      --bg-light: #F8FAFC;
-      --surface-white: #FFFFFF;
-      --text-main: #1E293B;
-      --text-muted: #64748B;
+      --purple-dark: #2E1A47;
+      --purple: #6B46C1;
+      --purple-light: #9F7AEA;
+      --green: #10B981;
+      --green-light: #D1FAE5;
+      --bg-main: #F7FAFC;
+      --card-bg: #FFFFFF;
+      --text-main: #2D3748;
+      --text-muted: #718096;
       --border-color: #E2E8F0;
-      
-      --sidebar-width: 280px;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-      --shadow-md: 0 10px 15px -3px rgba(35, 10, 128, 0.08);
-      --radius-lg: 16px;
-      --radius-md: 12px;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--bg-light);
+      background-color: var(--bg-main);
       color: var(--text-main);
       display: flex;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
-    /* BARRA SUPERIOR PARA SMARTPHONES */
-    .mobile-header {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: var(--surface-white);
-      border-bottom: 1px solid var(--border-color);
-      z-index: 90;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1rem;
-    }
-
-    .mobile-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 800;
-      color: var(--purple-dark);
-    }
-
-    .mobile-toggle-btn {
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--purple);
-      padding: 0.5rem;
-    }
-
-    /* BACKDROP MOBILE */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(35, 10, 128, 0.4);
-      backdrop-filter: blur(4px);
-      z-index: 99;
-    }
-
-    /* SIDEBAR LATERAL */
+    /* BARRA LATERAL (SIDEBAR) */
     .sidebar {
-      width: var(--sidebar-width);
-      background: var(--surface-white);
-      border-right: 1px solid var(--border-color);
+      width: 260px;
+      background-color: var(--purple-dark);
+      color: #FFF;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem 1rem;
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       z-index: 100;
-      transition: var(--transition);
+      transition: transform 0.3s ease;
     }
 
-    .sidebar-header {
-      padding: 1.5rem;
-      background: var(--main-gradient);
-      color: white;
-      position: relative;
-    }
-
-    .sidebar-brand {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    .brand {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
     }
 
-    .sidebar-sub {
-      font-size: 0.75rem;
-      opacity: 0.9;
-      margin-top: 0.25rem;
-      font-weight: 500;
+    .brand-icon {
+      font-size: 1.8rem;
     }
 
-    .user-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      margin-top: 0.75rem;
-      font-weight: 600;
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #FFF;
     }
 
     .nav-list {
       list-style: none;
-      padding: 1rem 0.75rem;
-      flex: 1;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border-radius: var(--radius-md);
-      color: var(--text-muted);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: #CBD5E0;
       cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-      transition: var(--transition);
+      transition: all 0.2s ease;
+      font-weight: 500;
     }
 
-    .nav-item:hover {
-      background: #F1F5F9;
-      color: var(--purple);
+    .nav-item:hover, .nav-item.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #FFF;
     }
 
     .nav-item.active {
-      background: #F3E8FF;
-      color: var(--purple-dark);
-      border-left: 4px solid var(--purple);
+      background-color: var(--purple);
     }
 
-    .nav-item .icon {
-      font-size: 1.2rem;
+    .user-profile {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .sidebar-footer {
-      padding: 1rem;
-      border-top: 1px solid var(--border-color);
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
     }
 
     /* CONTEÚDO PRINCIPAL */
-    .main-wrapper {
-      margin-left: var(--sidebar-width);
+    .main-content {
+      margin-left: 260px;
       flex: 1;
       padding: 2rem;
-      transition: var(--transition);
       max-width: 1200px;
+    }
+
+    .header-mobile {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--purple-dark);
+      color: #FFF;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 90;
     }
 
     .view-section {
       display: none;
-      animation: fadeIn 0.3s ease-out;
     }
 
     .view-section.active {
       display: block;
+      animation: fadeIn 0.3s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -213,22 +149,16 @@
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
+      gap: 1.5rem;
       margin-top: 1rem;
     }
 
     .card {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
+      background: var(--card-bg);
+      border-radius: 12px;
       padding: 1.5rem;
       border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-    }
-
-    .card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: #CBD5E1;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .card-title {
@@ -236,114 +166,65 @@
       font-weight: 700;
       color: var(--purple-dark);
       margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
 
-    .hero-banner {
-      background: var(--main-gradient);
-      color: white;
-      border-radius: var(--radius-lg);
-      padding: 2.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-md);
-    }
-
-    .hero-banner h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    /* BOTÕES */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border: none;
-      transition: var(--transition);
-      width: 100%;
-    }
-
-    .btn-green {
-      background: var(--green);
-      color: white;
-    }
-
-    .btn-green:hover {
-      background: var(--green-dark);
-    }
-
-    .btn-purple {
-      background: var(--purple);
-      color: white;
-    }
-
-    .btn-purple:hover {
-      background: var(--purple-dark);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    .btn-outline:hover {
-      background: #F8FAFC;
-      border-color: var(--purple);
-      color: var(--purple);
-    }
-
-    .btn-danger {
-      background: #EF4444;
-      color: white;
-    }
-
-    /* FORMULÁRIOS */
+    /* FORMULÁRIOS E BOTÕES */
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
+      text-align: left;
     }
 
     .form-group label {
       display: block;
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.35rem;
       color: var(--text-main);
     }
 
     .form-control {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--border-color);
-      font-size: 0.95rem;
+      padding: 0.65rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.9rem;
       outline: none;
-      transition: var(--transition);
     }
 
     .form-control:focus {
       border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1);
     }
 
     textarea.form-control {
-      min-height: 110px;
       resize: vertical;
+      min-height: 80px;
     }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-purple { background: var(--purple); color: #FFF; }
+    .btn-purple:hover { background: var(--purple-dark); }
+    .btn-green { background: var(--green); color: #FFF; }
+    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { background: #EDF2F7; }
 
     /* TABELAS */
     .data-table-container {
       overflow-x: auto;
-      border-radius: var(--radius-md);
+      background: #FFF;
+      border-radius: 8px;
       border: 1px solid var(--border-color);
       margin-top: 1rem;
     }
@@ -352,27 +233,22 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
     }
 
     th {
-      background: #F8FAFC;
-      padding: 0.85rem 1rem;
+      background: #F7FAFC;
+      color: var(--text-muted);
       font-weight: 700;
-      color: var(--purple-dark);
-      border-bottom: 1px solid var(--border-color);
     }
 
-    td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    /* BADGES DE STATUS */
     .status-badge {
-      display: inline-block;
-      padding: 0.25rem 0.6rem;
+      padding: 0.25rem 0.5rem;
       border-radius: 12px;
       font-size: 0.75rem;
       font-weight: 700;
@@ -380,235 +256,115 @@
 
     .badge-analise { background: #FEF3C7; color: #D97706; }
     .badge-mediacao { background: #E0E7FF; color: #4338CA; }
-    .badge-resolvido { background: #DCFCE7; color: #15803D; }
+    .badge-resolvido { background: #D1FAE5; color: #059669; }
 
     /* MODAL */
     .modal-overlay {
-      display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 200;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      z-index: 200;
     }
 
-    .modal-overlay.open {
-      display: flex;
-    }
+    .modal-overlay.open { display: flex; }
 
     .modal-box {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
+      background: #FFF;
+      padding: 1.5rem;
+      border-radius: 12px;
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
     }
 
-    /* ESPAÇO RESPIRE */
-    .respire-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem 1.5rem;
-      background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-color);
-      text-align: center;
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 95;
     }
 
-    .respire-circle {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: var(--green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 1.5rem 0;
-      transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear;
-      box-shadow: 0 0 20px rgba(64, 182, 21, 0.3);
-    }
-
-    /* ADAPTAÇÕES RESPONSIVAS */
     @media (max-width: 768px) {
-      .mobile-header { display: flex; }
-      .sidebar {
-        transform: translateX(-100%);
-        top: 0;
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .sidebar-overlay.open {
-        display: block;
-      }
-      .main-wrapper {
-        margin-left: 0;
-        padding: 1rem;
-        padding-top: 80px;
-      }
-      .hero-banner {
-        padding: 1.5rem;
-      }
-      .hero-banner h1 {
-        font-size: 1.5rem;
-      }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-content { margin-left: 0; padding: 1rem; }
+      .header-mobile { display: flex; }
     }
   </style>
 </head>
 <body>
 
-  <!-- MOBILE HEADER -->
-  <header class="mobile-header">
-    <div class="mobile-brand">
-      <span>🟢🟣</span> ABRAÇAR
-    </div>
-    <button class="mobile-toggle-btn" onclick="toggleSidebar()">☰</button>
-  </header>
+  <!-- HEADER MOBILE -->
+  <div class="header-mobile">
+    <div style="font-weight: 800;">🤝 ABRAÇAR</div>
+    <button class="btn btn-outline" style="width: auto; color: #FFF; border-color: #FFF;" onclick="toggleSidebar()">☰ Menu</button>
+  </div>
 
-  <!-- OVERLAY MOBILE -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-  <!-- SIDEBAR LATERAL -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-brand">
-        <span>🟢🟣</span> ABRAÇAR
+  <!-- NAVEGAÇÃO LATERAL -->
+  <nav class="sidebar" id="sidebar">
+    <div>
+      <div class="brand">
+        <span class="brand-icon">🤝</span>
+        <span class="brand-title">ABRAÇAR</span>
       </div>
-      <div class="sidebar-sub">CETI José Marques</div>
-      <div class="user-badge" id="userBadge">
+      <ul class="nav-list">
+        <li class="nav-item active" onclick="switchNav('inicio', this)"><span>🏠</span> Início</li>
+        <li class="nav-item" onclick="switchNav('relato', this)"><span>🛡️</span> Relato Anônimo</li>
+        <li class="nav-item" onclick="switchNav('mediacao', this)"><span>⚖️</span> Mediação</li>
+        <li class="nav-item" onclick="switchNav('respire', this)"><span>🧘</span> Espaço Respire</li>
+        <li class="nav-item" onclick="switchNav('dicas', this)"><span>💡</span> Dicas e Orientações</li>
+        <li class="nav-item" onclick="switchNav('mural', this)"><span>💬</span> Mural Acolhedor</li>
+        <li class="nav-item" onclick="switchNav('apoio', this)"><span>📞</span> Rede de Apoio</li>
+        <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)"><span>⚙️</span> Painel Gestor</li>
+      </ul>
+    </div>
+
+    <div class="user-profile">
+      <div class="user-info">
         <span id="roleIcon">👤</span>
         <span id="roleText">Modo Visitante</span>
       </div>
+      <button class="btn btn-outline" id="btnLoginModal" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="openLoginModal()">Entrar</button>
+      <button class="btn btn-outline" id="btnLogoutBtn" style="display: none; width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="logout()">Sair</button>
     </div>
-
-    <ul class="nav-list">
-      <li class="nav-item active" onclick="switchNav('inicio', this)">
-        <span class="icon">🏠</span> Início
-      </li>
-      <li class="nav-item" onclick="switchNav('atendimento', this)">
-        <span class="icon">💬</span> Atendimento
-      </li>
-      <li class="nav-item" onclick="switchNav('relatos', this)">
-        <span class="icon">📝</span> Relato Anônimo
-      </li>
-      <li class="nav-item" onclick="switchNav('mediacao', this)">
-        <span class="icon">🤝</span> Mediação de Conflitos
-      </li>
-      <li class="nav-item" onclick="switchNav('respire', this)">
-        <span class="icon">🌿</span> Espaço Respire
-      </li>
-      <li class="nav-item" onclick="switchNav('dicas', this)">
-        <span class="icon">💡</span> Dicas e Guias
-      </li>
-      <li class="nav-item" onclick="switchNav('mural', this)">
-        <span class="icon">📢</span> Mural Acolhedor
-      </li>
-      <li class="nav-item" onclick="switchNav('apoio', this)">
-        <span class="icon">☎️</span> Rede de Apoio
-      </li>
-      <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)">
-        <span class="icon">🛡️</span> Painel Gestor
-      </li>
-    </ul>
-
-    <div class="sidebar-footer">
-      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">
-        🔐 Acesso Gestor
-      </button>
-      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">
-        🚪 Sair do Sistema
-      </button>
-    </div>
-  </aside>
+  </nav>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main class="main-wrapper">
+  <main class="main-content">
 
     <!-- SEÇÃO: INÍCIO -->
     <section id="inicio" class="view-section active">
-      <div class="hero-banner">
-        <h1>Escuta • Acolhimento • Respeito</h1>
-        <p>Um espaço seguro, totalmente integrado e confidencial para a comunidade do CETI José Marques.</p>
-      </div>
+      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Bem-vindo à Plataforma ABRAÇAR</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Espaço de acolhimento, escuta ativa e mediação escolar.</p>
 
       <div class="cards-grid">
         <div class="card">
-          <div class="card-title">💬 Conversa Direta</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação sem complicação.
-          </p>
-          <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
+          <div class="card-title">💬 Atendimento Individual</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Converse diretamente com a equipe do CETI em um canal reservado.</p>
+          <button class="btn btn-purple" onclick="openChatForm('Atendimento Geral')">Iniciar Conversa</button>
         </div>
-
         <div class="card">
-          <div class="card-title">📝 Relato Anônimo</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Informe situações de bullying ou ocorrências com segurança. Nenhum dado pessoal é exigido.
-          </p>
-          <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🌿 Despressurizar</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Acesse áudios relaxantes e um exercício guiado de respiração para momentos de ansiedade.
-          </p>
-          <button class="btn btn-outline" onclick="switchNav('respire')">Ir ao Espaço Respire</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: ATENDIMENTO -->
-    <section id="atendimento" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais de Atendimento</h2>
-      
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">🏛️ Coordenação Pedagógica</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Suporte para dúvidas escolares, orientação acadêmica e situações disciplinares.
-          </p>
-          <button class="btn btn-purple" onclick="openChatForm('Coordenação')">Abrir Chamado</button>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🎓 Grêmio Estudantil</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Canal aberto para sugestões, eventos escolares e ideias dos estudantes.
-          </p>
-          <button class="btn btn-green" onclick="openChatForm('Grêmio Estudantil')">Falar com o Grêmio</button>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🤝 Mediação de Conflitos</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Ajuda profissional para resolver divergências ou atritos interpessoais de forma pacífica.
-          </p>
-          <button class="btn btn-purple" onclick="openChatForm('Mediação')">Solicitar Mediação</button>
+          <div class="card-title">🛡️ Enviar Relato Anônimo</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Informe com segurança situações de intimidação ou conflitos.</p>
+          <button class="btn btn-outline" onclick="switchNav('relato')">Acessar Formulário</button>
         </div>
       </div>
 
-      <!-- FORMULÁRIO DE CHAT -->
-      <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
-        <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
+      <div id="chatFormCard" class="card" style="display: none; margin-top: 1.5rem; border-left: 4px solid var(--purple);">
+        <h4 id="chatFormTitle" style="color: var(--purple-dark); margin-bottom: 0.75rem;">Atendimento Privado</h4>
         <form onsubmit="submitChat(event)">
           <input type="hidden" id="chatChannelInput">
-          
           <div class="form-group">
-            <label>Sua Mensagem / Solicitação:</label>
-            <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
+            <label>Sua Mensagem:</label>
+            <textarea id="chatMessageInput" class="form-control" required placeholder="Digite sua dúvida, desabafo ou solicitação..."></textarea>
           </div>
-
-          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <div style="display: flex; gap: 0.5rem;">
             <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
             <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
           </div>
@@ -617,116 +373,76 @@
     </section>
 
     <!-- SEÇÃO: RELATO ANÔNIMO -->
-    <section id="relatos" class="view-section">
-      <div class="card">
-        <div class="card-title">📝 Registrar Relato Anônimo</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          Sua identidade permanece 100% protegida. O sistema gerará um ID exclusivo (ex: ABR-8X92) para acompanhamento interno.
-        </p>
-
+    <section id="relato" class="view-section">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Relato Anônimo</h2>
+      <div class="card" style="max-width: 600px;">
         <form onsubmit="submitRelato(event)">
           <div class="form-group">
-            <label>Local da Ocorrência:</label>
-            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04, Redes Sociais...">
+            <label>Local / Contexto:</label>
+            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala de aula, Online...">
           </div>
-
           <div class="form-group">
-            <label>Data Aproximada:</label>
+            <label>Data aproximada:</label>
             <input type="date" id="reportDate" class="form-control" required>
           </div>
-
-          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px;">
-            <label for="reportDanger" style="margin-bottom: 0; cursor: pointer;">Trata-se de uma urgência ou risco imediato?</label>
-          </div>
-
           <div class="form-group">
-            <label>Descrição Fatos:</label>
-            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes possível..."></textarea>
+            <label>Descrição detalhada:</label>
+            <textarea id="reportDesc" class="form-control" required placeholder="Descreva o ocorrido com o máximo de detalhes..."></textarea>
           </div>
-
-          <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="reportDanger" style="width: auto;">
+            <label for="reportDanger" style="margin: 0; cursor: pointer;">Caso urgente / risco imediato</label>
+          </div>
+          <button type="submit" class="btn btn-purple">Enviar Relato</button>
         </form>
       </div>
     </section>
 
     <!-- SEÇÃO: MEDIAÇÃO -->
     <section id="mediacao" class="view-section">
-      <div class="card">
-        <div class="card-title">🤝 Pedido de Mediação Escolar</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          A mediação é um processo voluntário onde um mediador neutro ajuda as partes a encontrarem um acordo respeitoso.
-        </p>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Solicitação de Mediação</h2>
+      <div class="card" style="max-width: 600px;">
         <form onsubmit="submitMediacao(event)">
           <div class="form-group">
-            <label>Tema ou Motivo do Conflito:</label>
-            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho em grupo">
+            <label>Assunto / Motivo:</label>
+            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em grupo, Relação interpessoal...">
           </div>
           <div class="form-group">
-            <label>Resumo da Situação:</label>
-            <textarea id="mediacaoDesc" class="form-control" required placeholder="Descreva brevemente o que aconteceu..."></textarea>
+            <label>Resumo do caso:</label>
+            <textarea id="mediacaoDesc" class="form-control" required placeholder="Explique como a equipe pode ajudar na mediação..."></textarea>
           </div>
-          <button type="submit" class="btn btn-purple">Solicitar Apoio da Mediação</button>
+          <button type="submit" class="btn btn-purple">Solicitar Mediação</button>
         </form>
       </div>
     </section>
 
     <!-- SEÇÃO: ESPAÇO RESPIRE -->
     <section id="respire" class="view-section">
-      <div class="respire-box">
-        <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Espaço Respire</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">
-          Siga o ritmo do círculo para acalmar a mente e estabilizar a respiração.
-        </p>
-
-        <div class="respire-circle" id="respireCircle">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Espaço Respire</h2>
+      <div class="card" style="text-align: center; max-width: 500px; margin: 0 auto;">
+        <div id="respireCircle" style="width: 120px; height: 120px; border-radius: 50%; background: var(--green); margin: 1.5rem auto; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold; transition: transform 3.5s ease, background 3.5s ease;">
           <span id="respireInstruction">Inspire</span>
         </div>
-
-        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-          <button class="btn btn-green" onclick="startRespire()">Iniciar Exercício</button>
-          <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
+        <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem;">
+          <button class="btn btn-purple" style="width: auto;" onclick="startRespire()">Iniciar Exercício</button>
+          <button class="btn btn-outline" style="width: auto;" onclick="stopRespire()">Parar</button>
         </div>
-
-        <div style="width: 100%; max-width: 500px; text-align: left;">
-          <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem;">Sons Relaxantes</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <button class="btn btn-outline" onclick="toggleAudio('chuva')" style="justify-content: space-between;">
-              <span>🌧️ Som de Chuva Sutil</span>
-              <span id="label-chuva">Play</span>
-            </button>
-            <button class="btn btn-outline" onclick="toggleAudio('floresta')" style="justify-content: space-between;">
-              <span>🌲 Passarinhos na Floresta</span>
-              <span id="label-floresta">Play</span>
-            </button>
-          </div>
-        </div>
+        <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem; text-align: left;">Sons Relaxantes Cadastrados</h4>
+        <div id="audioListContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
       </div>
     </section>
 
-    <!-- SEÇÃO: DICAS E GUIAS -->
+    <!-- SEÇÃO: DICAS -->
     <section id="dicas" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Dicas e Orientação</h2>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Dicas e Orientações</h2>
       <div class="cards-grid">
         <div class="card">
-          <div class="card-title">🛡️ O que é Bullying e Cyberbullying?</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
-            Comportamento agressivo, intencional e repetido sem motivação evidente. Na internet, ganha proporções gigantescas. Não se cale, busque apoio dos professores ou use o Relato Anônimo.
-          </p>
+          <div class="card-title">🛡️ Bullying e Cyberbullying</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Práticas repetidas de violência interpessoal não devem ser silenciadas. Busque mediação.</p>
         </div>
-
         <div class="card">
-          <div class="card-title">🧠 Lidando com a Ansiedade Escolar</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
-            Sentir-se sobrecarregado em época de avaliações é normal. Organize suas tarefas com prazos curtos, mantenha pausas regulares e faça exercícios de respiração consciente.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🤝 Comunicação Não-Violenta (CNV)</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
-            Ao resolver um conflito, foque em expressar como você se sente em vez de acusar o outro. Substitua "Você nunca me ouve" por "Eu sinto falta de espaço para falar".
-          </p>
+          <div class="card-title">🧠 Gestão da Ansiedade</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Estratégias de respiração e organização de rotina auxiliam nos períodos de avaliações.</p>
         </div>
       </div>
     </section>
@@ -735,59 +451,19 @@
     <section id="mural" class="view-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2 style="color: var(--purple-dark);">Mural Acolhedor</h2>
-        <button class="btn btn-green" onclick="openPostModal()" style="width: auto;">+ Postar Mensagem</button>
+        <button class="btn btn-green" onclick="openPostModal()" style="width: auto;">+ Publicar</button>
       </div>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-        Deixe mensagens positivas de incentivo e empatia para os colegas de escola.
-      </p>
-
-      <div class="cards-grid" id="muralContainer">
-        <div class="card" style="border-left: 4px solid var(--green);">
-          <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">
-            "Você é mais forte do que imagina. Bom início de semestre para todos do CETI!"
-          </p>
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— Anônimo • CETI José Marques</div>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--purple);">
-          <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">
-            "Respire fundo. As provas passam, mas o seu bem-estar vem sempre em primeiro lugar."
-          </p>
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— Grêmio Estudantil</div>
-        </div>
-      </div>
+      <div class="cards-grid" id="muralContainer"></div>
     </section>
 
-    <!-- SEÇÃO: REDE DE APOIO EXTERNA -->
+    <!-- SEÇÃO: REDE DE APOIO -->
     <section id="apoio" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Rede de Apoio Externa</h2>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-        Se precisar de ajuda especializada fora do ambiente escolar, entre em contato com os canais gratuitos de atendimento nacional:
-      </p>
-
-      <div class="cards-grid">
+      <div class="cards-grid" id="apoioGridContainer">
         <div class="card">
           <div class="card-title">💛 CVV — Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Apoio emocional e prevenção do suicídio. Atendimento gratuito e 100% confidencial.
-          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Atendimento gratuito e confidencial de suporte emocional.</p>
           <a href="tel:188" class="btn btn-outline" style="text-decoration: none;">📞 Ligar 188</a>
-        </div>
-
-        <div class="card">
-          <div class="card-title">🛡️ Pode Falar (UNICEF)</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Canal de ajuda em saúde mental para adolescentes e jovens de 13 a 24 anos.
-          </p>
-          <a href="https://www.podefalar.org.br" target="_blank" class="btn btn-outline" style="text-decoration: none;">🌐 Acessar podefalar.org.br</a>
-        </div>
-
-        <div class="card">
-          <div class="card-title">⚖️ Disque 100</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Violações de direitos humanos, violência e maus-tratos contra crianças e adolescentes.
-          </p>
-          <a href="tel:100" class="btn btn-outline" style="text-decoration: none;">📞 Ligar 100</a>
         </div>
       </div>
     </section>
@@ -795,22 +471,22 @@
     <!-- SEÇÃO: PAINEL GESTOR (ADMIN) -->
     <section id="dashboard" class="view-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h2 style="color: var(--purple-dark);">Painel de Gestão e Triagem</h2>
+        <h2 style="color: var(--purple-dark);">Painel de Gestão</h2>
         <span class="status-badge badge-resolvido">Acesso Restrito: Gestão CETI</span>
       </div>
 
       <div class="cards-grid" style="margin-bottom: 2rem;">
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Total Relatos</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark); margin-top: 0.25rem;" id="statTotalRelatos">0</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TOTAL REGISTROS</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);" id="statTotalRelatos">0</div>
         </div>
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Em Análise</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: #D97706; margin-top: 0.25rem;" id="statAnalise">0</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">EM ANÁLISE</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: #D97706;" id="statAnalise">0</div>
         </div>
         <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Em Mediação</div>
-          <div style="font-size: 1.8rem; font-weight: 800; color: #4338CA; margin-top: 0.25rem;" id="statMediacao">0</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">EM MEDIAÇÃO</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: #4338CA;" id="statMediacao">0</div>
         </div>
       </div>
 
@@ -819,7 +495,7 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>ID Usuário</th>
               <th>Tipo</th>
               <th>Local / Motivo</th>
               <th>Data</th>
@@ -828,12 +504,71 @@
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody id="adminTableBody">
-            <!-- Linhas dinâmicas inseridas por JS -->
-          </tbody>
+          <tbody id="adminTableBody"></tbody>
         </table>
       </div>
-    </section>
+
+      <!-- PAINEL DE ADIÇÃO DE CONTEÚDOS -->
+      <h3 style="color: var(--purple-dark); margin-top: 2rem; margin-bottom: 0.75rem;">Gerenciar Conteúdos da Plataforma</h3>
+
+      <div class="cards-grid" style="margin-bottom: 2rem;">
+        <div class="card">
+          <div class="card-title">📞 Adicionar Rede de Apoio</div>
+          <form onsubmit="submitApoio(event)">
+            <div class="form-group">
+              <label>Título / Órgão:</label>
+              <input type="text" id="apoioTitle" class="form-control" required placeholder="Ex: Conselho Tutelar">
+            </div>
+            <div class="form-group">
+              <label>Descrição:</label>
+              <textarea id="apoioDesc" class="form-control" required placeholder="Apoio emergencial..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Telefone ou Link:</label>
+              <input type="text" id="apoioContact" class="form-control" required placeholder="Ex: 188 ou https://...">
+            </div>
+            <div class="form-group">
+              <label>Imagem (Opcional):</label>
+              <input type="file" id="apoioImg" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-purple">Cadastrar Apoio</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎵 Adicionar Som Relaxante</div>
+          <form onsubmit="submitAudio(event)">
+            <div class="form-group">
+              <label>Nome do Som:</label>
+              <input type="text" id="audioName" class="form-control" required placeholder="Ex: Ondas do Mar">
+            </div>
+            <div class="form-group">
+              <label>Link direto do Áudio (URL MP3):</label>
+              <input type="url" id="audioUrl" class="form-control" required placeholder="https://exemplo.com/audio.mp3">
+            </div>
+            <button type="submit" class="btn btn-purple">Adicionar Som</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📢 Postar Aviso Oficial</div>
+          <form onsubmit="submitAviso(event)">
+            <div class="form-group">
+              <label>Título do Aviso:</label>
+              <input type="text" id="avisoTitle" class="form-control" required placeholder="Ex: Comunicado do Grêmio">
+            </div>
+            <div class="form-group">
+            <label>Descrição:</label>
+            <textarea id="avisoDesc" class="form-control" required placeholder="Detalhes sobre o aviso..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Imagem Informativa (Galeria):</label>
+            <input type="file" id="avisoImg" class="form-control" accept="image/*">
+          </div>
+          <button type="submit" class="btn btn-green">Publicar Aviso</button>
+        </form>
+      </div>
+    </div>
 
   </main>
 
@@ -841,9 +576,7 @@
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Acesso do Gestor</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
-        Área destinada à Coordenação Pedagógica e Mediadores da escola.
-      </p>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Área restrita à coordenação e equipe de mediação.</p>
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
           <label>Usuário:</label>
@@ -853,10 +586,7 @@
           <label>Senha:</label>
           <input type="password" id="loginPass" class="form-control" required placeholder="••••••••">
         </div>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">
-          *(Dica de teste: Usuário <b>admin</b> | Senha <b>1234</b>)
-        </p>
-        <div style="display: flex; gap: 0.5rem;">
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
           <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
           <button type="submit" class="btn btn-purple">Autenticar</button>
         </div>
@@ -867,15 +597,15 @@
   <!-- MODAL MURAL -->
   <div class="modal-overlay" id="postModal">
     <div class="modal-box">
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Nova Mensagem no Mural</h3>
+      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Publicar no Mural</h3>
       <form onsubmit="submitPost(event)">
         <div class="form-group">
-          <label>Sua Mensagem de Apoio:</label>
-          <textarea id="postText" class="form-control" required placeholder="Escreva algo gentil para inspirar seus colegas..."></textarea>
+          <label>Mensagem de Apoio:</label>
+          <textarea id="postText" class="form-control" required placeholder="Escreva uma mensagem construtiva..."></textarea>
         </div>
         <div class="form-group">
           <label>Assinatura (Opcional):</label>
-          <input type="text" id="postAuthor" class="form-control" placeholder="Ex: Aluno do 2º Ano, Anônimo...">
+          <input type="text" id="postAuthor" class="form-control" placeholder="Ex: Anônimo, Aluno do 2º Ano...">
         </div>
         <div style="display: flex; gap: 0.5rem;">
           <button type="button" class="btn btn-outline" onclick="closePostModal()">Cancelar</button>
@@ -885,130 +615,339 @@
     </div>
   </div>
 
-  <!-- LÓGICA JAVASCRIPT INTEGRADA -->
-  <script>
-    /* ESTADO DA APLICAÇÃO */
-    let isAdmin = false;
-    let respireInterval = null;
-    let audioElements = {
-      chuva: new Audio('https://cdn.pixabay.com/download/audio/2022/05/16/audio_db6591201e.mp3?filename=soft-rain-ambient-111154.mp3'),
-      floresta: new Audio('https://cdn.pixabay.com/download/audio/2021/09/06/audio_34b3589b91.mp3?filename=birds-in-forest-24159.mp3')
+  <!-- FIREBASE E INTEGRALIZAÇÃO DE LÓGICA -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+      projectId: "escutaacolhimento-a9f15",
+      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+      messagingSenderId: "639476751207",
+      appId: "1:639476751207:web:571f32f893f4156176adc2",
+      measurementId: "G-WEQXQG0PHH"
     };
 
-    // Configura loop dos áudios
-    Object.values(audioElements).forEach(audio => audio.loop = true);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-    // Banco de Dados em Memória Simulado
-    let dbRecords = [
-      { id: 'ABR-1092', tipo: 'Relato Anônimo', local: 'Refeitório', data: '2026-03-24', urgente: true, status: 'Em Análise', desc: 'Conflito verbal entre alunos no horário do almoço.' },
-      { id: 'ABR-1093', tipo: 'Mediação', local: 'Conflito em Grupo', data: '2026-03-25', urgente: false, status: 'Em Mediação', desc: 'Divergência de papéis em trabalho da feira de ciências.' }
-    ];
+    const relatosRef = ref(database, 'relatos');
+    const muralRef = ref(database, 'mural');
+    const apoioRef = ref(database, 'rede_apoio');
+    const audiosRef = ref(database, 'audios_relaxantes');
 
-    /* NAVEGAÇÃO E INTERFACE */
-    function switchNav(targetId, element = null) {
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+    /* GERADOR DE ID EXCLUSIVO PARA ATENDIMENTO ISOLADO POR DISPOSITIVO */
+    let userId = localStorage.getItem('user_unique_id');
+    if (!userId) {
+      userId = 'USER-' + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('user_unique_id', userId);
+    }
 
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) targetSection.classList.add('active');
+    window.isAdmin = false;
+    let respireInterval = null;
+    let dynamicAudios = {};
 
-      if (element) {
-        element.classList.add('active');
-      } else {
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-          if (item.getAttribute('onclick')?.includes(targetId)) {
-            item.classList.add('active');
-          }
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    /* LISTENERS DO DATABASE */
+    onValue(relatosRef, (snapshot) => {
+      const data = snapshot.val();
+      const tbody = document.getElementById('adminTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      let countTotal = 0, countAnalise = 0, countMediacao = 0;
+
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const item = data[key];
+          countTotal++;
+          if (item.status === 'Em Análise') countAnalise++;
+          if (item.status === 'Em Mediação') countMediacao++;
+
+          const badgeClass = item.status === 'Em Análise' ? 'badge-analise' : (item.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-resolvido');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><b>${item.id}</b></td>
+            <td>${item.tipo}</td>
+            <td>${item.local}</td>
+            <td>${item.data}</td>
+            <td>${item.urgente ? '<span style="color: red; font-weight: 700;">SIM</span>' : 'Não'}</td>
+            <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="toggleStatus('${key}', '${item.status}')">
+                Alterar Status
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
         });
       }
 
-      // Fecha a sidebar no celular ao clicar em um item
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
+      document.getElementById('statTotalRelatos').innerText = countTotal;
+      document.getElementById('statAnalise').innerText = countAnalise;
+      document.getElementById('statMediacao').innerText = countMediacao;
+    });
+
+    onValue(muralRef, (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById('muralContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (data) {
+        Object.values(data).reverse().forEach((post) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.style.borderLeft = post.isAviso ? '4px solid #D97706' : '4px solid var(--purple)';
+          
+          let imgTag = post.img ? `<img src="${post.img}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-top: 0.5rem;">` : '';
+          
+          card.innerHTML = `
+            ${post.isAviso ? '<span style="font-size: 0.7rem; background: #FEF3C7; color: #D97706; padding: 2px 6px; border-radius: 4px; font-weight: bold;">AVISO OFICIAL</span>' : ''}
+            <h4 style="color: var(--purple-dark); margin-top: 0.25rem;">${post.title || ''}</h4>
+            <p style="color: var(--text-main); margin-bottom: 0.5rem;">"${post.text}"</p>
+            ${imgTag}
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem;">— ${post.author}</div>
+          `;
+          container.appendChild(card);
+        });
       }
+    });
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    onValue(audiosRef, (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById('audioListContainer');
+      if (!container) return;
+      container.innerHTML = '';
 
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('open');
-    }
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const item = data[key];
+          dynamicAudios[key] = new Audio(item.url);
+          dynamicAudios[key].loop = true;
 
-    /* SISTEMA DE ATENDIMENTO */
-    function openChatForm(channel) {
-      document.getElementById('chatFormCard').style.display = 'block';
-      document.getElementById('chatFormTitle').innerText = 'Atendimento: ' + channel;
-      document.getElementById('chatChannelInput').value = channel;
-      document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
-    }
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-outline';
+          btn.style.justifyContent = 'space-between';
+          btn.onclick = () => toggleDynamicAudio(key);
+          btn.innerHTML = `
+            <span>🎵 ${item.name}</span>
+            <span id="label-audio-${key}">Play</span>
+          `;
+          container.appendChild(btn);
+        });
+      }
+    });
 
-    function submitChat(e) {
+    onValue(apoioRef, (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById('apoioGridContainer');
+      if (!container) return;
+
+      if (data) {
+        Object.values(data).forEach((item) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          let imgTag = item.img ? `<img src="${item.img}" style="width:100%; max-height:150px; object-fit:cover; border-radius:6px; margin-bottom:0.75rem;">` : '';
+          let actionBtn = item.contact.startsWith('http') 
+            ? `<a href="${item.contact}" target="_blank" class="btn btn-outline" style="text-decoration:none;">🌐 Acessar Link</a>`
+            : `<a href="tel:${item.contact}" class="btn btn-outline" style="text-decoration:none;">📞 Ligar ${item.contact}</a>`;
+
+          card.innerHTML = `
+            ${imgTag}
+            <div class="card-title">🛡️ ${item.title}</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${item.desc}</p>
+            ${actionBtn}
+          `;
+          container.appendChild(card);
+        });
+      }
+    });
+
+    /* SENHA AJUSTADA PARA "12345" */
+    window.handleLogin = function(e) {
       e.preventDefault();
-      const channel = document.getElementById('chatChannelInput').value;
-      alert(`Sua solicitação para "${channel}" foi enviada com sucesso! A equipe responderá em breve.`);
-      document.getElementById('chatMessageInput').value = '';
-      document.getElementById('chatFormCard').style.display = 'none';
-    }
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
 
-    /* SUBMISSÃO DE RELATO ANÔNIMO */
-    function submitRelato(e) {
+      if (user === 'admin' && pass === '12345') {
+        window.isAdmin = true;
+        document.getElementById('roleIcon').innerText = '🛡️';
+        document.getElementById('roleText').innerText = 'Modo Gestor';
+        document.getElementById('adminNavBtn').style.display = 'flex';
+        document.getElementById('btnLoginModal').style.display = 'none';
+        document.getElementById('btnLogoutBtn').style.display = 'flex';
+        closeLoginModal();
+        switchNav('dashboard');
+      } else {
+        alert('Credenciais incorretas!');
+      }
+    };
+
+    window.submitRelato = function(e) {
       e.preventDefault();
       const place = document.getElementById('reportPlace').value;
       const date = document.getElementById('reportDate').value;
       const danger = document.getElementById('reportDanger').checked;
       const desc = document.getElementById('reportDesc').value;
 
-      const newId = 'ABR-' + Math.floor(1000 + Math.random() * 9000);
-      
-      dbRecords.push({
-        id: newId,
+      push(relatosRef, {
+        id: userId,
         tipo: 'Relato Anônimo',
         local: place,
         data: date,
         urgente: danger,
         status: 'Em Análise',
-        desc: desc
+        desc: desc,
+        timestamp: Date.now()
+      }).then(() => {
+        alert(`Relato registrado com sucesso!\nSeu Código de acompanhamento: ${userId}`);
+        e.target.reset();
+        switchNav('inicio');
       });
+    };
 
-      alert(`Relato registrado com sucesso!\nGuarde o código de acompanhamento: ${newId}`);
-      
-      e.target.reset();
-      updateAdminDashboard();
-      switchNav('inicio');
-    }
-
-    /* SUBMISSÃO DE MEDIAÇÃO */
-    function submitMediacao(e) {
+    window.submitMediacao = function(e) {
       e.preventDefault();
       const topic = document.getElementById('mediacaoTopic').value;
       const desc = document.getElementById('mediacaoDesc').value;
-      const newId = 'ABR-' + Math.floor(1000 + Math.random() * 9000);
 
-      dbRecords.push({
-        id: newId,
+      push(relatosRef, {
+        id: userId,
         tipo: 'Mediação',
         local: topic,
         data: new Date().toISOString().split('T')[0],
         urgente: false,
         status: 'Em Mediação',
-        desc: desc
+        desc: desc,
+        timestamp: Date.now()
+      }).then(() => {
+        alert(`Solicitação registrada com sucesso!\nSeu Código: ${userId}`);
+        e.target.reset();
+        switchNav('inicio');
       });
+    };
 
-      alert(`Solicitação de Mediação cadastrada com sucesso! Código: ${newId}`);
-      e.target.reset();
-      updateAdminDashboard();
-      switchNav('inicio');
-    }
+    window.submitChat = function(e) {
+      e.preventDefault();
+      const channel = document.getElementById('chatChannelInput').value;
+      const msg = document.getElementById('chatMessageInput').value;
 
-    /* ESPAÇO RESPIRE (RESPIRAÇÃO GUIADA) */
-    function startRespire() {
+      push(relatosRef, {
+        id: userId,
+        tipo: 'Chat Individual: ' + channel,
+        local: 'Atendimento Online',
+        data: new Date().toISOString().split('T')[0],
+        urgente: false,
+        status: 'Em Análise',
+        desc: msg,
+        timestamp: Date.now()
+      }).then(() => {
+        alert(`Mensagem enviada com sucesso!\nSeu ID de Atendimento: ${userId}`);
+        document.getElementById('chatMessageInput').value = '';
+        document.getElementById('chatFormCard').style.display = 'none';
+      });
+    };
+
+    window.submitPost = function(e) {
+      e.preventDefault();
+      const text = document.getElementById('postText').value;
+      const author = document.getElementById('postAuthor').value || 'Anônimo';
+
+      push(muralRef, {
+        text: text,
+        author: author,
+        timestamp: Date.now()
+      }).then(() => {
+        closePostModal();
+        e.target.reset();
+      });
+    };
+
+    window.submitApoio = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById('apoioTitle').value;
+      const desc = document.getElementById('apoioDesc').value;
+      const contact = document.getElementById('apoioContact').value;
+      const imgFile = document.getElementById('apoioImg').files[0];
+
+      let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
+
+      push(apoioRef, { title, desc, contact, img: imgBase64 }).then(() => {
+        alert('Item adicionado!');
+        e.target.reset();
+      });
+    };
+
+    window.submitAudio = function(e) {
+      e.preventDefault();
+      const name = document.getElementById('audioName').value;
+      const url = document.getElementById('audioUrl').value;
+
+      push(audiosRef, { name, url }).then(() => {
+        alert('Som adicionado!');
+        e.target.reset();
+      });
+    };
+
+    window.submitAviso = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById('avisoTitle').value;
+      const text = document.getElementById('avisoDesc').value;
+      const imgFile = document.getElementById('avisoImg').files[0];
+
+      let imgBase64 = imgFile ? await fileToBase64(imgFile) : '';
+
+      push(muralRef, {
+        title,
+        text,
+        img: imgBase64,
+        author: 'Gestão CETI',
+        isAviso: true,
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Aviso publicado!');
+        e.target.reset();
+      });
+    };
+
+    window.toggleStatus = function(key, currentStatus) {
+      const statuses = ['Em Análise', 'Em Mediação', 'Resolvido'];
+      const currentIndex = statuses.indexOf(currentStatus);
+      const nextStatus = statuses[(currentIndex + 1) % statuses.length];
+
+      const recordRef = ref(database, `relatos/${key}`);
+      update(recordRef, { status: nextStatus });
+    };
+
+    window.toggleDynamicAudio = function(key) {
+      const audio = dynamicAudios[key];
+      const label = document.getElementById(`label-audio-${key}`);
+
+      if (audio.paused) {
+        audio.play().catch(() => alert('Clique na página antes de reproduzir áudios.'));
+        label.innerText = 'Pause';
+      } else {
+        audio.pause();
+        label.innerText = 'Play';
+      }
+    };
+
+    window.startRespire = function() {
       stopRespire();
       const circle = document.getElementById('respireCircle');
       const text = document.getElementById('respireInstruction');
-      let state = 0; // 0: Inspire, 1: Segure, 2: Expire
+      let state = 0;
 
       const cycle = () => {
         if (state === 0) {
@@ -1029,142 +968,64 @@
 
       cycle();
       respireInterval = setInterval(cycle, 4000);
-    }
+    };
 
-    function stopRespire() {
+    window.stopRespire = function() {
       if (respireInterval) clearInterval(respireInterval);
       const circle = document.getElementById('respireCircle');
       const text = document.getElementById('respireInstruction');
-      circle.style.transform = 'scale(1)';
-      circle.style.backgroundColor = 'var(--green)';
-      text.innerText = 'Inspire';
-    }
-
-    function toggleAudio(type) {
-      const audio = audioElements[type];
-      const label = document.getElementById(`label-${type}`);
-      
-      if (audio.paused) {
-        audio.play().catch(() => alert('Clique na página antes de reproduzir áudios.'));
-        label.innerText = 'Pause';
-      } else {
-        audio.pause();
-        label.innerText = 'Play';
+      if (circle && text) {
+        circle.style.transform = 'scale(1)';
+        circle.style.backgroundColor = 'var(--green)';
+        text.innerText = 'Inspire';
       }
-    }
+    };
 
-    /* MURAL ACOLHEDOR */
-    function openPostModal() {
-      document.getElementById('postModal').classList.add('open');
-    }
+    window.switchNav = function(targetId, element = null) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
 
-    function closePostModal() {
-      document.getElementById('postModal').classList.remove('open');
-    }
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) targetSection.classList.add('active');
 
-    function submitPost(e) {
-      e.preventDefault();
-      const text = document.getElementById('postText').value;
-      const author = document.getElementById('postAuthor').value || 'Anônimo';
-
-      const container = document.getElementById('muralContainer');
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.borderLeft = '4px solid var(--purple)';
-      card.innerHTML = `
-        <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">"${text}"</p>
-        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— ${author}</div>
-      `;
-
-      container.prepend(card);
-      closePostModal();
-      e.target.reset();
-    }
-
-    /* AUTENTICAÇÃO E ADMINISTRAÇÃO */
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('open');
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('open');
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
-
-      if (user === 'admin' && pass === '1234') {
-        isAdmin = true;
-        document.getElementById('roleIcon').innerText = '🛡️';
-        document.getElementById('roleText').innerText = 'Modo Gestor';
-        document.getElementById('adminNavBtn').style.display = 'flex';
-        document.getElementById('btnLoginModal').style.display = 'none';
-        document.getElementById('btnLogoutBtn').style.display = 'flex';
-        closeLoginModal();
-        updateAdminDashboard();
-        switchNav('dashboard');
-      } else {
-        alert('Credenciais incorretas!');
+      if (element) {
+        element.classList.add('active');
       }
-    }
 
-    function logout() {
-      isAdmin = false;
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    };
+
+    window.openChatForm = function(channel) {
+      document.getElementById('chatFormCard').style.display = 'block';
+      document.getElementById('chatFormTitle').innerText = 'Atendimento Privado (' + userId + ')';
+      document.getElementById('chatChannelInput').value = channel;
+      document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    window.openPostModal = () => document.getElementById('postModal').classList.add('open');
+    window.closePostModal = () => document.getElementById('postModal').classList.remove('open');
+    window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
+    window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('open');
+
+    window.logout = function() {
+      window.isAdmin = false;
       document.getElementById('roleIcon').innerText = '👤';
       document.getElementById('roleText').innerText = 'Modo Visitante';
       document.getElementById('adminNavBtn').style.display = 'none';
       document.getElementById('btnLoginModal').style.display = 'flex';
       document.getElementById('btnLogoutBtn').style.display = 'none';
       switchNav('inicio');
-    }
-
-    function updateAdminDashboard() {
-      const tbody = document.getElementById('adminTableBody');
-      tbody.innerHTML = '';
-
-      let countAnalise = 0;
-      let countMediacao = 0;
-
-      dbRecords.forEach((item, index) => {
-        if (item.status === 'Em Análise') countAnalise++;
-        if (item.status === 'Em Mediação') countMediacao++;
-
-        const badgeClass = item.status === 'Em Análise' ? 'badge-analise' : (item.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-resolvido');
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><b>${item.id}</b></td>
-          <td>${item.tipo}</td>
-          <td>${item.local}</td>
-          <td>${item.data}</td>
-          <td>${item.urgente ? '<span style="color: red; font-weight: 700;">SIM</span>' : 'Não'}</td>
-          <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
-          <td>
-            <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="toggleStatus(${index})">
-              Alterar Status
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById('statTotalRelatos').innerText = dbRecords.length;
-      document.getElementById('statAnalise').innerText = countAnalise;
-      document.getElementById('statMediacao').innerText = countMediacao;
-    }
-
-    function toggleStatus(index) {
-      const statuses = ['Em Análise', 'Em Mediação', 'Resolvido'];
-      const currentIndex = statuses.indexOf(dbRecords[index].status);
-      const nextIndex = (currentIndex + 1) % statuses.length;
-      dbRecords[index].status = statuses[nextIndex];
-      updateAdminDashboard();
-    }
-
-    // Inicializa a tabela no carregamento
-    updateAdminDashboard();
+    };
   </script>
 </body>
 </html>

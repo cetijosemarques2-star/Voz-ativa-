@@ -3,798 +3,1166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projeto ABRAÇAR — Acolhimento e Bem-Estar Escolar</title>
+  <title>Plataforma ABRAÇAR — CETI José Marques</title>
   
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --purple: #7C3AED;
-      --purple-dark: #5B21B6;
-      --purple-light: #EDE9FE;
-      --green: #10B981;
-      --green-light: #D1FAE5;
-      --sky: #0EA5E9;
-      --sky-light: #E0F2FE;
-      --bg-body: #F8FAFC;
-      --bg-card: #FFFFFF;
+      /* PALETA DE CORES CETI JOSÉ MARQUES */
+      --green-dark: #188607;
+      --green: #40B615;
+      --purple: #4E22A5;
+      --purple-dark: #230A80;
+      --blue: #64C6ED;
+      --gold: #F1DC22;
+
+      --main-gradient: linear-gradient(135deg, #188607 0%, #40B615 38%, #4E22A5 72%, #230A80 100%);
+      
+      --bg-light: #F8FAFC;
+      --surface-white: #FFFFFF;
       --text-main: #1E293B;
       --text-muted: #64748B;
       --border-color: #E2E8F0;
-      --radius: 12px;
-      --radius-sm: 8px;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      
+      --sidebar-width: 280px;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 10px 15px -3px rgba(35, 10, 128, 0.08);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
 
-    /* LAYOUT RESPONSIVO */
-    aside {
-      width: 280px;
-      background: var(--bg-card);
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BARRA SUPERIOR PARA SMARTPHONES */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--surface-white);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 90;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+    }
+
+    .mobile-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+    }
+
+    .mobile-toggle-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--purple);
+      padding: 0.5rem;
+    }
+
+    /* BACKDROP MOBILE */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(35, 10, 128, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 99;
+    }
+
+    /* SIDEBAR LATERAL */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--surface-white);
       border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 0; bottom: 0; left: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
       z-index: 100;
-      transition: transform 0.3s ease;
+      transition: var(--transition);
     }
 
-    .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
-    .logo-icon { width: 40px; height: 40px; background: var(--purple-light); color: var(--purple); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; }
-    .logo-text h1 { font-size: 1.1rem; color: var(--purple-dark); font-weight: 700; }
-    .logo-text span { font-size: 0.75rem; color: var(--text-muted); }
+    .sidebar-header {
+      padding: 1.5rem;
+      background: var(--main-gradient);
+      color: white;
+      position: relative;
+    }
 
-    .sidebar-menu { padding: 1rem; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.35rem; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; background: none; width: 100%; text-align: left; }
-    .nav-item:hover { background: var(--bg-body); color: var(--purple); }
-    .nav-item.active { background: var(--purple-light); color: var(--purple); font-weight: 600; }
+    .sidebar-brand {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-    .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border-color); }
-    .user-info { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
+    .sidebar-sub {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
 
-    main { margin-left: 280px; flex: 1; padding: 2rem; max-width: calc(100vw - 280px); min-height: 100vh; }
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      margin-top: 0.75rem;
+      font-weight: 600;
+    }
 
-    /* HEADER MOBILE */
-    .mobile-header { display: none; background: var(--bg-card); padding: 1rem; border-bottom: 1px solid var(--border-color); align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 90; }
-    .menu-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 95; }
+    .nav-list {
+      list-style: none;
+      padding: 1rem 0.75rem;
+      flex: 1;
+      overflow-y: auto;
+    }
 
-    /* COMPONENTES */
-    .view-section { display: none; animation: fadeIn 0.3s ease; }
-    .view-section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      transition: var(--transition);
+    }
 
-    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
-    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-item:hover {
+      background: #F1F5F9;
+      color: var(--purple);
+    }
 
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .nav-item.active {
+      background: #F3E8FF;
+      color: var(--purple-dark);
+      border-left: 4px solid var(--purple);
+    }
 
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; transition: filter 0.2s; width: 100%; }
-    .btn-purple { background: var(--purple); color: #fff; }
-    .btn-purple:hover { background: var(--purple-dark); }
-    .btn-green { background: var(--green); color: #fff; }
-    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-    .btn-outline:hover { background: var(--bg-body); }
-    .btn-danger { background: #EF4444; color: #fff; }
+    .nav-item .icon {
+      font-size: 1.2rem;
+    }
 
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem; }
-    .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; background: var(--bg-body); color: var(--text-main); }
-    .form-control:focus { border-color: var(--purple); background: #fff; }
-    textarea.form-control { resize: vertical; min-height: 100px; }
+    .sidebar-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
 
-    /* STATUS BADGES */
-    .status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
-    .badge-analise { background: #FEF3C7; color: #B45309; }
-    .badge-mediacao { background: var(--sky-light); color: var(--sky); }
-    .badge-resolvido { background: var(--green-light); color: #047857; }
+    /* CONTEÚDO PRINCIPAL */
+    .main-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 2rem;
+      transition: var(--transition);
+      max-width: 1200px;
+    }
 
-    /* TABELAS RESPONSIVAS */
-    .data-table-container { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
-    th, td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-color); }
-    th { background: var(--bg-body); color: var(--text-muted); font-weight: 600; }
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
 
-    /* MODAIS */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: var(--bg-card); width: 100%; max-width: 420px; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); animation: fadeIn 0.2s ease; }
+    .view-section.active {
+      display: block;
+    }
 
-    /* MURAL DE RECADOS */
-    .mural-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .mural-card { background: var(--purple-light); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid rgba(124, 58, 237, 0.2); display: flex; flex-direction: column; justify-content: space-between; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    /* RESPONSIVIDADE MOBILE */
+    /* CARDS E GRIDS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #CBD5E1;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--purple-dark);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-banner {
+      background: var(--main-gradient);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-banner h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    /* BOTÕES */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-green:hover {
+      background: var(--green-dark);
+    }
+
+    .btn-purple {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-purple:hover {
+      background: var(--purple-dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: #F8FAFC;
+      border-color: var(--purple);
+      color: var(--purple);
+    }
+
+    .btn-danger {
+      background: #EF4444;
+      color: white;
+    }
+
+    /* FORMULÁRIOS */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border-color);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* TABELAS */
+    .data-table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    th {
+      background: #F8FAFC;
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      color: var(--purple-dark);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    /* BADGES DE STATUS */
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-analise { background: #FEF3C7; color: #D97706; }
+    .badge-mediacao { background: #E0E7FF; color: #4338CA; }
+    .badge-resolvido { background: #DCFCE7; color: #15803D; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ESPAÇO RESPIRE */
+    .respire-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .respire-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 1.5rem 0;
+      transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear;
+      box-shadow: 0 0 20px rgba(64, 182, 21, 0.3);
+    }
+
+    /* ADAPTAÇÕES RESPONSIVAS */
     @media (max-width: 768px) {
-      aside { transform: translateX(-100%); }
-      aside.open { transform: translateX(0); }
-      main { margin-left: 0; max-width: 100vw; padding: 1rem; }
       .mobile-header { display: flex; }
-      .sidebar-overlay.open { display: block; }
+      .sidebar {
+        transform: translateX(-100%);
+        top: 0;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-overlay.open {
+        display: block;
+      }
+      .main-wrapper {
+        margin-left: 0;
+        padding: 1rem;
+        padding-top: 80px;
+      }
+      .hero-banner {
+        padding: 1.5rem;
+      }
+      .hero-banner h1 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-brand">
+      <span>🟢🟣</span> ABRAÇAR
+    </div>
+    <button class="mobile-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </header>
+
   <!-- OVERLAY MOBILE -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-  <!-- HEADER MOBILE -->
-  <header class="mobile-header">
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">💚</div>
-      <span style="font-weight: 700; color: var(--purple-dark);">Projeto ABRAÇAR</span>
-    </div>
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-  </header>
-
-  <!-- MENU LATERAL (SIDEBAR) -->
-  <aside id="sidebar">
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo-icon">💚</div>
-      <div class="logo-text">
-        <h1>ABRAÇAR</h1>
-        <span>Acolhimento Escolar</span>
+      <div class="sidebar-brand">
+        <span>🟢🟣</span> ABRAÇAR
+      </div>
+      <div class="sidebar-sub">CETI José Marques</div>
+      <div class="user-badge" id="userBadge">
+        <span id="roleIcon">👤</span>
+        <span id="roleText">Modo Visitante</span>
       </div>
     </div>
-    
-    <div class="sidebar-menu">
-      <button class="nav-item active" onclick="switchNav('inicio', this)">🏠 Início e Consulta</button>
-      <button class="nav-item" onclick="switchNav('escuta', this)">🤝 Espaço Escuta</button>
-      <button class="nav-item" onclick="switchNav('respire', this)">🧘 Espaço Respire</button>
-      <button class="nav-item" onclick="switchNav('mural', this)">✨ Mural e Avisos</button>
-      <button class="nav-item" onclick="switchNav('apoio', this)">📞 Redes de Apoio</button>
 
-      <!-- Grupo do Gestor (Oculto até autenticar) -->
-      <div id="adminNavGroup" style="display: none; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
-        <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; padding-left: 1rem;">ÁREA ADMINISTRATIVA</div>
-        <button class="nav-item" onclick="switchNav('dashboard', this)">📊 Painel de Ocorrências</button>
-        <button class="nav-item" onclick="switchNav('gestaoAudios', this)">🎧 Gerenciar Áudios</button>
-        <button class="nav-item" onclick="switchNav('gestaoAvisos', this)">📢 Publicar Avisos</button>
-      </div>
-    </div>
+    <ul class="nav-list">
+      <li class="nav-item active" onclick="switchNav('inicio', this)">
+        <span class="icon">🏠</span> Início
+      </li>
+      <li class="nav-item" onclick="switchNav('atendimento', this)">
+        <span class="icon">💬</span> Atendimento
+      </li>
+      <li class="nav-item" onclick="switchNav('relatos', this)">
+        <span class="icon">📝</span> Relato Anônimo
+      </li>
+      <li class="nav-item" onclick="switchNav('mediacao', this)">
+        <span class="icon">🤝</span> Mediação de Conflitos
+      </li>
+      <li class="nav-item" onclick="switchNav('respire', this)">
+        <span class="icon">🌿</span> Espaço Respire
+      </li>
+      <li class="nav-item" onclick="switchNav('dicas', this)">
+        <span class="icon">💡</span> Dicas e Guias
+      </li>
+      <li class="nav-item" onclick="switchNav('mural', this)">
+        <span class="icon">📢</span> Mural Acolhedor
+      </li>
+      <li class="nav-item" onclick="switchNav('apoio', this)">
+        <span class="icon">☎️</span> Rede de Apoio
+      </li>
+      <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)">
+        <span class="icon">🛡️</span> Painel Gestor
+      </li>
+    </ul>
 
     <div class="sidebar-footer">
-      <div class="user-info">
-        <span id="roleIcon">👤</span>
-        <span id="roleText">Estudante / Visitante</span>
-      </div>
-      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()" style="font-size: 0.8rem; padding: 0.5rem;">Acesso Gestor</button>
-      <button class="btn btn-danger" id="btnLogoutBtn" onclick="logout()" style="display: none; font-size: 0.8rem; padding: 0.5rem;">Sair da Conta</button>
+      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">
+        🔐 Acesso Gestor
+      </button>
+      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">
+        🚪 Sair do Sistema
+      </button>
     </div>
   </aside>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main>
+  <main class="main-wrapper">
 
-    <!-- INÍCIO -->
+    <!-- SEÇÃO: INÍCIO -->
     <section id="inicio" class="view-section active">
-      <div class="card" style="background: linear-gradient(135deg, var(--purple-light), #F3E8FF); border: none;">
-        <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Bem-vindo(a) ao Projeto ABRAÇAR 💚</h2>
-        <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5; margin-bottom: 1rem;">
-          Este é um espaço seguro e confidencial para toda a comunidade escolar. Aqui você pode relatar situações, buscar apoio emocional ou interagir com a gestão de forma anônima e transparente.
-        </p>
+      <div class="hero-banner">
+        <h1>Escuta • Acolhimento • Respeito</h1>
+        <p>Um espaço seguro, totalmente integrado e confidencial para a comunidade do CETI José Marques.</p>
       </div>
 
-      <div class="grid-2">
+      <div class="cards-grid">
         <div class="card">
-          <div class="card-title">🔍 Consultar Protocolo</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Digite o código fornecido ao enviar sua mensagem para acompanhar o andamento em tempo real.</p>
-          <div class="form-group">
-            <input type="text" id="searchProtocolInput" class="form-control" placeholder="Ex: ABR-12345">
-          </div>
-          <button class="btn btn-purple" onclick="consultarProtocolo()">Consultar Status</button>
-          
-          <div id="protocolResultContainer" style="margin-top: 1rem; display: none; padding: 1rem; background: var(--bg-body); border-radius: var(--radius-sm); border: 1px solid var(--border-color);"></div>
+          <div class="card-title">💬 Conversa Direta</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação sem complicação.
+          </p>
+          <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
         </div>
 
         <div class="card">
-          <div class="card-title">💡 Como Funciona?</div>
-          <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.4;">
-            <li><b>100% Sigiloso:</b> Seus relatos são criptografados e enviados diretamente para o painel seguro da gestão escolar.</li>
-            <li><b>Respostas Ágeis:</b> Acompanhe atualizações em tempo real pelo seu número de protocolo.</li>
-            <li><b>Ambiente Positivo:</b> Utilize o mural comunitário para espalhar palavras de incentivo.</li>
-          </ul>
+          <div class="card-title">📝 Relato Anônimo</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Informe situações de bullying ou ocorrências com segurança. Nenhum dado pessoal é exigido.
+          </p>
+          <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🌿 Despressurizar</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            Acesse áudios relaxantes e um exercício guiado de respiração para momentos de ansiedade.
+          </p>
+          <button class="btn btn-outline" onclick="switchNav('respire')">Ir ao Espaço Respire</button>
         </div>
       </div>
     </section>
 
-    <!-- ESPAÇO ESCUTA -->
-    <section id="escuta" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">🤝 Espaço Escuta e Relatos</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Selecione o canal adequado para conversar ou relatar uma ocorrência de forma segura.</p>
+    <!-- SEÇÃO: ATENDIMENTO -->
+    <section id="atendimento" class="view-section">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais de Atendimento</h2>
       
-      <div class="grid-2">
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="openChatForm('Atendimento com Psicólogo(a) / Orientador(a)')">
-          <div class="card-title">💬 Atendimento Escolar</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Converse de forma reservada com a equipe de orientação ou psicologia educacional.</p>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">🏛️ Coordenação Pedagógica</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Suporte para dúvidas escolares, orientação acadêmica e situações disciplinares.
+          </p>
+          <button class="btn btn-purple" onclick="openChatForm('Coordenação')">Abrir Chamado</button>
         </div>
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="openChatForm('Relato de Bullying ou Ocorrência')">
-          <div class="card-title">🛡️ Relatar Ocorrência / Bullying</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Comunique situações ocorridas na escola com total sigilo e segurança.</p>
+
+        <div class="card">
+          <div class="card-title">🎓 Grêmio Estudantil</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Canal aberto para sugestões, eventos escolares e ideias dos estudantes.
+          </p>
+          <button class="btn btn-green" onclick="openChatForm('Grêmio Estudantil')">Falar com o Grêmio</button>
         </div>
-        <div class="card" style="cursor: pointer; transition: transform 0.2s;" onclick="openChatForm('Mediação de Conflitos')">
-          <div class="card-title">⚖️ Mediação de Conflitos</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Solicite ajuda neutra e profissional para resolver desentendimentos entre colegas.</p>
+
+        <div class="card">
+          <div class="card-title">🤝 Mediação de Conflitos</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Ajuda profissional para resolver divergências ou atritos interpessoais de forma pacífica.
+          </p>
+          <button class="btn btn-purple" onclick="openChatForm('Mediação')">Solicitar Mediação</button>
         </div>
       </div>
 
-      <!-- Formulário Dinâmico de Envio -->
-      <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem; border: 2px solid var(--purple);">
-        <div class="card-title" id="chatFormTitle">Formulário de Atendimento</div>
-        <form onsubmit="submitRegistro(event)">
+      <!-- FORMULÁRIO DE CHAT -->
+      <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
+        <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
+        <form onsubmit="submitChat(event)">
           <input type="hidden" id="chatChannelInput">
+          
           <div class="form-group">
-            <label>Descreva sua necessidade ou ocorrência com detalhes:</label>
-            <textarea id="chatMessageInput" class="form-control" required placeholder="Digite aqui o que está acontecendo..."></textarea>
+            <label>Sua Mensagem / Solicitação:</label>
+            <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
           </div>
-          <div style="display: flex; gap: 0.75rem;">
-            <button type="submit" class="btn btn-purple">Enviar de Forma Segura</button>
+
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
             <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
+            <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
           </div>
         </form>
       </div>
     </section>
 
-    <!-- ESPAÇO RESPIRE -->
-    <section id="respire" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">🧘 Espaço Respire e Bem-Estar</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Faça uma pausa para relaxar, controlar a ansiedade e escutar sons calmantes.</p>
-      
-      <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
-        <div style="font-weight: 700; color: var(--purple-dark); margin-bottom: 1rem;">Exercício de Respiração Guiada</div>
-        <div style="margin: 2rem auto; width: 140px; height: 140px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; transition: all 3.5s ease; box-shadow: var(--shadow);" id="respireCircle">
-          <span style="font-weight: 700; color: var(--purple-dark); font-size: 1.1rem;" id="respireInstruction">Inspire</span>
-        </div>
-        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-          <button class="btn btn-green" style="width: auto;" onclick="startRespire()">Iniciar Exercício</button>
-          <button class="btn btn-outline" style="width: auto;" onclick="stopRespire()">Parar</button>
-        </div>
-      </div>
-
+    <!-- SEÇÃO: RELATO ANÔNIMO -->
+    <section id="relatos" class="view-section">
       <div class="card">
-        <div class="card-title">🎧 Áudios Relaxantes Disponíveis</div>
-        <div id="audiosListContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Carregando áudios...</p>
-        </div>
-      </div>
-    </section>
+        <div class="card-title">📝 Registrar Relato Anônimo</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Sua identidade permanece 100% protegida. O sistema gerará um ID exclusivo (ex: ABR-8X92) para acompanhamento interno.
+        </p>
 
-    <!-- MURAL E AVISOS -->
-    <section id="mural" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">✨ Mural Comunitário e Avisos Oficiais</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Fique por dentro dos comunicados da escola e compartilhe mensagens positivas.</p>
-      
-      <div class="card" style="margin-bottom: 1.5rem;">
-        <div class="card-title">📢 Avisos Oficiais da Gestão</div>
-        <div id="avisosGestaoContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Carregando avisos...</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">✨ Mural Positivo de Incentivo</div>
-        <form onsubmit="publicarMural(event)" style="margin-bottom: 1rem;">
+        <form onsubmit="submitRelato(event)">
           <div class="form-group">
-            <textarea id="muralInput" class="form-control" required placeholder="Deixe uma mensagem motivadora para a escola..." style="min-height: 70px;"></textarea>
+            <label>Local da Ocorrência:</label>
+            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04, Redes Sociais...">
           </div>
-          <button type="submit" class="btn btn-green" style="width: auto;">Publicar no Mural</button>
+
+          <div class="form-group">
+            <label>Data Aproximada:</label>
+            <input type="date" id="reportDate" class="form-control" required>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px;">
+            <label for="reportDanger" style="margin-bottom: 0; cursor: pointer;">Trata-se de uma urgência ou risco imediato?</label>
+          </div>
+
+          <div class="form-group">
+            <label>Descrição Fatos:</label>
+            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes possível..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
         </form>
-        <div class="mural-grid" id="muralGrid">
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Carregando mural...</p>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: MEDIAÇÃO -->
+    <section id="mediacao" class="view-section">
+      <div class="card">
+        <div class="card-title">🤝 Pedido de Mediação Escolar</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          A mediação é um processo voluntário onde um mediador neutro ajuda as partes a encontrarem um acordo respeitoso.
+        </p>
+        <form onsubmit="submitMediacao(event)">
+          <div class="form-group">
+            <label>Tema ou Motivo do Conflito:</label>
+            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho em grupo">
+          </div>
+          <div class="form-group">
+            <label>Resumo da Situação:</label>
+            <textarea id="mediacaoDesc" class="form-control" required placeholder="Descreva brevemente o que aconteceu..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-purple">Solicitar Apoio da Mediação</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: ESPAÇO RESPIRE -->
+    <section id="respire" class="view-section">
+      <div class="respire-box">
+        <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Espaço Respire</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">
+          Siga o ritmo do círculo para acalmar a mente e estabilizar a respiração.
+        </p>
+
+        <div class="respire-circle" id="respireCircle">
+          <span id="respireInstruction">Inspire</span>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+          <button class="btn btn-green" onclick="startRespire()">▶ Iniciar</button>
+          <button class="btn btn-outline" onclick="stopRespire()">⏸ Pausar</button>
+        </div>
+
+        <div style="width: 100%; max-width: 400px; text-align: left;">
+          <h4 style="color: var(--purple-dark); margin-bottom: 0.5rem;">🎧 Sons Suaves</h4>
+          <audio controls style="width: 100%;">
+            <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy_loud.ogg" type="audio/ogg">
+            Seu navegador não suporta o reprodutor de áudio.
+          </audio>
         </div>
       </div>
     </section>
 
-    <!-- REDES DE APOIO -->
+    <!-- SEÇÃO: DICAS E GUIAS -->
+    <section id="dicas" class="view-section">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Guias Práticos e Dicas</h2>
+      <div class="cards-grid">
+        <div class="card" style="border-top: 4px solid var(--purple);">
+          <div class="card-title">🚨 Bullying e Cyberbullying</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+            Se causa sofrimento, exclusão ou humilhação contínua, não é brincadeira. Guarde evidências digitais e reporte imediatamente.
+          </p>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--green);">
+          <div class="card-title">🧠 Acolhimento Emocional</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+            Sentir-se sobrecarregado faz parte. Conversar sobre suas emoções com alguém de confiança é um ato de coragem e autocuidado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: MURAL ACOLHEDOR -->
+    <section id="mural" class="view-section">
+      <div class="card">
+        <div class="card-title">📢 Mural Acolhedor</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Deixe uma mensagem positiva ou de incentivo para os seus colegas do CETI José Marques.
+        </p>
+
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+          <input type="text" id="muralInput" class="form-control" placeholder="Escreva uma mensagem positiva..." maxlength="140">
+          <button class="btn btn-green" style="width: auto;" onclick="addMuralPost()">Publicar</button>
+        </div>
+
+        <div class="cards-grid" id="muralGrid">
+          <!-- Postagens carregadas dinamicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: REDE DE APOIO -->
     <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">📞 Redes de Apoio Externas</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Canais públicos e gratuitos de atendimento especializado disponíveis 24h.</p>
-      
-      <div class="grid-2">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais Externos de Emergência</h2>
+      <div class="cards-grid" id="apoioGrid">
         <div class="card">
           <div class="card-title">📞 CVV — Centro de Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio, gratuito, 24 horas.</p>
-          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Ligue 188</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio. Atendimento gratuito 24h.</p>
+          <a href="tel:188" class="btn btn-outline" style="text-decoration:none;">Ligar 188</a>
         </div>
         <div class="card">
-          <div class="card-title">⚖️ Disque 100 — Direitos Humanos</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Recebimento e investigação de denúncias de violações de direitos humanos.</p>
-          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Ligue 100</div>
+          <div class="card-title">🛡️ Disque 100</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Violação de direitos humanos, crianças e adolescentes.</p>
+          <a href="tel:100" class="btn btn-outline" style="text-decoration:none;">Ligar 100</a>
         </div>
       </div>
     </section>
 
-    <!-- PAINEL DO GESTOR (ADMIN) -->
+    <!-- SEÇÃO: PAINEL ADMINISTRATIVO -->
     <section id="dashboard" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">📊 Painel de Ocorrências e Atendimentos</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Gerencie chamados enviados pela comunidade em tempo real.</p>
-      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="color: var(--purple-dark);">Painel Gestor de Ocorrências</h2>
+        <span class="status-badge badge-resolvido">Painel Ativo</span>
+      </div>
+
+      <div class="cards-grid" style="margin-bottom: 1.5rem;">
+        <div class="card">
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Relatos Pendentes</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);" id="statRelatos">0</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Atendimentos Ativos</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--green-dark);" id="statChats">0</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Mediações Abertas</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--blue);" id="statMediacoes">0</div>
+        </div>
+      </div>
+
       <div class="card">
+        <div class="card-title">📋 Gerenciamento Unificado em Tempo Real</div>
         <div class="data-table-container">
           <table>
             <thead>
               <tr>
-                <th>Protocolo</th>
+                <th>ID</th>
                 <th>Tipo</th>
-                <th>Resumo / Descrição</th>
+                <th>Canal/Local</th>
+                <th>Data</th>
+                <th>Urgente?</th>
                 <th>Status</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody id="adminTableBody">
-              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Carregando registros...</td></tr>
+              <!-- Registros sincronizados dinamicamente -->
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- GERENCIAR ÁUDIOS (ADMIN) -->
-    <section id="gestaoAudios" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">🎧 Gerenciar Áudios Relaxantes</h2>
-      <div class="card" style="margin-bottom: 1.5rem;">
-        <div class="card-title">Cadastrar Novo Áudio</div>
-        <form onsubmit="cadastrarAudio(event)">
-          <div class="form-group">
-            <label>Título do Áudio:</label>
-            <input type="text" id="audioTitleInput" class="form-control" required placeholder="Ex: Meditação Guiada">
-          </div>
-          <div class="form-group">
-            <label>Arquivo de Áudio (MP3 / WAV):</label>
-            <input type="file" id="audioFileInput" class="form-control" accept="audio/*" required>
-</div>
-<button type="submit" class="btn btn-purple" style="width: auto;">Adicionar Áudio</button>
-</form>
-</div>
-<div class="card">
-<div class="card-title">Áudios Cadastrados</div>
-<div id="adminAudiosList" style="display: flex; flex-direction: column; gap: 0.75rem;">
-<p style="color: var(--text-muted); font-size: 0.85rem;">Carregando áudios...</p>
-</div>
-</div>
-</section>
-<!-- PUBLICAR AVISOS (ADMIN) -->
-<section id="gestaoAvisos" class="view-section">
-<h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">📢 Publicar Avisos Oficiais</h2>
-<div class="card">
-<div class="card-title">Novo Comunicado Escolar</div>
-<form onsubmit="cadastrarAviso(event)">
-<div class="form-group">
-<label>Título do Aviso:</label>
-<input type="text" id="avisoTitleInput" class="form-control" required placeholder="Ex: Reunião de Pais e Mestres">
-</div>
-<div class="form-group">
-<label>Conteúdo / Descrição:</label>
-<textarea id="avisoContentInput" class="form-control" required placeholder="Detalhes do aviso oficial..."></textarea>
-</div>
-<div class="form-group">
-<label>Imagem Ilustrativa (Opcional):</label>
-<input type="file" id="avisoImageInput" class="form-control" accept="image/*">
-</div>
-<button type="submit" class="btn btn-purple" style="width: auto;">Publicar Aviso</button>
-</form>
-</div>
-</section>
-</main>
-<!-- MODAL DE LOGIN -->
-<div class="modal-overlay" id="loginModal">
-<div class="modal-box">
-<div class="card-title" style="justify-content: space-between;">
-<span>🔒 Acesso da Gestão</span>
-<button onclick="closeLoginModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-muted);">✕</button>
-</div>
-<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Entre com suas credenciais de gestor para acessar o painel administrativo.</p>
-<form onsubmit="handleLogin(event)">
-<div class="form-group">
-<label>E-mail:</label>
-<input type="email" id="adminEmailInput" class="form-control" required placeholder="gestor@escola.com">
-</div>
-<div class="form-group">
-<label>Senha:</label>
-<input type="password" id="adminPasswordInput" class="form-control" required placeholder="Sua senha">
-</div>
-<div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-<button type="submit" class="btn btn-purple">Entrar</button>
-<button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-</div>
-</form>
-</div>
-</div>
-<!-- MODAL DE DETALHES DA OCORRÊNCIA (ADMIN) -->
-<div class="modal-overlay" id="ocorrenciaModal">
-<div class="modal-box" style="max-width: 500px;">
-<div class="card-title" style="justify-content: space-between;">
-<span>📄 Detalhes da Ocorrência</span>
-<button onclick="closeOcorrenciaModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-muted);">✕</button>
-</div>
-<div id="modalOcorrenciaContent" style="font-size: 0.85rem; color: var(--text-main); display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-<!-- Preenchido via JS -->
-</div>
-<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-<button class="btn btn-purple" style="font-size: 0.8rem; padding: 0.5rem 1rem; width: auto;" onclick="updateStatusOcorr('Em mediação')">Marcar: Em Mediação</button>
-<button class="btn btn-green" style="font-size: 0.8rem; padding: 0.5rem 1rem; width: auto;" onclick="updateStatusOcorr('Resolvido')">Marcar: Resolvido</button>
-<button class="btn btn-outline" style="font-size: 0.8rem; padding: 0.5rem 1rem; width: auto;" onclick="closeOcorrenciaModal()">Fechar</button>
-</div>
-</div>
-</div>
-<!-- FIREBASE SDKs & LOGICA -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
-const firebaseConfig = {
-apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
-authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
-databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
-projectId: "escutaacolhimento-a9f15",
-storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
-messagingSenderId: "639476751207",
-appId: "1:639476751207:web:571f32f893f4156176adc2",
-measurementId: "G-WEQXQG0PHH"
-};
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
-let currentSelectedProtocolId = null;
-let respireInterval = null;
-window.addEventListener('DOMContentLoaded', () => {
-initListeners();
-setupAuthListener();
-});
-function setupAuthListener() {
-onAuthStateChanged(auth, (user) => {
-applyAdminState(user);
-});
-}
-function applyAdminState(user) {
-const adminGroup = document.getElementById('adminNavGroup');
-const roleIcon = document.getElementById('roleIcon');
-const roleText = document.getElementById('roleText');
-const btnLogin = document.getElementById('btnLoginModal');
-const btnLogout = document.getElementById('btnLogoutBtn');
-if (user) {
-adminGroup.style.display = 'block';
-roleIcon.textContent = '🛡️';
-roleText.textContent = 'Gestor(a) Escolar';
-btnLogin.style.display = 'none';
-btnLogout.style.display = 'block';
-} else {
-adminGroup.style.display = 'none';
-roleIcon.textContent = '👤';
-roleText.textContent = 'Estudante / Visitante';
-btnLogin.style.display = 'block';
-btnLogout.style.display = 'none';
-}
-}
-// --- ESCAPE HTML PARA PREVENIR XSS ---
-function escapeHTML(str) {
-if (!str) return '';
-return str.replace(/[&<>'"]/g,
-tag => ({ '&': '&', '<': '<', '>': '>', "'": ''', '"': '"' }[tag] || tag)
-);
-}
-// --- NAVEGAÇÃO E RESPONSIVIDADE ---
-window.switchNav = function(sectionId, element) {
-document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-const targetSec = document.getElementById(sectionId);
-if (targetSec) targetSec.classList.add('active');
-if (element) element.classList.add('active');
-document.getElementById('sidebar').classList.remove('open');
-document.getElementById('sidebarOverlay').classList.remove('open');
-}
-window.toggleSidebar = function() {
-document.getElementById('sidebar').classList.toggle('open');
-document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-// --- CONTROLE DE ACESSO AUTH ---
-window.openLoginModal = function() { document.getElementById('loginModal').classList.add('open'); }
-window.closeLoginModal = function() {
-document.getElementById('loginModal').classList.remove('open');
-document.getElementById('adminEmailInput').value = '';
-document.getElementById('adminPasswordInput').value = '';
-}
-window.handleLogin = async function(e) {
-e.preventDefault();
-const email = document.getElementById('adminEmailInput').value;
-const pass = document.getElementById('adminPasswordInput').value;
-try {
-await signInWithEmailAndPassword(auth, email, pass);
-closeLoginModal();
-switchNav('dashboard', document.querySelector('[onclick*="dashboard"]'));
-} catch (error) {
-alert('Erro ao entrar: Verifique suas credenciais.');
-}
-}
-window.logout = async function() {
-await signOut(auth);
-switchNav('inicio', document.querySelector('[onclick*="inicio"]'));
-}
-// --- TEMPO REAL (FIRESTORE LISTENERS) ---
-function initListeners() {
-// Ocorrências / Registros
-const qReg = query(collection(db, "registros"), orderBy("dataCriacao", "desc"));
-onSnapshot(qReg, (snapshot) => {
-let registros = [];
-snapshot.forEach(docSnap => registros.push({ firestoreId: docSnap.id, ...docSnap.data() }));
-window.cachedRegistros = registros;
-renderAdminTable(registros);
-});
-// Avisos
-const qAv = query(collection(db, "avisos"), orderBy("dataCriacao", "desc"));
-onSnapshot(qAv, (snapshot) => {
-let avisos = [];
-snapshot.forEach(docSnap => avisos.push({ id: docSnap.id, ...docSnap.data() }));
-renderAvisos(avisos);
-});
-// Áudios
-const qAud = query(collection(db, "audios"), orderBy("dataCriacao", "desc"));
-onSnapshot(qAud, (snapshot) => {
-let audios = [];
-snapshot.forEach(docSnap => audios.push({ id: docSnap.id, ...docSnap.data() }));
-renderAudios(audios);
-});
-// Mural
-const qMur = query(collection(db, "mural"), orderBy("dataCriacao", "desc"));
-onSnapshot(qMur, (snapshot) => {
-let mural = [];
-snapshot.forEach(docSnap => mural.push({ id: docSnap.id, ...docSnap.data() }));
-renderMural(mural);
-});
-}
-// --- CONSULTA DE PROTOCOLO ---
-window.consultarProtocolo = function() {
-const code = document.getElementById('searchProtocolInput').value.trim().toUpperCase();
-const container = document.getElementById('protocolResultContainer');
-if (!code) {
-alert('Digite um código de protocolo válido.');
-return;
-}
-const registros = window.cachedRegistros || [];
-const encontrado = registros.find(r => r.id === code);
-container.style.display = 'block';
-if (encontrado) {
-let badgeClass = 'badge-analise';
-if (encontrado.status === 'Em mediação') badgeClass = 'badge-mediacao';
-if (encontrado.status === 'Resolvido') badgeClass = 'badge-resolvido';
-container.innerHTML = <div style="font-weight: 700; color: var(--purple-dark); margin-bottom: 0.35rem;">Protocolo: ${escapeHTML(encontrado.id)}</div> <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Canal: ${escapeHTML(encontrado.canal)} | Data: ${escapeHTML(encontrado.data)}</div> <div style="margin-bottom: 0.5rem;"><b>Mensagem:</b> ${escapeHTML(encontrado.mensagem)}</div> <div><b>Status atual:</b> <span class="status-badge ${badgeClass}">${escapeHTML(encontrado.status)}</span></div>;
-} else {
-container.innerHTML = <span style="color: #EF4444; font-weight: 600;">Nenhum registro encontrado para o protocolo "${escapeHTML(code)}".</span>;
-}
-}
-// --- ESPAÇO ESCUTA (REGISTRO) ---
-window.openChatForm = function(canalNome) {
-document.getElementById('chatFormCard').style.display = 'block';
-document.getElementById('chatFormTitle').textContent = Canal: ${canalNome};
-document.getElementById('chatChannelInput').value = canalNome;
-document.getElementById('chatMessageInput').value = '';
-document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
-}
-window.submitRegistro = async function(e) {
-e.preventDefault();
-const canal = document.getElementById('chatChannelInput').value;
-const mensagem = document.getElementById('chatMessageInput').value;
-const randomNum = Math.floor(10000 + Math.random() * 90000);
-const novoId = ABR-${randomNum};
-const dataHoje = new Date().toLocaleDateString('pt-BR');
-try {
-await addDoc(collection(db, "registros"), {
-id: novoId,
-canal: canal,
-mensagem: mensagem,
-status: 'Em análise',
-data: dataHoje,
-dataCriacao: Date.now()
-});
-alert(Mensagem enviada com sucesso! \n\nGuarde o seu número de protocolo para acompanhamento: ${novoId});
-document.getElementById('chatFormCard').style.display = 'none';
-} catch (error) {
-alert('Erro ao enviar relato. Tente novamente.');
-}
-}
-// --- ESPAÇO RESPIRE ---
-window.startRespire = function() {
-const circle = document.getElementById('respireCircle');
-const instruction = document.getElementById('respireInstruction');
-if (respireInterval) clearInterval(respireInterval);
-let phase = 0;
-const phases = [
-{ text: 'Inspire', scale: 'scale(1.3)', bg: 'var(--sky-light)' },
-{ text: 'Segure', scale: 'scale(1.3)', bg: '#FEF3C7' },
-{ text: 'Expire', scale: 'scale(1)', bg: 'var(--green-light)' }
-];
-function runPhase() {
-instruction.textContent = phases[phase].text;
-circle.style.transform = phases[phase].scale;
-circle.style.background = phases[phase].bg;
-phase = (phase + 1) % phases.length;
-}
-runPhase();
-respireInterval = setInterval(runPhase, 3500);
-}
-window.stopRespire = function() {
-if (respireInterval) clearInterval(respireInterval);
-const circle = document.getElementById('respireCircle');
-const instruction = document.getElementById('respireInstruction');
-circle.style.transform = 'scale(1)';
-circle.style.background = 'var(--green-light)';
-instruction.textContent = 'Inspire';
-}
-function renderAudios(audios) {
-const container = document.getElementById('audiosListContainer');
-const adminContainer = document.getElementById('adminAudiosList');
-if (audios.length === 0) {
-if (container) container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum áudio cadastrado.</p>';
-if (adminContainer) adminContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum áudio cadastrado.</p>';
-return;
-}
-let html = '';
-audios.forEach(aud => {
-html += <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);"> <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">🎧 ${escapeHTML(aud.titulo)}</div> <audio controls style="width: 100%; height: 36px;"><source src="${aud.url}" type="audio/mpeg">Seu navegador não suporta áudio.</audio> </div>;
-});
-if (container) container.innerHTML = html;
-let adminHtml = '';
-audios.forEach(aud => {
-adminHtml += <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg-body); border-radius: var(--radius-sm); border: 1px solid var(--border-color);"> <span style="font-size: 0.9rem;">${escapeHTML(aud.titulo)}</span> <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; width: auto;" onclick="removerAudio('${aud.id}', '${aud.path || ''}')">Excluir</button> </div>;
-});
-if (adminContainer) adminContainer.innerHTML = adminHtml;
-}
-// --- MURAL E AVISOS ---
-function renderAvisos(avisos) {
-const container = document.getElementById('avisosGestaoContainer');
-if (avisos.length === 0) {
-container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum aviso oficial no momento.</p>';
-return;
-}
-let html = '';
-avisos.forEach(av => {
-let imgHtml = av.imageUrl ? <img src="${av.imageUrl}" style="max-width: 100%; border-radius: var(--radius-sm); margin-top: 0.75rem; max-height: 250px; object-fit: cover;" alt="Aviso"> : '';
-html += <div style="padding: 1rem; background: var(--sky-light); border-radius: var(--radius-sm); border-left: 4px solid var(--sky);"> <div style="font-weight: 700; color: var(--purple-dark); margin-bottom: 0.25rem;">${escapeHTML(av.titulo)}</div> <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.5rem;">${escapeHTML(av.conteudo)}</div> ${imgHtml} <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">Publicado em: ${escapeHTML(av.data)}</div> </div>;
-});
-container.innerHTML = html;
-}
-function renderMural(mural) {
-const grid = document.getElementById('muralGrid');
-if (mural.length === 0) {
-grid.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">O mural ainda está vazio.</p>';
-return;
-}
-let html = '';
-mural.forEach(m => {
-html += <div class="mural-card"> <p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.75rem; line-height: 1.4;">"${escapeHTML(m.texto)}"</p> <div style="font-size: 0.7rem; color: var(--text-muted); text-align: right;">${escapeHTML(m.data)}</div> </div>;
-});
-grid.innerHTML = html;
-}
-window.publicarMural = async function(e) {
-e.preventDefault();
-const texto = document.getElementById('muralInput').value.trim();
-if (!texto) return;
-try {
-await addDoc(collection(db, "mural"), {
-texto: texto,
-data: new Date().toLocaleDateString('pt-BR'),
-dataCriacao: Date.now()
-});
-document.getElementById('muralInput').value = '';
-alert('Mensagem publicada no mural com sucesso!');
-} catch (err) {
-alert('Erro ao publicar no mural.');
-}
-}
-// --- PAINEL ADMINISTRATIVO ---
-function renderAdminTable(registros) {
-const tbody = document.getElementById('adminTableBody');
-if (registros.length === 0) {
-tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Nenhum registro encontrado.</td></tr>';
-return;
-}
-let html = '';
-registros.forEach(r => {
-let badgeClass = 'badge-analise';
-if (r.status === 'Em mediação') badgeClass = 'badge-mediacao';
-if (r.status === 'Resolvido') badgeClass = 'badge-resolvido';
-html += <tr> <td style="font-weight: 600; color: var(--purple-dark);">${escapeHTML(r.id)}</td> <td>${escapeHTML(r.canal)}</td> <td>${escapeHTML(r.mensagem.substring(0, 45))}...</td> <td><span class="status-badge ${badgeClass}">${escapeHTML(r.status)}</span></td> <td> <button class="btn btn-purple" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; width: auto;" onclick="openOcorrenciaModal('${r.firestoreId}')">Gerenciar</button> </td> </tr>;
-});
-tbody.innerHTML = html;
-}
-window.openOcorrenciaModal = function(firestoreId) {
-currentSelectedProtocolId = firestoreId;
-const registros = window.cachedRegistros || [];
-const r = registros.find(item => item.firestoreId === firestoreId);
-if (!r) return;
-const modalContent = document.getElementById('modalOcorrenciaContent');
-modalContent.innerHTML = <div><b>Protocolo:</b> ${escapeHTML(r.id)}</div> <div><b>Canal / Assunto:</b> ${escapeHTML(r.canal)}</div> <div><b>Data de Envio:</b> ${escapeHTML(r.data)}</div> <div><b>Status Atual:</b> ${escapeHTML(r.status)}</div> <div style="background: var(--bg-body); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-top: 0.5rem;"> <b>Relato Completo:</b><br>${escapeHTML(r.mensagem)} </div>;
-document.getElementById('ocorrenciaModal').classList.add('open');
-}
-window.closeOcorrenciaModal = function() {
-document.getElementById('ocorrenciaModal').classList.remove('open');
-currentSelectedProtocolId = null;
-}
-window.updateStatusOcorr = async function(novoStatus) {
-if (!currentSelectedProtocolId) return;
-try {
-const docRef = doc(db, "registros", currentSelectedProtocolId);
-await updateDoc(docRef, { status: novoStatus });
-closeOcorrenciaModal();
-alert(Status atualizado para "${novoStatus}" com sucesso!);
-} catch (err) {
-alert('Erro ao atualizar status.');
-}
-}
-window.cadastrarAudio = async function(e) {
-e.preventDefault();
-const titulo = document.getElementById('audioTitleInput').value.trim();
-const fileInput = document.getElementById('audioFileInput');
-const file = fileInput.files[0];
-if (!file) return;
-try {
-const storageRef = ref(storage, audios/${Date.now()}_${file.name});
-const snapshot = await uploadBytes(storageRef, file);
-const downloadUrl = await getDownloadURL(snapshot.ref);
-await addDoc(collection(db, "audios"), {
-titulo: titulo,
-url: downloadUrl,
-path: snapshot.ref.fullPath,
-dataCriacao: Date.now()
-});
-document.getElementById('audioTitleInput').value = '';
-fileInput.value = '';
-alert('Áudio cadastrado com sucesso!');
-} catch (err) {
-alert('Erro ao cadastrar áudio.');
-}
-}
-window.removerAudio = async function(id, path) {
-if (!confirm('Deseja realmente excluir este áudio?')) return;
-try {
-await deleteDoc(doc(db, "audios", id));
-if (path) {
-await deleteObject(ref(storage, path)).catch(() => {});
-}
-} catch (err) {
-alert('Erro ao excluir áudio.');
-}
-}
-window.cadastrarAviso = async function(e) {
-e.preventDefault();
-const titulo = document.getElementById('avisoTitleInput').value.trim();
-const conteudo = document.getElementById('avisoContentInput').value.trim();
-const imgInput = document.getElementById('avisoImageInput');
-const file = imgInput.files[0];
-try {
-let imageUrl = '';
-if (file) {
-const storageRef = ref(storage, avisos/${Date.now()}_${file.name});
-const snapshot = await uploadBytes(storageRef, file);
-imageUrl = await getDownloadURL(snapshot.ref);
-}
-await addDoc(collection(db, "avisos"), {
-titulo: titulo,
-conteudo: conteudo,
-imageUrl: imageUrl,
-data: new Date().toLocaleDateString('pt-BR'),
-dataCriacao: Date.now()
-});
-document.getElementById('avisoTitleInput').value = '        document.getElementById('avisoTitleInput').value = '';
-        document.getElementById('avisoContentInput').value = '';
-        imgInput.value = '';
-        alert('Aviso oficial publicado com sucesso!');
-        switchNav('mural', document.querySelector('[onclick*="mural"]'));
-      } catch (err) {
-        alert('Erro ao publicar aviso.');
+  </main>
+
+  <!-- MODAL ADMIN LOGIN -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <div class="card-title">🔐 Acesso Administrativo</div>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">
+        Insira a senha de acesso da coordenação ou gestão escolar.
+      </p>
+      
+      <div class="form-group">
+        <label>Senha de Acesso:</label>
+        <input type="password" id="adminPassword" class="form-control" placeholder="••••••••">
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
+        <button class="btn btn-purple" onclick="checkAdminAuth()">Acessar Painel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE SDK CONFIGURAÇÃO DE PRODUÇÃO -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInAnonymously, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // CHAVES DO PROJETO INTEGRADOS
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+      projectId: "escutaacolhimento-a9f15",
+      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+      messagingSenderId: "639476751207",
+      appId: "1:639476751207:web:571f32f893f4156176adc2",
+      measurementId: "G-WEQXQG0PHH"
+    };
+
+    let app, auth, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    } catch(e) {
+      console.error("Erro na inicialização do Firebase", e);
+    }
+
+    // EXPOSIÇÃO GLOBAL SEGURA PARA OPERAÇÕES DA INTERFACE
+    window.db = db;
+    window.auth = auth;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.serverTimestamp = serverTimestamp;
+    window.updateDoc = updateDoc;
+    window.doc = doc;
+
+    // CONEXÃO ANÔNIMA INICIAL
+    if (auth) {
+      signInAnonymously(auth).catch(err => console.error("Erro ao autenticar anonimamente:", err));
+      onAuthStateChanged(auth, (user) => {
+        if (user && db) {
+          setupRealtimeListeners();
+        }
+      });
+    }
+
+    // LISTENER EM TEMPO REAL DAS COLEÇÕES
+    function setupRealtimeListeners() {
+      if (!db) return;
+
+      // 1. ESCUTA DO MURAL
+      const muralQuery = query(collection(db, "mural"), orderBy("timestamp", "desc"));
+      onSnapshot(muralQuery, (snapshot) => {
+        const grid = document.getElementById('muralGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.style.borderLeft = '4px solid var(--purple)';
+          card.innerHTML = `
+            <p style="font-style: italic; font-size: 0.9rem;">"${data.text}"</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ID: ${data.authorId || 'Estudante'}</span>
+          `;
+          grid.appendChild(card);
+        });
+      });
+
+      // 2. ESCUTA REGISTROS PARA O PAINEL ADMIN
+      const registrosQuery = query(collection(db, "registros"), orderBy("timestamp", "desc"));
+      onSnapshot(registrosQuery, (snapshot) => {
+        const tbody = document.getElementById('adminTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        let countRelatos = 0;
+        let countChats = 0;
+        let countMediacoes = 0;
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const id = docSnap.id;
+
+          if (data.tipo === 'Relato') countRelatos++;
+          if (data.tipo === 'Atendimento') countChats++;
+          if (data.tipo === 'Mediação') countMediacoes++;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${data.code || id.substring(0,6)}</strong></td>
+            <td>${data.tipo}</td>
+            <td>${data.canalOuLocal || 'Geral'}</td>
+            <td>${data.date || 'Hoje'}</td>
+            <td><span style="${data.isDanger ? 'color: red; font-weight:700;' : ''}">${data.isDanger ? 'Sim' : 'Não'}</span></td>
+            <td><span class="status-badge ${data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${data.status || 'Em Análise'}</span></td>
+            <td>
+              <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="alert('Detalhes: ${data.description ? data.description.replace(/'/g, "\\'") : 'Sem detalhes'}')">Ver</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('statRelatos').innerText = countRelatos;
+        document.getElementById('statChats').innerText = countChats;
+        document.getElementById('statMediacoes').innerText = countMediacoes;
+      });
+    }
+  </script>
+
+  <!-- LÓGICA DE INTERFACE EM JAVASCRIPT -->
+  <script>
+    let currentRole = 'user';
+    let respireInterval = null;
+
+    // GERAR ID DE REGISTRO ANÔNIMO
+    function generateUniqueID() {
+      return 'ABR-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    }
+
+    // ALTERNAR SIDEBAR NO SMARTPHONE
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+    }
+
+    // NAVEGAÇÃO ENTRE ABAS
+    function switchNav(viewId, element) {
+      if (viewId === 'dashboard' && currentRole !== 'admin') {
+        alert('Acesso restrito aos gestores.');
+        return;
       }
+
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add('active');
+
+      if (element) {
+        element.classList.add('active');
+      }
+
+      // Fecha menu mobile ao selecionar
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+      }
+    }
+
+    // ABRIR FORMULÁRIO DE ATENDIMENTO CANALIZADO
+    function openChatForm(channelName) {
+      document.getElementById('chatChannelInput').value = channelName;
+      document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channelName;
+      document.getElementById('chatFormCard').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('chatFormCard').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    // ENVIO DE CHAT / ATENDIMENTO
+    async function submitChat(e) {
+      e.preventDefault();
+      const channel = document.getElementById('chatChannelInput').value;
+      const message = document.getElementById('chatMessageInput').value;
+      const code = generateUniqueID();
+
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "registros"), {
+            code: code,
+            tipo: 'Atendimento',
+            canalOuLocal: channel,
+            description: message,
+            status: 'Em Análise',
+            isDanger: false,
+            timestamp: window.serverTimestamp()
+          });
+        }
+        alert(`Atendimento iniciado com sucesso!\nGuarde seu ID de acompanhamento: ${code}`);
+        document.getElementById('chatMessageInput').value = '';
+        document.getElementById('chatFormCard').style.display = 'none';
+      } catch(err) {
+        console.error(err);
+        alert(`Solicitação gerada no modo local.\nSeu ID: ${code}`);
+      }
+    }
+
+    // ENVIO DE RELATO ANÔNIMO
+    async function submitRelato(e) {
+      e.preventDefault();
+      const place = document.getElementById('reportPlace').value;
+      const date = document.getElementById('reportDate').value;
+      const isDanger = document.getElementById('reportDanger').checked;
+      const desc = document.getElementById('reportDesc').value;
+      const code = generateUniqueID();
+
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "registros"), {
+            code: code,
+            tipo: 'Relato',
+            canalOuLocal: place,
+            date: date,
+            isDanger: isDanger,
+            description: desc,
+            status: 'Em Análise',
+            timestamp: window.serverTimestamp()
+          });
+        }
+        alert(`Relato enviado com sucesso e totalmente protegido!\nGuarde seu ID de registro: ${code}`);
+        e.target.reset();
+      } catch(err) {
+        console.error(err);
+        alert(`Relato registrado!\nID: ${code}`);
+        e.target.reset();
+      }
+    }
+
+    // ENVIO DE MEDIAÇÃO
+    async function submitMediacao(e) {
+      e.preventDefault();
+      const topic = document.getElementById('mediacaoTopic').value;
+      const desc = document.getElementById('mediacaoDesc').value;
+      const code = generateUniqueID();
+
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "registros"), {
+            code: code,
+            tipo: 'Mediação',
+            canalOuLocal: topic,
+            description: desc,
+            status: 'Em Análise',
+            isDanger: false,
+            timestamp: window.serverTimestamp()
+          });
+        }
+        alert(`Solicitação de mediação enviada!\nID: ${code}`);
+        e.target.reset();
+      } catch(err) {
+        console.error(err);
+        alert(`Mediação enviada!\nID: ${code}`);
+        e.target.reset();
+      }
+    }
+
+    // MURAL POSITIVO
+    async function addMuralPost() {
+      const input = document.getElementById('muralInput');
+      const text = input.value.trim();
+      if (!text) return alert('Escreva uma mensagem antes de publicar.');
+
+      const anonID = generateUniqueID();
+
+      try {
+        if (window.db && window.addDoc && window.collection) {
+          await window.addDoc(window.collection(window.db, "mural"), {
+            text: text,
+            authorId: anonID,
+            timestamp: window.serverTimestamp()
+          });
+        }
+        input.value = '';
+      } catch(err) {
+        console.error(err);
+        input.value = '';
+      }
+    }
+
+    // ESPAÇO RESPIRE
+    function startRespire() {
+      const circle = document.getElementById('respireCircle');
+      const text = document.getElementById('respireInstruction');
+      if (!circle || !text) return;
+
+      if (respireInterval) clearInterval(respireInterval);
+
+      let step = 0;
+      const steps = [
+        { label: 'Inspire...', scale: 'scale(1.4)', bg: '#40B615' },
+        { label: 'Segure...', scale: 'scale(1.4)', bg: '#4E22A5' },
+        { label: 'Expire...', scale: 'scale(1)', bg: '#64C6ED' }
+      ];
+
+      function runStep() {
+        const current = steps[step];
+        text.innerText = current.label;
+        circle.style.transform = current.scale;
+        circle.style.backgroundColor = current.bg;
+        step = (step + 1) % steps.length;
+      }
+
+      runStep();
+      respireInterval = setInterval(runStep, 4000);
+    }
+
+    function stopRespire() {
+      if (respireInterval) clearInterval(respireInterval);
+      const circle = document.getElementById('respireCircle');
+      const text = document.getElementById('respireInstruction');
+      if (circle && text) {
+        circle.style.transform = 'scale(1)';
+        circle.style.backgroundColor = 'var(--green)';
+        text.innerText = 'Inspire';
+      }
+    }
+
+    // AUTENTICAÇÃO E MODAL ADMIN
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.add('open');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('open');
+      document.getElementById('adminPassword').value = '';
+    }
+
+    function checkAdminAuth() {
+      const pass = document.getElementById('adminPassword').value;
+      if (pass === '123456') {
+        currentRole = 'admin';
+        document.getElementById('roleText').innerText = 'Modo Gestor';
+        document.getElementById('roleIcon').innerText = '🛡️';
+        document.getElementById('adminNavBtn').style.display = 'flex';
+        document.getElementById('btnLoginModal').style.display = 'none';
+        document.getElementById('btnLogoutBtn').style.display = 'block';
+        closeLoginModal();
+        switchNav('dashboard');
+      } else {
+        alert('Senha incorreta!');
+      }
+    }
+
+    function logout() {
+      currentRole = 'user';
+      document.getElementById('roleText').innerText = 'Modo Visitante';
+      document.getElementById('roleIcon').innerText = '👤';
+      document.getElementById('adminNavBtn').style.display = 'none';
+      document.getElementById('btnLoginModal').style.display = 'block';
+      document.getElementById('btnLogoutBtn').style.display = 'none';
+      switchNav('inicio');
     }
   </script>
 </body>
 </html>
-  

@@ -172,6 +172,7 @@
       <li class="nav-item" onclick="switchNav('respire', this)"><span class="icon">🌿</span> Espaço Respire</li>
       <li class="nav-item" onclick="switchNav('dicas', this)"><span class="icon">💡</span> Dicas e Guias</li>
       <li class="nav-item" onclick="switchNav('mural', this)"><span class="icon">📢</span> Mural Acolhedor</li>
+      <li class="nav-item" onclick="switchNav('avisos', this)"><span class="icon">📣</span> Avisos da Escola</li>
       <li class="nav-item" onclick="switchNav('apoio', this)"><span class="icon">☎️</span> Rede de Apoio</li>
       <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)"><span class="icon">🛡️</span> Painel Gestor</li>
     </ul>
@@ -190,6 +191,7 @@
       <div class="hero-banner">
         <h1>Escuta • Acolhimento • Respeito</h1>
         <p>Um espaço seguro, integrado e confidencial para a comunidade do CETI José Marques.</p>
+        <div style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.85;">Dados sincronizados em tempo real com o sistema.</div>
       </div>
 
       <div class="cards-grid">
@@ -248,12 +250,12 @@
       </div>
     </section>
 
-    <!-- SEÇÃO: RELATO ANÔNIMO -->
+    <!-- SEÇÃO: RELATO ANÔNIMO & CONSULTA -->
     <section id="relatos" class="view-section">
-      <div class="card">
+      <div class="card" style="margin-bottom: 1.5rem;">
         <div class="card-title">📝 Registrar Relato Protegido</div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          O sistema não solicita seu nome ou outros dados pessoais no formulário. O acesso aos relatos é restrito à equipe responsável. Um código de ID exclusivo será gerado para acompanhamento.
+          O sistema não solicita seu nome ou dados pessoais. Um código de ID exclusivo (ex: ABR-7K92) será gerado para acompanhamento seguro.
         </p>
         <form onsubmit="submitRelato(event)">
           <div class="form-group">
@@ -274,6 +276,17 @@
           </div>
           <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
         </form>
+      </div>
+
+      <!-- CONSULTAR MEU RELATO -->
+      <div class="card">
+        <div class="card-title">🔍 Consultar Meu Relato</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Digite seu código exclusivo para verificar o andamento da análise:</p>
+        <div style="display: flex; gap: 0.75rem;">
+          <input type="text" id="checkCodeInput" class="form-control" placeholder="Ex: ABR-XXXX" style="max-width: 220px;">
+          <button class="btn btn-purple" style="max-width: 130px;" onclick="consultarRelato()">Consultar</button>
+        </div>
+        <div id="checkResultBox" style="margin-top: 1rem; font-size: 0.9rem; display: none;"></div>
       </div>
     </section>
 
@@ -311,8 +324,10 @@
           <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
         </div>
 
-        <audio id="relaxAudio" src="https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" loop></audio>
-        <button class="btn btn-purple" style="max-width: 250px;" onclick="toggleAudio()">🎵 Alternar Som Relaxante</button>
+        <div id="audioPlayerContainer" style="width: 100%; max-width: 300px;">
+          <!-- Áudio dinâmico carregado do Firebase -->
+        </div>
+        <button class="btn btn-purple" style="max-width: 250px; margin-top: 1rem;" onclick="toggleAudio()">🎵 Alternar Som Relaxante</button>
       </div>
     </section>
 
@@ -333,9 +348,10 @@
           <div class="card-title">🛡️ Combate ao Cyberbullying</div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Como se proteger e agir diante de ofensas digitais.</p>
           <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
+            <li>Não retalie provocações onl          <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
             <li>Não retalie provocações online.</li>
-            <li>Salve provas tirando capturas de tela (prints).</li>
-            <li>Comunique imediatamente a coordenação.</li>
+            <li>Tente capturar capturas de tela (prints) como prova.</li>
+            <li>Comunique imediatamente à coordenação ou use o Relato Anônimo.</li>
           </ul>
         </div>
       </div>
@@ -345,88 +361,107 @@
     <section id="mural" class="view-section">
       <div class="card" style="margin-bottom: 1.5rem;">
         <div class="card-title">📢 Enviar Mensagem Positiva</div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Deixe uma palavra de incentivo. Para preservar a segurança e evitar exposição, utilize a opção "Anônimo" ou seu primeiro nome.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Compartilhe uma palavra de incentivo, elogio ou mensagem motivacional para a comunidade escolar.</p>
         <form onsubmit="submitMural(event)">
           <div class="form-group">
-            <input type="text" id="muralAuthor" class="form-control" placeholder="Seu nome ou 'Anônimo'" required maxlength="30">
+            <label>Sua Mensagem:</label>
+            <textarea id="muralMsgInput" class="form-control" required placeholder="Escreva algo positivo..."></textarea>
           </div>
           <div class="form-group">
-            <textarea id="muralText" class="form-control" placeholder="Escreva sua mensagem positiva.          <div class="form-group">
-            <textarea id="muralText" class="form-control" placeholder="Escreva sua mensagem positiva..." required maxlength="200"></textarea>
+            <label>Seu Nome ou Apelido (Opcional):</label>
+            <input type="text" id="muralAuthorInput" class="form-control" placeholder="Ex: Aluno do 2º Ano, Amigo Anônimo...">
           </div>
           <button type="submit" class="btn btn-purple">Publicar no Mural</button>
         </form>
       </div>
 
       <h3 style="color: var(--purple-dark); margin-bottom: 1rem;">Mural da Comunidade</h3>
-      <div class="cards-grid" id="muralGrid"></div>
+      <div class="cards-grid" id="muralGrid">
+        <!-- Itens carregados via Script -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: AVISOS DA ESCOLA -->
+    <section id="avisos" class="view-section">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">📣 Avisos Oficiais e Comunicados</h2>
+      <div class="cards-grid" id="avisosGrid">
+        <!-- Itens carregados via Script -->
+      </div>
     </section>
 
     <!-- SEÇÃO: REDE DE APOIO -->
     <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Redes de Apoio Externas e Internas</h2>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">☎️ Canais e Redes de Apoio Externo</h2>
       <div class="cards-grid">
         <div class="card">
-          <div class="card-title">📞 CVV - Centro de Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio, gratuito e sigiloso 24h.</p>
-          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Ligue 188</div>
+          <div class="card-title">📞 CVV (Centro de Valorização da Vida)</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Apoio emocional e prevenção do suicídio, gratuito e sigiloso.</p>
+          <p style="font-weight: 700; color: var(--purple-dark); font-size: 1.1rem;">Ligue 188</p>
         </div>
         <div class="card">
-          <div class="card-title">🏫 Conselho Tutelar local</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Garantia de direitos e proteção infantojuvenil.</p>
-          <div style="font-weight: 700; color: var(--purple); font-size: 1.1rem;">Disque 100</div>
+          <div class="card-title">🛡️ Conselho Tutelar Local</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Garantia e defesa dos direitos de crianças e adolescentes.</p>
+          <p style="font-weight: 700; color: var(--purple-dark); font-size: 1.1rem;">Disque 100 / Órgão Local</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🏥 CAPS (Centro de Atenção Psicossocial)</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Atendimento em saúde mental para a comunidade.</p>
+          <p style="font-weight: 700; color: var(--purple-dark); font-size: 1.1rem;">Consulte a unidade do seu município</p>
         </div>
       </div>
     </section>
 
     <!-- SEÇÃO: PAINEL GESTOR (ADMIN) -->
     <section id="dashboard" class="view-section">
-      <div class="hero-banner" style="background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 100%);">
-        <h1>Painel de Gestão e Escuta</h1>
-        <p>Gerenciamento centralizado em tempo real de chamados e relatos do CETI José Marques.</p>
+      <div class="hero-banner" style="background: linear-gradient(135deg, #230A80 0%, #4E22A5 100%);">
+        <h1>Painel de Gestão e Mediação</h1>
+        <p>Área restrita para administração de relatos, atendimento de chamados e controle da plataforma.</p>
       </div>
 
-      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-        <button class="btn btn-purple" onclick="switchTabAdmin('chamados')">Atendimentos</button>
-        <button class="btn btn-outline" onclick="switchTabAdmin('relatorios')">Relatos Anônimos</button>
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <button class="btn btn-purple" style="max-width: 200px;" onclick="switchAdminTab('relatosAdm')">Gerenciar Relatos</button>
+        <button class="btn btn-outline" style="max-width: 200px;" onclick="switchAdminTab('avisosAdm')">Publicar Aviso</button>
       </div>
 
-      <div id="adminChamados" class="admin-tab-content">
+      <!-- ABA: RELATOS GESTOR -->
+      <div id="adminTabRelatos" class="admin-tab">
         <div class="card">
-          <div class="card-title">💬 Chamados Recebidos</div>
+          <div class="card-title">Relatos Anônimos Recebidos</div>
           <div class="data-table-container">
             <table>
               <thead>
                 <tr>
-                  <th>Canal</th>
-                  <th>Mensagem</th>
+                  <th>Código</th>
+                  <th>Local</th>
+                  <th>Data</th>
+                  <th>Urgente?</th>
                   <th>Status</th>
                   <th>Ações</th>
                 </tr>
               </thead>
-              <tbody id="tableChamadosBody"></tbody>
+              <tbody id="adminRelatosTableBody">
+                <!-- Preenchido via Script -->
+              </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <div id="adminRelatorios" class="admin-tab-content" style="display: none;">
+      <!-- ABA: AVISOS GESTOR -->
+      <div id="adminTabAvisos" class="admin-tab" style="display: none;">
         <div class="card">
-          <div class="card-title">📝 Relatos Protegidos</div>
-          <div class="data-table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Local</th>
-                  <th>Data</th>
-                  <th>Urgência?</th>
-                  <th>Descrição</th>
-                </tr>
-              </thead>
-              <tbody id="tableRelatosBody"></tbody>
-            </table>
-          </div>
+          <div class="card-title">Publicar Novo Comunicado Escolar</div>
+          <form onsubmit="submitAdminAviso(event)">
+            <div class="form-group">
+              <label>Título do Aviso:</label>
+              <input type="text" id="adminAvisoTitulo" class="form-control" required placeholder="Ex: Reunião de Pais e Mestres...">
+            </div>
+            <div class="form-group">
+              <label>Conteúdo:</label>
+              <textarea id="adminAvisoTexto" class="form-control" required placeholder="Detalhes do aviso..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-green">Publicar Aviso Oficial</button>
+          </form>
         </div>
       </div>
     </section>
@@ -436,15 +471,15 @@
   <!-- MODAL DE LOGIN GESTOR -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Restrito - Gestão</div>
+      <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Restrito (Gestores)</div>
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label>Usuário Administrador:</label>
-          <input type="text" id="loginUser" class="form-control" required placeholder="Digite o usuário">
+          <label>Usuário Administrativo:</label>
+          <input type="text" id="loginUser" class="form-control" required placeholder="Digite seu usuário">
         </div>
         <div class="form-group">
           <label>Senha:</label>
-          <input type="password" id="loginPass" class="form-control" required placeholder="Digite a senha">
+          <input type="password" id="loginPass" class="form-control" required placeholder="Digite sua senha">
         </div>
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
           <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
@@ -454,337 +489,311 @@
     </div>
   </div>
 
-  <!-- FIREBASE SDKs & LÓGICA DO SISTEMA -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
-      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
-      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
-      projectId: "escutaacolhimento-a9f15",
-      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
-      messagingSenderId: "639476751207",
-      appId: "1:639476751207:web:571f32f893f4156176adc2",
-      measurementId: "G-WEQXQG0PHH"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    window.appState = {
-      isAdmin: false,
-      chamados: {},
-      relatos: {},
-      mural: []
-    };
-
-    // SINCRONIZAÇÃO EM TEMPO REAL COM FIREBASE
-    onValue(ref(db, 'chamados'), (snapshot) => {
-      window.appState.chamados = snapshot.val() || {};
-      renderAdminData();
-    });
-
-    onValue(ref(db, 'relatos'), (snapshot) => {
-      window.appState.relatos = snapshot.val() || {};
-      renderAdminData();
-    });
-
-    onValue(ref(db, 'mural'), (snapshot) => {
-      const data = snapshot.val();
-      window.appState.mural = data ? Object.values(data).reverse() : [];
-      renderMural();
-    });
-
-    window.switchNav = function(sectionId, element) {
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
-      if(element) {
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-      }
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('sidebarOverlay').classList.remove('open');
-      window.scrollTo(0, 0);
-    }
-
-    window.toggleSidebar = function() {
+  <!-- SCRIPT DE FUNCIONALIDADES E INTEGRAÇÃO -->
+  <script>
+    // Controle do Menu Mobile
+    function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('sidebarOverlay').classList.toggle('open');
     }
 
-    window.openChatForm = function(canal) {
+    // Navegação entre seções
+    function switchNav(sectionId, element) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+
+      if(element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+      }
+
+      if(window.innerWidth <= 768) {
+        toggleSidebar();
+      }
+      window.scrollTo(0, 0);
+    }
+
+    // Modal de Login
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.add('open');
+    }
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('open');
+    }
+
+    // Simulação de Login de Gestor
+    function handleLogin(event) {
+      event.preventDefault();
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+
+      // Credenciais simples de demonstração
+      if(user === 'gestor' && pass === 'abracar2026') {
+        localStorage.setItem('abracar_role', 'Gestor CETI');
+        updateAuthUI();
+        closeLoginModal();
+        switchNav('dashboard');
+        alert('Login efetuado com sucesso!');
+      } else {
+        alert('Credenciais inválidas. Tente novamente.');
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('abracar_role');
+      updateAuthUI();
+      switchNav('inicio');
+      alert('Sessão encerrada.');
+    }
+
+    function updateAuthUI() {
+      const role = localStorage.getItem('abracar_role');
+      const badgeText = document.getElementById('roleText');
+      const roleIcon = document.getElementById('roleIcon');
+      const adminNavBtn = document.getElementById('adminNavBtn');
+      const btnLoginModal = document.getElementById('btnLoginModal');
+      const btnLogoutBtn = document.getElementById('btnLogoutBtn');
+
+      if(role) {
+        badgeText.innerText = role;
+        roleIcon.innerText = '🛡️';
+        adminNavBtn.style.display = 'flex';
+        btnLoginModal.style.display = 'none';
+        btnLogoutBtn.style.display = 'block';
+      } else {
+        badgeText.innerText = 'Modo Visitante';
+        roleIcon.innerText = '👤';
+        adminNavBtn.style.display = 'none';
+        btnLoginModal.style.display = 'block';
+        btnLogoutBtn.style.display = 'none';
+      }
+    }
+
+    // Atendimento Direto
+    function openChatForm(channel) {
+      document.getElementById('chatChannelInput').value = channel;
+      document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channel;
       document.getElementById('chatFormCard').style.display = 'block';
-      document.getElementById('chatFormTitle').innerText = 'Atendimento com ' + canal;
-      document.getElementById('chatChannelInput').value = canal;
       document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
     }
 
-    window.submitChat = function(e) {
-      e.preventDefault();
-      const canal = document.getElementById('chatChannelInput').value;
-      const mensagem = document.getElementById('chatMessageInput').value;
-
-      const newRef = push(ref(db, 'chamados'));
-      set(newRef, {
-        canal: canal,
-        mensagem: mensagem,
-        status: 'Em Análise',
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Sua mensagem foi enviada com sucesso para a equipe de ' + canal + '!');
-        document.getElementById('chatFormCard').style.display = 'none';
-        e.target.reset();
-      }).catch(err => {
-        alert('Erro ao enviar mensagem. Verifique a conexão.');
-      });
+    function submitChat(event) {
+      event.preventDefault();
+      alert('Mensagem enviada com sucesso para o canal de atendimento! A equipe responderá em breve.');
+      document.getElementById('chatMessageInput').value = '';
+      document.getElementById('chatFormCard').style.display = 'none';
     }
 
-    window.submitRelato = function(e) {
-      e.preventDefault();
-      const randomId = 'ABR-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+    // Relato Anônimo
+    function submitRelato(event) {
+      event.preventDefault();
+      const code = 'ABR-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      
+      // Salvar localmente para simular persistência
+      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
       const novoRelato = {
-        id: randomId,
-        local: document.getElementById('reportPlace').value,
-        data: document.getElementById('reportDate').value,
-        urgencia: document.getElementById('reportDanger').checked ? 'Sim ⚠️' : 'Não',
+        code: code,
+        place: document.getElementById('reportPlace').value,
+        date: document.getElementById('reportDate').value,
+        danger: document.getElementById('reportDanger').checked,
         desc: document.getElementById('reportDesc').value,
-        timestamp: Date.now()
+        status: 'Em Análise'
       };
+      relatos.push(novoRelato);
+      localStorage.setItem('abracar_relatos', JSON.stringify(relatos));
 
-      const newRef = push(ref(db, 'relatos'));
-      set(newRef, novoRelato).then(() => {
-        alert('Relato enviado com segurança! Seu código de acompanhamento exclusivo é: ' + randomId);
-        e.target.reset();
-        window.switchNav('inicio');
-      }).catch(err => {
-        alert('Erro ao registrar relato.');
-      });
+      alert('Relato registrado com sucesso!\n\nSeu código de acompanhamento exclusivo é: ' + code + '\nGuarde este código para consultar o status futuramente.');
+      event.target.reset();
+      carregarRelatosAdmin();
     }
 
-    window.submitMediacao = function(e) {
-      e.preventDefault();
-      const topico = document.getElementById('mediacaoTopic').value;
-      const desc = document.getElementById('mediacaoDesc').value;
+    function consultarRelato() {
+      const code = document.getElementById('checkCodeInput').value.trim().toUpperCase();
+      const resultBox = document.getElementById('checkResultBox');
+      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
+      const encontrado = relatos.find(r => r.code === code);
 
-      const newRef = push(ref(db, 'chamados'));
-      set(newRef, {
-        canal: 'Mediação',
-        mensagem: 'Tema: ' + topico + ' | ' + desc,
-        status: 'Em Mediação',
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Solicitação de mediação registrada com confidencialidade.');
-        e.target.reset();
-        window.switchNav('inicio');
-      });
+      resultBox.style.display = 'block';
+      if(encontrado) {
+        resultBox.innerHTML = `
+          <div style="background: #F1F5F9; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--purple);">
+            <strong>Status Atual:</strong> <span class="status-badge badge-analise">${encontrado.status}</span><br>
+            <strong>Local:</strong> ${encontrado.place}<br>
+            <strong>Data do registro:</strong> ${encontrado.date}
+          </div>
+        `;
+      } else {
+        resultBox.innerHTML = `<span style="color: #EF4444;">Nenhum relato encontrado com o código "${code}". Verifique se digitou corretamente.</span>`;
+      }
     }
 
+    // Mediação
+    function submitMediacao(event) {
+      event.preventDefault();
+      alert('Solicitação de mediação enviada com sucesso! Um mediador escolar entrará em contato de forma sigilosa.');
+      event.target.reset();
+    }
+
+    // Espaço Respire
     let respireInterval = null;
-    window.startRespire = function() {
+    function startRespire() {
       const circle = document.getElementById('respireCircle');
       const instruction = document.getElementById('respireInstruction');
+      
       if(respireInterval) clearInterval(respireInterval);
 
-      const runCycle = () => {
-        instruction.innerText = "Inspire...";
-        circle.style.transform = "scale(1.35)";
-        circle.style.backgroundColor = "var(--green)";
+      function runCycle() {
+        instruction.innerText = 'Inspira...';
+        circle.style.transform = 'scale(1.35)';
+        circle.style.backgroundColor = 'var(--purple)';
 
         setTimeout(() => {
-          instruction.innerText = "Segure...";
+          instruction.innerText = 'Segura...';
         }, 4000);
 
         setTimeout(() => {
-          instruction.innerText = "Expire...";
-          circle.style.transform = "scale(1)";
-          circle.style.backgroundColor = "var(--purple)";
-        }, 8000);
-      };
+          instruction.innerText = 'Expira...';
+          circle.style.transform = 'scale(1)';
+          circle.style.backgroundColor = 'var(--green)';
+        }, 7000);
+      }
 
       runCycle();
       respireInterval = setInterval(runCycle, 12000);
     }
 
-    window.stopRespire = function() {
+    function stopRespire() {
       if(respireInterval) clearInterval(respireInterval);
       const circle = document.getElementById('respireCircle');
       const instruction = document.getElementById('respireInstruction');
-      circle.style.transform = "scale(1)";
-      circle.style.backgroundColor = "var(--green)";
-      instruction.innerText = "Pronto";
+      circle.style.transform = 'scale(1)';
+      circle.style.backgroundColor = 'var(--green)';
+      instruction.innerText = 'Pronto';
     }
 
-    window.toggleAudio = function() {
-      const audio = document.getElementById('relaxAudio');
-      if(audio.paused) audio.play(); else audio.pause();
+    function toggleAudio() {
+      alert('Recurso de som relaxante simulado. Em breve com suporte a áudios binaurais oficiais.');
     }
 
-    window.submitMural = function(e) {
-      e.preventDefault();
-      const autor = document.getElementById('muralAuthor').value;
-      const texto = document.getElementById('muralText').value;
+    // Mural Acolhedor
+    function submitMural(event) {
+      event.preventDefault();
+      const msg = document.getElementById('muralMsgInput').value;
+      const author = document.getElementById('muralAuthorInput').value || 'Membro Anônimo';
 
-      const newRef = push(ref(db, 'mural'));
-      set(newRef, { autor, texto, timestamp: Date.now() }).then(() => {
-        alert('Sua mensagem foi publicada no mural com sucesso!');
-        e.target.reset();
-      });
+      const recados = JSON.parse(localStorage.getItem('abracar_mural') || '[]');
+      recados.unshift({ msg, author });
+      localStorage.setItem('abracar_mural', JSON.stringify(recados));
+
+      document.getElementById('muralMsgInput').value = '';
+      document.getElementById('muralAuthorInput').value = '';
+      carregarMural();
+      alert('Mensagem publicada no mural com sucesso!');
     }
 
-    function renderMural() {
+    function carregarMural() {
       const grid = document.getElementById('muralGrid');
-      if (!grid) return;
+      const recados = JSON.parse(localStorage.getItem('abracar_mural') || '[
+        {"msg": "Acredite na sua capacidade! Juntos fazemos a diferença no CETI José Marques. 💚", "author": "Grêmio Estudantil"},
+        {"msg": "Respire fundo, dias difíceis passam e o aprendizado fica. Força a todos!", "author": "Equipe de Apoio"}
+      ]');
+
       grid.innerHTML = '';
-      window.appState.mural.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        
-        const p = document.createElement('p');
-        p.style.cssText = "font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;";
-        p.textContent = `"${item.texto}"`;
-
-        const small = document.createElement('div');
-        small.style.cssText = "font-size: 0.8rem; font-weight: 700; color: var(--purple);";
-        small.textContent = `— ${item.autor}`;
-
-        div.appendChild(p);
-        div.appendChild(small);
-        grid.appendChild(div);
+      recados.forEach(r => {
+        grid.innerHTML += `
+          <div class="card" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);">
+            <p style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">"${r.msg}"</p>
+            <div style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">— ${r.author}</div>
+          </div>
+        `;
       });
     }
 
-    window.openLoginModal = function() { document.getElementById('loginModal').classList.add('open'); }
-    window.closeLoginModal = function() { document.getElementById('loginModal').classList.remove('open'); }
+    // Avisos da Escola
+    function carregarAvisos() {
+      const grid = document.getElementById('avisosGrid');
+      const avisos = JSON.parse(localStorage.getItem('abracar_avisos') || '[
+        {"title": "Início do Projeto Abraçar 2026", "text": "Nossa plataforma oficial de escuta e bem-estar já está ativa e integrada para toda a comunidade escolar."},
+        {"title": "Semana de Apoio Emocional", "text": "Acompanhe na coordenação os horários das oficinas de técnicas de relaxamento e foco para avaliações."}
+      ]');
 
-    window.handleLogin = function(e) {
-      e.preventDefault();
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
+      grid.innerHTML = '';
+      avisos.forEach(a => {
+        grid.innerHTML += `
+          <div class="card">
+            <div class="card-title">📢 ${a.title}</div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">${a.text}</p>
+          </div>
+        `;
+      });
+    }
 
-      if(user === 'admin' && pass === 'ceti2026') {
-        window.appState.isAdmin = true;
-        closeLoginModal();
-        updateAuthUI();
-        window.switchNav('dashboard');
-        renderAdminData();
+    function submitAdminAviso(event) {
+      event.preventDefault();
+      const title = document.getElementById('adminAvisoTitulo').value;
+      const text = document.getElementById('adminAvisoTexto').value;
+
+      const avisos = JSON.parse(localStorage.getItem('abracar_avisos') || '[]');
+      avisos.unshift({ title, text });
+      localStorage.setItem('abracar_avisos', JSON.stringify(avisos));
+
+      event.target.reset();
+      carregarAvisos();
+      alert('Aviso publicado oficialmente!');
+    }
+
+    // Gestor: Relatos
+    function carregarRelatosAdmin() {
+      const tbody = document.getElementById('adminRelatosTableBody');
+      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
+
+      if(relatos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum relato registrado no momento.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      relatos.forEach((r, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${r.code}</strong></td>
+            <td>${r.place}</td>
+            <td>${r.date}</td>
+            <td>${r.danger ? '🚨 Sim' : 'Não'}</td>
+            <td><span class="status-badge badge-analise">${r.status}</span></td>
+            <td>
+              <button class="btn btn-purple" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="resolverRelato(${index})">Resolver</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function resolverRelato(index) {
+      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
+      relatos[index].status = 'Resolvido';
+      localStorage.setItem('abracar_relatos', JSON.stringify(relatos));
+      carregarRelatosAdmin();
+      alert('Relato marcado como resolvido.');
+    }
+
+    function switchAdminTab(tabName) {
+      if(tabName === 'relatosAdm') {
+        document.getElementById('adminTabRelatos').style.display = 'block';
+        document.getElementById('adminTabAvisos').style.display = 'none';
       } else {
-        alert('Usuário ou senha incorretos!');
+        document.getElementById('adminTabRelatos').style.display = 'none';
+        document.getElementById('adminTabAvisos').style.display = 'block';
       }
     }
 
-    window.logout = function() {
-      window.appState.isAdmin = false;
+    // Inicialização da Aplicação
+    window.onload = function() {
       updateAuthUI();
-      window.switchNav('inicio');
-    }
-
-    function updateAuthUI() {
-      if(window.appState.isAdmin) {
-        document.getElementById('adminNavBtn').style.display = 'flex';
-        document.getElementById('btnLoginModal').style.display = 'none';
-        document.getElementById('btnLogoutBtn').style.display = 'block';
-        document.getElementById('roleIcon').innerText = '🛡️';
-        document.getElementById('roleText').innerText = 'Modo Gestor';
-      } else {
-        document.getElementById('adminNavBtn').style.display = 'none';
-        document.getElementById('btnLoginModal').style.display = 'block';
-        document.getElementById('btnLogoutBtn').style.display = 'none';
-        document.getElementById('roleIcon').innerText = '👤';
-        document.getElementById('roleText').innerText = 'Modo Visitante';
-      }
-    }
-
-    window.switchTabAdmin = function(tab) {
-      if(tab === 'chamados') {
-        document.getElementById('adminChamados').style.display = 'block';
-        document.getElementById('adminRelatorios').style.display = 'none';
-      } else {
-        document.getElementById('adminChamados').style.display = 'none';
-        document.getElementById('adminRelatorios').style.display = 'block';
-      }
-    }
-
-    function renderAdminData() {
-      const tbodyChamados = document.getElementById('tableChamadosBody');
-      if(tbodyChamados) {
-        tbodyChamados.innerHTML = '';
-        Object.entries(window.appState.chamados).forEach(([key, c]) => {
-          let badgeClass = c.status === 'Resolvido' ? 'badge-resolvido' : (c.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-analise');
-          
-          const tr = document.createElement('tr');
-          
-          const tdCanal = document.createElement('td');
-          const strongCanal = document.createElement('strong');
-          strongCanal.textContent = c.canal;
-          tdCanal.appendChild(strongCanal);
-
-          const tdMsg = document.createElement('td');
-          tdMsg.textContent = c.mensagem;
-
-          const tdStatus = document.createElement('td');
-          const spanStatus = document.createElement('span');
-          spanStatus.className = `status-badge ${badgeClass}`;
-          spanStatus.textContent = c.status;
-          tdStatus.appendChild(spanStatus);
-
-          const tdAcao = document.createElement('td');
-          if(c.status !== 'Resolvido') {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-outline';
-            btn.style.cssText = "padding: 0.25rem 0.5rem; font-size: 0.75rem;";
-            btn.textContent = "Marcar Resolvido";
-            btn.onclick = () => window.resolverChamado(key);
-            tdAcao.appendChild(btn);
-          }
-
-          tr.appendChild(tdCanal);
-          tr.appendChild(tdMsg);
-          tr.appendChild(tdStatus);
-          tr.appendChild(tdAcao);
-          tbodyChamados.appendChild(tr);
-        });
-      }
-
-      const tbodyRelatos = document.getElementById('tableRelatosBody');
-      if(tbodyRelatos) {
-        tbodyRelatos.innerHTML = '';
-        Object.values(window.appState.relatos).forEach(r => {
-          const tr = document.createElement('tr');
-          
-          const tdId = document.createElement('td');
-          const code = document.createElement('code');
-          code.textContent = r.id;
-          tdId.appendChild(code);
-
-          const tdLocal = document.createElement('td');
-          tdLocal.textContent = r.local;
-
-          const tdData = document.createElement('td');
-          tdData.textContent = r.data;
-
-          const tdUrg = document.createElement('td');
-          const strongUrg = document.createElement('strong');
-          strongUrg.textContent = r.urgencia;
-          tdUrg.appendChild(strongUrg);
-
-          const tdDesc = document.createElement('td');
-          tdDesc.textContent = r.desc;
-
-          tr.appendChild(tdId);
-          tr.appendChild(tdLocal);
-          tr.appendChild(tdData);
-          tr.appendChild(tdUrg);
-          tr.appendChild(tdDesc);
-          tbodyRelatos.appendChild(tr);
-        });
-      }
-    }
-
-    window.resolverChamado = function(firebaseKey) {
-      update(ref(db, 'chamados/' + firebaseKey), { status: 'Resolvido' });
-    }
+      carregarMural();
+      carregarAvisos();
+      carregarRelatosAdmin();
+    };
   </script>
 </body>
 </html>

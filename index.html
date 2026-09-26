@@ -111,7 +111,6 @@
 
     .status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
     .badge-analise { background: #FEF3C7; color: #D97706; }
-    .badge-mediacao { background: #E0E7FF; color: #4338CA; }
     .badge-resolvido { background: #DCFCE7; color: #15803D; }
 
     .modal-overlay {
@@ -191,7 +190,7 @@
       <div class="hero-banner">
         <h1>Escuta • Acolhimento • Respeito</h1>
         <p>Um espaço seguro, integrado e confidencial para a comunidade do CETI José Marques.</p>
-        <div style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.85;">Dados sincronizados em tempo real com o sistema.</div>
+        <div style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.85;">Sincronizado via Firebase Realtime Database.</div>
       </div>
 
       <div class="cards-grid">
@@ -278,7 +277,6 @@
         </form>
       </div>
 
-      <!-- CONSULTAR MEU RELATO -->
       <div class="card">
         <div class="card-title">🔍 Consultar Meu Relato</div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Digite seu código exclusivo para verificar o andamento da análise:</p>
@@ -319,15 +317,14 @@
           <span id="respireInstruction">Pronto</span>
         </div>
 
-        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
           <button class="btn btn-green" onclick="startRespire()">Iniciar Ciclo</button>
           <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
         </div>
 
-        <div id="audioPlayerContainer" style="width: 100%; max-width: 300px;">
-          <!-- Áudio dinâmico carregado do Firebase -->
+        <div id="audioPlayerContainer" style="width: 100%; max-width: 350px; margin-top: 1rem;">
+          <!-- Carregado via Firebase -->
         </div>
-        <button class="btn btn-purple" style="max-width: 250px; margin-top: 1rem;" onclick="toggleAudio()">🎵 Alternar Som Relaxante</button>
       </div>
     </section>
 
@@ -348,16 +345,15 @@
           <div class="card-title">🛡️ Combate ao Cyberbullying</div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Como se proteger e agir diante de ofensas digitais.</p>
           <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
-            <li>Não retalie provocações onl          <ul style="font-size: 0.85rem; color: var(--text-main); padding-left: 1.2rem; line-height: 1.6;">
             <li>Não retalie provocações online.</li>
-            <li>Tente capturar capturas de tela (prints) como prova.</li>
+            <li>Guarde capturas de tela (prints) como prova.</li>
             <li>Comunique imediatamente à coordenação ou use o Relato Anônimo.</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- SEÇÃO: MURAL ACOLHEDOR -->
+    <!-- SEÇÃO: M    <!-- SEÇÃO: MURAL ACOLHEDOR -->
     <section id="mural" class="view-section">
       <div class="card" style="margin-bottom: 1.5rem;">
         <div class="card-title">📢 Enviar Mensagem Positiva</div>
@@ -377,7 +373,7 @@
 
       <h3 style="color: var(--purple-dark); margin-bottom: 1rem;">Mural da Comunidade</h3>
       <div class="cards-grid" id="muralGrid">
-        <!-- Itens carregados via Script -->
+        <!-- Sincronizado via Firebase -->
       </div>
     </section>
 
@@ -385,7 +381,7 @@
     <section id="avisos" class="view-section">
       <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">📣 Avisos Oficiais e Comunicados</h2>
       <div class="cards-grid" id="avisosGrid">
-        <!-- Itens carregados via Script -->
+        <!-- Sincronizado via Firebase -->
       </div>
     </section>
 
@@ -415,18 +411,19 @@
     <section id="dashboard" class="view-section">
       <div class="hero-banner" style="background: linear-gradient(135deg, #230A80 0%, #4E22A5 100%);">
         <h1>Painel de Gestão e Mediação</h1>
-        <p>Área restrita para administração de relatos, atendimento de chamados e controle da plataforma.</p>
+        <p>Área restrita segura (Firebase Auth + Roles). Gerencie relatos, comunicados e áudios de relaxamento.</p>
       </div>
 
       <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-        <button class="btn btn-purple" style="max-width: 200px;" onclick="switchAdminTab('relatosAdm')">Gerenciar Relatos</button>
-        <button class="btn btn-outline" style="max-width: 200px;" onclick="switchAdminTab('avisosAdm')">Publicar Aviso</button>
+        <button class="btn btn-purple" style="max-width: 180px;" onclick="switchAdminTab('relatosAdm')">Gerenciar Relatos</button>
+        <button class="btn btn-outline" style="max-width: 180px;" onclick="switchAdminTab('avisosAdm')">Publicar Aviso</button>
+        <button class="btn btn-outline" style="max-width: 180px;" onclick="switchAdminTab('audiosAdm')">Gerenciar Áudios</button>
       </div>
 
       <!-- ABA: RELATOS GESTOR -->
       <div id="adminTabRelatos" class="admin-tab">
         <div class="card">
-          <div class="card-title">Relatos Anônimos Recebidos</div>
+          <div class="card-title">Relatos Anônimos Recebidos (Tempo Real)</div>
           <div class="data-table-container">
             <table>
               <thead>
@@ -440,7 +437,7 @@
                 </tr>
               </thead>
               <tbody id="adminRelatosTableBody">
-                <!-- Preenchido via Script -->
+                <tr><td colspan="6" style="text-align: center;">Carregando relatos autorizados...</td></tr>
               </tbody>
             </table>
           </div>
@@ -457,10 +454,32 @@
               <input type="text" id="adminAvisoTitulo" class="form-control" required placeholder="Ex: Reunião de Pais e Mestres...">
             </div>
             <div class="form-group">
+              <label>URL da Imagem (Opcional):</label>
+              <input type="url" id="adminAvisoImg" class="form-control" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            <div class="form-group">
               <label>Conteúdo:</label>
               <textarea id="adminAvisoTexto" class="form-control" required placeholder="Detalhes do aviso..."></textarea>
             </div>
             <button type="submit" class="btn btn-green">Publicar Aviso Oficial</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ABA: ÁUDIOS GESTOR -->
+      <div id="adminTabAudios" class="admin-tab" style="display: none;">
+        <div class="card">
+          <div class="card-title">Cadastrar Som para o Espaço Respire</div>
+          <form onsubmit="submitAdminAudio(event)">
+            <div class="form-group">
+              <label>Nome da Faixa / Som:</label>
+              <input type="text" id="adminAudioTitulo" class="form-control" required placeholder="Ex: Sons da Natureza / Chuva suave">
+            </div>
+            <div class="form-group">
+              <label>Link Direto do Áudio (.mp3):</label>
+              <input type="url" id="adminAudioUrl" class="form-control" required placeholder="https://exemplo.com/audio.mp3">
+            </div>
+            <button type="submit" class="btn btn-purple">Cadastrar Áudio</button>
           </form>
         </div>
       </div>
@@ -474,92 +493,119 @@
       <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Restrito (Gestores)</div>
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label>Usuário Administrativo:</label>
-          <input type="text" id="loginUser" class="form-control" required placeholder="Digite seu usuário">
+          <label>E-mail do Gestor:</label>
+          <input type="email" id="loginEmail" class="form-control" required placeholder="gestor@ceti.edu.br">
         </div>
         <div class="form-group">
           <label>Senha:</label>
-          <input type="password" id="loginPass" class="form-control" required placeholder="Digite sua senha">
+          <input type="password" id="loginPass" class="form-control" required placeholder="Sua senha segura">
         </div>
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
           <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-          <button type="submit" class="btn btn-purple">Entrar</button>
+          <button type="submit" class="btn btn-purple">Entrar com Firebase</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- SCRIPT DE FUNCIONALIDADES E INTEGRAÇÃO -->
-  <script>
-    // Controle do Menu Mobile
-    function toggleSidebar() {
+  <!-- SCRIPT DE INTEGRAÇÃO FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+    import { getDatabase, ref, push, set, onValue, update, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+      projectId: "escutaacolhimento-a9f15",
+      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+      messagingSenderId: "639476751207",
+      appId: "1:639476751207:web:571f32f893f4156176adc2",
+      measurementId: "G-WEQXQG0PHH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Globais de UI
+    window.toggleSidebar = function() {
       document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('sidebarOverlay').classList.toggle('open');
     }
 
-    // Navegação entre seções
-    function switchNav(sectionId, element) {
+    window.switchNav = function(sectionId, element) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(sectionId).classList.add('active');
-
       if(element) {
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         element.classList.add('active');
       }
-
-      if(window.innerWidth <= 768) {
-        toggleSidebar();
-      }
+      if(window.innerWidth <= 768) { window.toggleSidebar(); }
       window.scrollTo(0, 0);
     }
 
-    // Modal de Login
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('open');
-    }
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('open');
-    }
+    window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
+    window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('open');
 
-    // Simulação de Login de Gestor
-    function handleLogin(event) {
+    // Autenticação Firebase com verificação segura na árvore /admins
+    window.handleLogin = async function(event) {
       event.preventDefault();
-      const user = document.getElementById('loginUser').value;
+      const email = document.getElementById('loginEmail').value;
       const pass = document.getElementById('loginPass').value;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        const user = userCredential.user;
 
-      // Credenciais simples de demonstração
-      if(user === 'gestor' && pass === 'abracar2026') {
-        localStorage.setItem('abracar_role', 'Gestor CETI');
-        updateAuthUI();
-        closeLoginModal();
-        switchNav('dashboard');
-        alert('Login efetuado com sucesso!');
-      } else {
-        alert('Credenciais inválidas. Tente novamente.');
+        // Verifica se o usuário autenticado está listado como admin no Database
+        const adminRef = ref(db, 'admins/' + user.uid);
+        const snapshot = await get(adminRef);
+
+        if (snapshot.exists() && snapshot.val() === true) {
+          window.closeLoginModal();
+          window.switchNav('dashboard');
+          alert('Autenticado como Gestor com sucesso!');
+        } else {
+          await signOut(auth);
+          alert('Acesso negado: Este usuário não possui privilégios de gestor cadastrados no banco de dados.');
+        }
+      } catch (error) {
+        alert('Erro ao entrar: Verifique e-mail e senha.');
       }
     }
 
-    function logout() {
-      localStorage.removeItem('abracar_role');
-      updateAuthUI();
-      switchNav('inicio');
+    window.logout = async function() {
+      await signOut(auth);
+      window.switchNav('inicio');
       alert('Sessão encerrada.');
     }
 
-    function updateAuthUI() {
-      const role = localStorage.getItem('abracar_role');
+    onAuthStateChanged(auth, async (user) => {
       const badgeText = document.getElementById('roleText');
       const roleIcon = document.getElementById('roleIcon');
       const adminNavBtn = document.getElementById('adminNavBtn');
       const btnLoginModal = document.getElementById('btnLoginModal');
       const btnLogoutBtn = document.getElementById('btnLogoutBtn');
 
-      if(role) {
-        badgeText.innerText = role;
-        roleIcon.innerText = '🛡️';
-        adminNavBtn.style.display = 'flex';
-        btnLoginModal.style.display = 'none';
-        btnLogoutBtn.style.display = 'block';
+      if (user) {
+        const adminRef = ref(db, 'admins/' + user.uid);
+        const snapshot = await get(adminRef);
+
+        if (snapshot.exists() && snapshot.val() === true) {
+          badgeText.innerText = 'Gestor (Autenticado)';
+          roleIcon.innerText = '🛡️';
+          adminNavBtn.style.display = 'flex';
+          btnLoginModal.style.display = 'none';
+          btnLogoutBtn.style.display = 'block';
+          carregarRelatosAdmin();
+        } else {
+          badgeText.innerText = 'Modo Visitante';
+          roleIcon.innerText = '👤';
+          adminNavBtn.style.display = 'none';
+          btnLoginModal.style.display = 'block';
+          btnLogoutBtn.style.display = 'none';
+        }
       } else {
         badgeText.innerText = 'Modo Visitante';
         roleIcon.innerText = '👤';
@@ -567,79 +613,309 @@
         btnLoginModal.style.display = 'block';
         btnLogoutBtn.style.display = 'none';
       }
+    });
+
+    // 1. Relato Anônimo com salvamento estruturado
+    window.submitRelato = async function(event) {
+      event.preventDefault();
+      const code = 'ABR-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      const relatoData = {
+        code: code,
+        place: document.getElementById('reportPlace').value.trim(),
+        date: document.getElementById('reportDate').value,
+        danger: document.getElementById('reportDanger').checked,
+        desc: document.getElementById('reportDesc').value.trim(),
+        status: 'Em Análise'
+      };
+
+      try {
+        const newRef = push(ref(db, 'relatos'));
+        await set(newRef, relatoData);
+        alert(`Relato registrado com sucesso!\n\nSeu código exclusivo de acompanhamento é: ${code}\nGuarde este código.`);
+        event.target.reset();
+      } catch(e) {
+        alert('Erro ao enviar relato. Tente novamente.');
+      }
     }
 
-    // Atendimento Direto
-    function openChatForm(channel) {
+    // Consulta segura indexada por query (sem baixar todos os relatos)
+    window.consultarRelato = function() {
+      const codeInput = document.getElementById('checkCodeInput').value.trim().toUpperCase();
+      const resultBox = document.getElementById('checkResultBox');
+      resultBox.style.display = 'block';
+      resultBox.textContent = 'Consultando banco de dados seguro...';
+
+      const relatosRef = ref(db, 'relatos');
+      const q = query(relatosRef, orderByChild('code'), equalTo(codeInput));
+
+      get(q).then((snapshot) => {
+        if(snapshot.exists()) {
+          let encontrado = null;
+          snapshot.forEach((childSnap) => {
+            encontrado = childSnap.val();
+          });
+
+          resultBox.innerHTML = '';
+          const wrapper = document.createElement('div');
+          wrapper.style.background = '#F1F5F9';
+          wrapper.style.padding = '1rem';
+          wrapper.style.borderRadius = '8px';
+          wrapper.style.borderLeft = '4px solid var(--purple)';
+
+          const statusEl = document.createElement('div');
+          statusEl.innerHTML = `<strong>Status Atual:</strong> <span class="status-badge badge-analise">${encontrado.status}</span>`;
+          
+          const placeEl = document.createElement('div');
+          placeEl.textContent = `Local: ${encontrado.place}`;
+
+          const dateEl = document.createElement('div');
+          dateEl.textContent = `Data do registro: ${encontrado.date}`;
+
+          wrapper.appendChild(statusEl);
+          wrapper.appendChild(placeEl);
+          wrapper.appendChild(dateEl);
+          resultBox.appendChild(wrapper);
+        } else {
+          resultBox.textContent = `Nenhum relato encontrado com o código "${codeInput}".`;
+          resultBox.style.color = '#EF4444';
+        }
+      }).catch(() => {
+        resultBox.textContent = 'Erro ao realizar a consulta.';
+      });
+    }
+
+    // 2. Gestor - Relatos
+    function carregarRelatosAdmin() {
+      const tbody = document.getElementById('adminRelatosTableBody');
+      onValue(ref(db, 'relatos'), (snapshot) => {
+        tbody.innerHTML = '';
+        if(!snapshot.exists()) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum relato registrado.</td></tr>`;
+          return;
+        }
+        snapshot.forEach((childSnap) => {
+          const key = childSnap.key;
+          const r = childSnap.val();
+          
+          const tr = document.createElement('tr');
+          
+          const tdCode = document.createElement('td');
+          tdCode.innerHTML = `<strong>${r.code}</strong>`;
+          
+          const tdPlace = document.createElement('td');
+          tdPlace.textContent = r.place;
+          
+          const tdDate = document.createElement('td');
+          tdDate.textContent = r.date;
+          
+          const tdDanger = document.createElement('td');
+          tdDanger.textContent = r.danger ? '🚨 Sim' : 'Não';
+          
+          const tdStatus = document.createElement('td');
+          tdStatus.innerHTML = `<span class="status-badge ${r.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${r.status}</span>`;
+          
+          const tdAction = document.createElement('td');
+          const btnResolver = document.createElement('button');
+          btnResolver.className = 'btn btn-purple';
+          btnResolver.style.padding = '0.25rem 0.5rem';
+          btnResolver.style.fontSize = '0.75rem';
+          btnResolver.textContent = 'Resolver';
+          btnResolver.onclick = () => resolverRelato(key);
+          tdAction.appendChild(btnResolver);
+
+          tr.appendChild(tdCode);
+          tr.appendChild(tdPlace);
+          tr.appendChild(tdDate);
+          tr.appendChild(tdDanger);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAction);
+
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
+    window.resolverRelato = async function(key) {
+      await update(ref(db, 'relatos/' + key), { status: 'Resolvido' });
+      alert('Relato atualizado para Resolvido.');
+    }
+
+    // 3. Atendimento e Mediação
+    window.openChatForm = function(channel) {
       document.getElementById('chatChannelInput').value = channel;
       document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channel;
       document.getElementById('chatFormCard').style.display = 'block';
       document.getElementById('chatFormCard').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function submitChat(event) {
+    window.submitChat = async function(event) {
       event.preventDefault();
-      alert('Mensagem enviada com sucesso para o canal de atendimento! A equipe responderá em breve.');
-      document.getElementById('chatMessageInput').value = '';
+      const channel = document.getElementById('chatChannelInput').value;
+      const message = document.getElementById('chatMessageInput').value.trim();
+      await push(ref(db, 'atendimentos'), { channel, message, timestamp: Date.now() });
+      alert('Mensagem enviada com sucesso para o canal!');
+      event.target.reset();
       document.getElementById('chatFormCard').style.display = 'none';
     }
 
-    // Relato Anônimo
-    function submitRelato(event) {
+    window.submitMediacao = async function(event) {
       event.preventDefault();
-      const code = 'ABR-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-      
-      // Salvar localmente para simular persistência
-      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
-      const novoRelato = {
-        code: code,
-        place: document.getElementById('reportPlace').value,
-        date: document.getElementById('reportDate').value,
-        danger: document.getElementById('reportDanger').checked,
-        desc: document.getElementById('reportDesc').value,
-        status: 'Em Análise'
-      };
-      relatos.push(novoRelato);
-      localStorage.setItem('abracar_relatos', JSON.stringify(relatos));
-
-      alert('Relato registrado com sucesso!\n\nSeu código de acompanhamento exclusivo é: ' + code + '\nGuarde este código para consultar o status futuramente.');
+      const topic = document.getElementById('mediacaoTopic').value.trim();
+      const desc = document.getElementById('mediacaoDesc').value.trim();
+      await push(ref(db, 'mediacoes'), { topic, desc, timestamp: Date.now() });
+      alert('Solicitação de mediação enviada com sucesso!');
       event.target.reset();
-      carregarRelatosAdmin();
     }
 
-    function consultarRelato() {
-      const code = document.getElementById('checkCodeInput').value.trim().toUpperCase();
-      const resultBox = document.getElementById('checkResultBox');
-      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
-      const encontrado = relatos.find(r => r.code === code);
+    // 4. Mural Sincronizado com TextContent Seguro
+    window.submitMural = async function(event) {
+      event.preventDefault();
+      const msg = document.getElementById('muralMsgInput').value.trim();
+      const author = document.getElementById('muralAuthorInput').value.trim() || 'Membro Anônimo';
+      await push(ref(db, 'mural'), { msg, author });
+      alert('Mensagem publicada no mural!');
+      event.target.reset();
+    }
 
-      resultBox.style.display = 'block';
-      if(encontrado) {
-        resultBox.innerHTML = `
-          <div style="background: #F1F5F9; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--purple);">
-            <strong>Status Atual:</strong> <span class="status-badge badge-analise">${encontrado.status}</span><br>
-            <strong>Local:</strong> ${encontrado.place}<br>
-            <strong>Data do registro:</strong> ${encontrado.date}
-          </div>
-        `;
-      } else {
-        resultBox.innerHTML = `<span style="color: #EF4444;">Nenhum relato encontrado com o código "${code}". Verifique se digitou corretamente.</span>`;
+    onValue(ref(db, 'mural'), (snapshot) => {
+      const grid = document.getElementById('muralGrid');
+      grid.innerHTML = '';
+      if(!snapshot.exists()) {
+        grid.innerHTML = '<p style="color: var(--text-muted);">Nenhuma mensagem no mural ainda.</p>';
+        return;
       }
-    }
+      snapshot.forEach((childSnap) => {
+        const r = childSnap.val();
+        
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.background = 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)';
 
-    // Mediação
-    function submitMediacao(event) {
+        const p = document.createElement('p');
+        p.style.fontSize = '0.95rem';
+        p.style.marginBottom = '1rem';
+        p.style.color = 'var(--text-main)';
+        p.textContent = `"${r.msg}"`;
+
+        const authorDiv = document.createElement('div');
+        authorDiv.style.fontSize = '0.75rem';
+        authorDiv.style.color = 'var(--purple)';
+        authorDiv.style.fontWeight = '700';
+        authorDiv.textContent = `— ${r.author}`;
+
+        card.appendChild(p);
+        card.appendChild(authorDiv);
+        grid.appendChild(card);
+      });
+    });
+
+    // 5. Avisos Oficiais com Imagem Segura
+    window.submitAdminAviso = async function(event) {
       event.preventDefault();
-      alert('Solicitação de mediação enviada com sucesso! Um mediador escolar entrará em contato de forma sigilosa.');
+      const title = document.getElementById('adminAvisoTitulo').value.tr    window.submitAdminAviso = async function(event) {
+      event.preventDefault();
+      const title = document.getElementById('adminAvisoTitulo').value.trim();
+      const img = document.getElementById('adminAvisoImg').value.trim();
+      const text = document.getElementById('adminAvisoTexto').value.trim();
+      await push(ref(db, 'avisos'), { title, img, text });
+      alert('Aviso publicado oficialmente!');
       event.target.reset();
     }
 
-    // Espaço Respire
+    onValue(ref(db, 'avisos'), (snapshot) => {
+      const grid = document.getElementById('avisosGrid');
+      grid.innerHTML = '';
+      if(!snapshot.exists()) {
+        grid.innerHTML = '<p style="color: var(--text-muted);">Nenhum aviso oficial no momento.</p>';
+        return;
+      }
+      snapshot.forEach((childSnap) => {
+        const a = childSnap.val();
+        
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        if(a.img) {
+          const imgEl = document.createElement('img');
+          imgEl.src = a.img;
+          imgEl.style.width = '100%';
+          imgEl.style.borderRadius = '8px';
+          imgEl.style.marginBottom = '0.75rem';
+          imgEl.style.maxHeight = '200px';
+          imgEl.style.objectFit = 'cover';
+          card.appendChild(imgEl);
+        }
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'card-title';
+        titleEl.textContent = `📢 ${a.title}`;
+
+        const textEl = document.createElement('p');
+        textEl.style.fontSize = '0.9rem';
+        textEl.style.color = 'var(--text-muted)';
+        textEl.textContent = a.text;
+
+        card.appendChild(titleEl);
+        card.appendChild(textEl);
+        grid.appendChild(card);
+      });
+    });
+
+    // 6. Espaço Respire & Áudios Gerenciáveis
+    window.submitAdminAudio = async function(event) {
+      event.preventDefault();
+      const title = document.getElementById('adminAudioTitulo').value.trim();
+      const url = document.getElementById('adminAudioUrl').value.trim();
+      await push(ref(db, 'audios'), { title, url });
+      alert('Áudio cadastrado com sucesso!');
+      event.target.reset();
+    }
+
+    onValue(ref(db, 'audios'), (snapshot) => {
+      const container = document.getElementById('audioPlayerContainer');
+      container.innerHTML = '';
+      if(!snapshot.exists()) {
+        container.innerHTML = '<p style="font-size:0.85rem; color: var(--text-muted);">Nenhum som relaxante cadastrado pelo gestor.</p>';
+        return;
+      }
+      snapshot.forEach((childSnap) => {
+        const audio = childSnap.val();
+        
+        const wrapper = document.createElement('div');
+        wrapper.style.background = 'white';
+        wrapper.style.padding = '0.75rem';
+        wrapper.style.borderRadius = '8px';
+        wrapper.style.border = '1px solid var(--border-color)';
+        wrapper.style.marginBottom = '0.5rem';
+        wrapper.style.textAlign = 'left';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.style.fontSize = '0.85rem';
+        titleDiv.style.fontWeight = '700';
+        titleDiv.style.color = 'var(--purple-dark)';
+        titleDiv.style.marginBottom = '0.35rem';
+        titleDiv.textContent = `🎵 ${audio.title}`;
+
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.style.width = '100%';
+        audioElement.style.height = '35px';
+
+        const sourceEl = document.createElement('source');
+        sourceEl.src = audio.url;
+        sourceEl.type = 'audio/mpeg';
+        audioElement.appendChild(sourceEl);
+
+        wrapper.appendChild(titleDiv);
+        wrapper.appendChild(audioElement);
+        container.appendChild(wrapper);
+      });
+    });
+
     let respireInterval = null;
-    function startRespire() {
+    window.startRespire = function() {
       const circle = document.getElementById('respireCircle');
       const instruction = document.getElementById('respireInstruction');
-      
       if(respireInterval) clearInterval(respireInterval);
 
       function runCycle() {
@@ -647,22 +923,18 @@
         circle.style.transform = 'scale(1.35)';
         circle.style.backgroundColor = 'var(--purple)';
 
-        setTimeout(() => {
-          instruction.innerText = 'Segura...';
-        }, 4000);
-
+        setTimeout(() => { instruction.innerText = 'Segura...'; }, 4000);
         setTimeout(() => {
           instruction.innerText = 'Expira...';
           circle.style.transform = 'scale(1)';
           circle.style.backgroundColor = 'var(--green)';
         }, 7000);
       }
-
       runCycle();
       respireInterval = setInterval(runCycle, 12000);
     }
 
-    function stopRespire() {
+    window.stopRespire = function() {
       if(respireInterval) clearInterval(respireInterval);
       const circle = document.getElementById('respireCircle');
       const instruction = document.getElementById('respireInstruction');
@@ -671,129 +943,11 @@
       instruction.innerText = 'Pronto';
     }
 
-    function toggleAudio() {
-      alert('Recurso de som relaxante simulado. Em breve com suporte a áudios binaurais oficiais.');
+    window.switchAdminTab = function(tabName) {
+      document.getElementById('adminTabRelatos').style.display = (tabName === 'relatosAdm') ? 'block' : 'none';
+      document.getElementById('adminTabAvisos').style.display = (tabName === 'avisosAdm') ? 'block' : 'none';
+      document.getElementById('adminTabAudios').style.display = (tabName === 'audiosAdm') ? 'block' : 'none';
     }
-
-    // Mural Acolhedor
-    function submitMural(event) {
-      event.preventDefault();
-      const msg = document.getElementById('muralMsgInput').value;
-      const author = document.getElementById('muralAuthorInput').value || 'Membro Anônimo';
-
-      const recados = JSON.parse(localStorage.getItem('abracar_mural') || '[]');
-      recados.unshift({ msg, author });
-      localStorage.setItem('abracar_mural', JSON.stringify(recados));
-
-      document.getElementById('muralMsgInput').value = '';
-      document.getElementById('muralAuthorInput').value = '';
-      carregarMural();
-      alert('Mensagem publicada no mural com sucesso!');
-    }
-
-    function carregarMural() {
-      const grid = document.getElementById('muralGrid');
-      const recados = JSON.parse(localStorage.getItem('abracar_mural') || '[
-        {"msg": "Acredite na sua capacidade! Juntos fazemos a diferença no CETI José Marques. 💚", "author": "Grêmio Estudantil"},
-        {"msg": "Respire fundo, dias difíceis passam e o aprendizado fica. Força a todos!", "author": "Equipe de Apoio"}
-      ]');
-
-      grid.innerHTML = '';
-      recados.forEach(r => {
-        grid.innerHTML += `
-          <div class="card" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);">
-            <p style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">"${r.msg}"</p>
-            <div style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">— ${r.author}</div>
-          </div>
-        `;
-      });
-    }
-
-    // Avisos da Escola
-    function carregarAvisos() {
-      const grid = document.getElementById('avisosGrid');
-      const avisos = JSON.parse(localStorage.getItem('abracar_avisos') || '[
-        {"title": "Início do Projeto Abraçar 2026", "text": "Nossa plataforma oficial de escuta e bem-estar já está ativa e integrada para toda a comunidade escolar."},
-        {"title": "Semana de Apoio Emocional", "text": "Acompanhe na coordenação os horários das oficinas de técnicas de relaxamento e foco para avaliações."}
-      ]');
-
-      grid.innerHTML = '';
-      avisos.forEach(a => {
-        grid.innerHTML += `
-          <div class="card">
-            <div class="card-title">📢 ${a.title}</div>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">${a.text}</p>
-          </div>
-        `;
-      });
-    }
-
-    function submitAdminAviso(event) {
-      event.preventDefault();
-      const title = document.getElementById('adminAvisoTitulo').value;
-      const text = document.getElementById('adminAvisoTexto').value;
-
-      const avisos = JSON.parse(localStorage.getItem('abracar_avisos') || '[]');
-      avisos.unshift({ title, text });
-      localStorage.setItem('abracar_avisos', JSON.stringify(avisos));
-
-      event.target.reset();
-      carregarAvisos();
-      alert('Aviso publicado oficialmente!');
-    }
-
-    // Gestor: Relatos
-    function carregarRelatosAdmin() {
-      const tbody = document.getElementById('adminRelatosTableBody');
-      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
-
-      if(relatos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum relato registrado no momento.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = '';
-      relatos.forEach((r, index) => {
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${r.code}</strong></td>
-            <td>${r.place}</td>
-            <td>${r.date}</td>
-            <td>${r.danger ? '🚨 Sim' : 'Não'}</td>
-            <td><span class="status-badge badge-analise">${r.status}</span></td>
-            <td>
-              <button class="btn btn-purple" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="resolverRelato(${index})">Resolver</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    function resolverRelato(index) {
-      const relatos = JSON.parse(localStorage.getItem('abracar_relatos') || '[]');
-      relatos[index].status = 'Resolvido';
-      localStorage.setItem('abracar_relatos', JSON.stringify(relatos));
-      carregarRelatosAdmin();
-      alert('Relato marcado como resolvido.');
-    }
-
-    function switchAdminTab(tabName) {
-      if(tabName === 'relatosAdm') {
-        document.getElementById('adminTabRelatos').style.display = 'block';
-        document.getElementById('adminTabAvisos').style.display = 'none';
-      } else {
-        document.getElementById('adminTabRelatos').style.display = 'none';
-        document.getElementById('adminTabAvisos').style.display = 'block';
-      }
-    }
-
-    // Inicialização da Aplicação
-    window.onload = function() {
-      updateAuthUI();
-      carregarMural();
-      carregarAvisos();
-      carregarRelatosAdmin();
-    };
   </script>
 </body>
 </html>

@@ -2,8 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Plataforma ABRAÇAR — CETI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma ABRAÇAR — CETI José Marques</title>
+  
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --green-dark: #188607;
@@ -12,1196 +18,808 @@
       --purple-dark: #230A80;
       --blue: #64C6ED;
       --gold: #F1DC22;
-      
-      --main-gradient: linear-gradient(
-        135deg,
-        #188607 0%,
-        #40B615 38%,
-        #4E22A5 72%,
-        #230A80 100%
-      );
-
-      --bg-main: #F4F7F4;
-      --card-bg: #FFFFFF;
-      --text-main: #1F2937;
-      --text-muted: #6B7280;
-      --border-color: #E5E7EB;
+      --main-gradient: linear-gradient(135deg, #188607 0%, #40B615 38%, #4E22A5 72%, #230A80 100%);
+      --bg-light: #F8FAFC;
+      --surface-white: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --sidebar-width: 280px;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 10px 15px -3px rgba(35, 10, 128, 0.08);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-light); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
+    .mobile-header {
+      display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--surface-white); border-bottom: 1px solid var(--border-color);
+      z-index: 90; align-items: center; justify-content: space-between; padding: 0 1rem;
     }
+    .mobile-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--purple-dark); }
+    .mobile-toggle-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--purple); padding: 0.5rem; }
 
-    /* BARRA LATERAL (SIDEBAR RESPONSIVA) */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(35, 10, 128, 0.4); backdrop-filter: blur(4px); z-index: 99; }
+
     .sidebar {
-      width: 270px;
-      background: var(--purple-dark);
-      color: #FFF;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 1.25rem 1rem;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 100;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+      width: var(--sidebar-width); background: var(--surface-white); border-right: 1px solid var(--border-color);
+      display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: var(--transition);
+    }
+    .sidebar-header { padding: 1.5rem; background: var(--main-gradient); color: white; }
+    .sidebar-brand { font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+    .sidebar-sub { font-size: 0.75rem; opacity: 0.9; margin-top: 0.25rem; font-weight: 500; }
+    .user-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.7rem; margin-top: 0.75rem; font-weight: 600;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-      padding: 0 0.5rem;
-    }
-
-    .brand-icon {
-      font-size: 2rem;
-      background: var(--main-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: #FFF;
-    }
-
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      overflow-y: auto;
-      max-height: calc(100vh - 220px);
-      padding-right: 4px;
-    }
-
-    .nav-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .nav-list::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.2);
-      border-radius: 4px;
-    }
-
+    .nav-list { list-style: none; padding: 1rem 0.75rem; flex: 1; overflow-y: auto; }
+    .nav-section-title { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; padding: 0.75rem 1rem 0.25rem 1rem; letter-spacing: 0.5px; }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      color: #D1D5DB;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
-      font-size: 0.95rem;
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-md);
+      color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.88rem; margin-bottom: 0.2rem; transition: var(--transition);
     }
+    .nav-item:hover { background: #F1F5F9; color: var(--purple); }
+    .nav-item.active { background: #F3E8FF; color: var(--purple-dark); border-left: 4px solid var(--purple); }
+    .nav-item .icon { font-size: 1.1rem; }
 
-    .nav-item:hover {
-      background-color: rgba(255, 255, 255, 0.08);
-      color: #FFF;
-    }
+    .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border-color); }
 
-    .nav-item.active {
-      background: var(--main-gradient);
-      color: #FFF;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(64, 182, 21, 0.3);
-    }
+    .main-wrapper { margin-left: var(--sidebar-width); flex: 1; padding: 2rem; transition: var(--transition); max-width: 1200px; }
+    .view-section { display: none; animation: fadeIn 0.3s ease-out; }
+    .view-section.active { display: block; }
 
-    .user-profile {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      color: #9CA3AF;
-    }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
+    .card { background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: var(--transition); }
+    .card:hover { box-shadow: var(--shadow-md); border-color: #CBD5E1; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
 
-    /* CONTEÚDO PRINCIPAL */
-    .main-content {
-      margin-left: 270px;
-      flex: 1;
-      padding: 2rem;
-      max-width: 1200px;
-      width: calc(100% - 270px);
-    }
+    .hero-banner { background: var(--main-gradient); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); }
+    .hero-banner h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
 
-    .header-mobile {
-      display: none;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--purple-dark);
-      color: #FFF;
-      padding: 1rem 1.25rem;
-      position: sticky;
-      top: 0;
-      z-index: 90;
-      border-bottom: 2px solid var(--green);
-    }
-
-    .view-section {
-      display: none;
-    }
-
-    .view-section.active {
-      display: block;
-      animation: fadeIn 0.25s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* CARDS E GRIDS */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 1.25rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--purple-dark);
-      margin-bottom: 0.5rem;
-    }
-
-    /* FORMULÁRIOS E BOTÕES */
-    .form-group {
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--text-main);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 1rem;
-      outline: none;
-      background: #FAFAFA;
-      transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-      border-color: var(--green);
-      background: #FFF;
-      box-shadow: 0 0 0 3px rgba(64, 182, 21, 0.15);
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 90px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-      width: 100%;
-      font-size: 0.95rem;
-    }
-
-    .btn-green { background: var(--main-gradient); color: #FFF; box-shadow: 0 4px 10px rgba(64, 182, 21, 0.2); }
-    .btn-green:hover { opacity: 0.95; }
-    .btn-purple { background: var(--purple); color: #FFF; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: var(--transition); width: 100%; }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { background: var(--green-dark); }
+    .btn-purple { background: var(--purple); color: white; }
     .btn-purple:hover { background: var(--purple-dark); }
-    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
-    .btn-outline:hover { background: #F3F4F6; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { background: #F8FAFC; border-color: var(--purple); color: var(--purple); }
+    .btn-danger { background: #EF4444; color: white; }
 
-    /* CHAT INDIVIDUAL REAL */
-    .chat-container {
-      background: #FFF;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      height: 480px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
-    .chat-messages {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      background: #F9FAFB;
-    }
-    .chat-bubble {
-      max-width: 75%;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-    .chat-bubble.user {
-      background: var(--green);
-      color: #FFF;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-    .chat-bubble.admin {
-      background: var(--purple);
-      color: #FFF;
-      align-self: flex-start;
-      border-bottom-left-radius: 2px;
-    }
-    .chat-input-area {
-      display: flex;
-      padding: 0.75rem;
-      border-top: 1px solid var(--border-color);
-      background: #FFF;
-      gap: 0.5rem;
-    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
+    .form-control { width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); font-size: 0.95rem; outline: none; transition: var(--transition); background: #fff; }
+    .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1); }
+    textarea.form-control { min-height: 110px; resize: vertical; }
 
-    /* TABELAS RESPONSIVAS */
-    .data-table-container {
-      overflow-x: auto;
-      background: #FFF;
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      margin-top: 1rem;
-      -webkit-overflow-scrolling: touch;
-    }
+    .data-table-container { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 1rem; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
+    th { background: #F8FAFC; padding: 0.85rem 1rem; font-weight: 700; color: var(--purple-dark); border-bottom: 1px solid var(--border-color); }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-
-    th, td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    th {
-      background: #F9FAFB;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .status-badge {
-      padding: 0.3rem 0.6rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
+    .status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
     .badge-analise { background: #FEF3C7; color: #D97706; }
     .badge-mediacao { background: #E0E7FF; color: #4338CA; }
-    .badge-resolvido { background: #CCFBF1; color: #0D9488; }
+    .badge-resolvido { background: #DCFCE7; color: #15803D; }
 
-    /* MODAIS */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(3px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 1rem;
-    }
-
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
     .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.75rem; width: 100%; max-width: 480px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
 
-    .modal-box {
-      background: #FFF;
-      padding: 1.5rem;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      animation: modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    .respire-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1.5rem; background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%); border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center; }
+    .respire-circle { width: 140px; height: 140px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; margin: 1.5rem 0; transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear; box-shadow: 0 0 20px rgba(64, 182, 21, 0.3); }
 
-    @keyframes modalPop {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 95;
-    }
-
-    /* ADAPTAÇÃO TOTAL PARA DISPOSITIVOS MÓVEIS */
     @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-        width: 280px;
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .sidebar-overlay.open {
-        display: block;
-      }
-      .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 1rem;
-      }
-      .header-mobile {
-        display: flex;
-      }
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
+      .mobile-header { display: flex; }
+      .sidebar { transform: translateX(-100%); top: 0; }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-wrapper { margin-left: 0; padding: 1rem; padding-top: 80px; }
+      .hero-banner { padding: 1.5rem; }
+      .hero-banner h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER MOBILE -->
-  <div class="header-mobile">
-    <div style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
-      <span style="background: var(--main-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🤝</span> ABRAÇAR CETI
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header">
+    <div class="mobile-brand">
+      <span>🟢🟣</span> ABRAÇAR
     </div>
-    <button class="btn btn-outline" style="width: auto; color: #FFF; border-color: rgba(255,255,255,0.4); padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="toggleSidebar()">☰ Menu</button>
-  </div>
+    <button class="mobile-toggle-btn" onclick="toggleSidebar()">☰</button>
+  </header>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-  <!-- NAVEGAÇÃO LATERAL -->
-  <nav class="sidebar" id="sidebar">
-    <div>
-      <div class="brand">
-        <span class="brand-icon">🤝</span>
-        <span class="brand-title">ABRAÇAR</span>
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <span>🟢🟣</span> ABRAÇAR
       </div>
-      <ul class="nav-list">
-        <li class="nav-item active" onclick="switchNav('inicio', this)"><span>🏠</span> Início</li>
-        <li class="nav-item" onclick="switchNav('relato', this)"><span>🛡️</span> Relato Anônimo</li>
-        <li class="nav-item" onclick="switchNav('chat', this)"><span>💬</span> Atendimento</li>
-        <li class="nav-item" onclick="switchNav('mediacao', this)"><span>⚖️</span> Mediação</li>
-        <li class="nav-item" onclick="switchNav('respire', this)"><span>🧘</span> Espaço Respire</li>
-        <li class="nav-item" onclick="switchNav('dicas', this)"><span>💡</span> Dicas e Orientações</li>
-        <li class="nav-item" onclick="switchNav('mural', this)"><span>💬</span> Mural Acolhedor</li>
-        <li class="nav-item" onclick="switchNav('apoio', this)"><span>📞</span> Rede de Apoio</li>
-        <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)"><span>⚙️</span> Painel Gestor</li>
-      </ul>
+      <div class="sidebar-sub">CETI José Marques</div>
+      <div class="user-badge" id="userBadge">
+        <span id="roleIcon">👤</span>
+        <span id="roleText">Estudante / Visitante</span>
+      </div>
     </div>
 
-    <div class="user-profile">
-      <div class="user-info">
-        <span id="roleIcon">👤</span>
-        <span id="roleText">Visitante</span>
+    <ul class="nav-list">
+      <div class="nav-section-title">Navegação</div>
+      <li class="nav-item active" onclick="switchNav('inicio', this)"><span class="icon">🏠</span> Início</li>
+      <li class="nav-item" onclick="switchNav('atendimento', this)"><span class="icon">💬</span> Atendimento</li>
+      <li class="nav-item" onclick="switchNav('relatos', this)"><span class="icon">📝</span> Relato Anônimo</li>
+      <li class="nav-item" onclick="switchNav('mediacao', this)"><span class="icon">🤝</span> Mediação</li>
+      <li class="nav-item" onclick="switchNav('protocolo', this)"><span class="icon">🔎</span> Consultar Protocolo</li>
+      <li class="nav-item" onclick="switchNav('respire', this)"><span class="icon">🌿</span> Espaço Respire</li>
+      <li class="nav-item" onclick="switchNav('dicas', this)"><span class="icon">💡</span> Dicas e Guias</li>
+      <li class="nav-item" onclick="switchNav('mural', this)"><span class="icon">📢</span> Mural e Avisos</li>
+      <li class="nav-item" onclick="switchNav('apoio', this)"><span class="icon">☎️</span> Rede de Apoio</li>
+
+      <!-- SEÇÃO EXCLUSIVA GESTOR -->
+      <div id="adminNavGroup" style="display: none;">
+        <div class="nav-section-title" style="margin-top: 1rem; color: var(--purple);">Painel Gestor</div>
+        <li class="nav-item" onclick="switchNav('dashboard', this)"><span class="icon">📊</span> Dashboard</li>
+        <li class="nav-item" onclick="switchNav('gestaoAudios', this)"><span class="icon">🎧</span> Gerenciar Áudios</li>
+        <li class="nav-item" onclick="switchNav('gestaoAvisos', this)"><span class="icon">📢</span> Publicar Avisos</li>
       </div>
-      <button class="btn btn-outline" id="btnLoginModal" style="width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="openLoginModal()">Entrar</button>
-      <button class="btn btn-outline" id="btnLogoutBtn" style="display: none; width: auto; padding: 0.3rem 0.6rem; font-size: 0.75rem; color: #FFF; border-color: rgba(255,255,255,0.3);" onclick="logout()">Sair</button>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">🔐 Acesso Gestor</button>
+      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">🚪 Sair do Sistema</button>
     </div>
-  </nav>
+  </aside>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main class="main-content">
+  <main class="main-wrapper">
 
-    <!-- SEÇÃO: INÍCIO -->
+    <!-- INÍCIO -->
     <section id="inicio" class="view-section active">
-      <h2 style="color: var(--purple-dark); margin-bottom: 0.3rem;">Plataforma ABRAÇAR</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.25rem; font-size: 0.9rem;">Ambiente seguro de acolhimento e mediação escolar.</p>
-
+      <div class="hero-banner">
+        <h1>Escuta • Acolhimento • Respeito</h1>
+        <p>Um espaço seguro, totalmente integrado e confidencial para a comunidade do CETI José Marques.</p>
+      </div>
       <div class="cards-grid">
         <div class="card">
-          <div class="card-title">💬 Atendimento Individual</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Converse em tempo real de forma confidencial com a equipe.</p>
-          <button class="btn btn-green" onclick="switchNav('chat', document.querySelectorAll('.nav-item')[2])">Abrir Chat</button>
+          <div class="card-title">💬 Conversa Direta</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Fale com a Coordenação, Grêmio ou Equipe de Mediação de forma segura.</p>
+          <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
         </div>
         <div class="card">
-          <div class="card-title">🛡️ Enviar Relato Anônimo</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Informe com segurança situações de intimidação ou conflitos.</p>
-          <button class="btn btn-outline" onclick="switchNav('relato', document.querySelectorAll('.nav-item')[1])">Acessar Formulário</button>
+          <div class="card-title">📝 Relato Anônimo</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Informe ocorrências sem expor sua identidade. Gere um protocolo seguro.</p>
+          <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
+        </div>
+        <div class="card">
+          <div class="card-title">🔎 Consultar Protocolo</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Acompanhe o andamento e respostas da gestão usando o seu código único.</p>
+          <button class="btn btn-outline" onclick="switchNav('protocolo')">Consultar Agora</button>
         </div>
       </div>
     </section>
 
-    <!-- SEÇÃO: RELATO ANÔNIMO -->
-    <section id="relato" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Relato Anônimo</h2>
-      <div class="card">
-        <form onsubmit="submitRelato(event)">
+    <!-- ATENDIMENTO -->
+    <section id="atendimento" class="view-section">
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais de Atendimento</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">🏛️ Coordenação Pedagógica</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Suporte para dúvidas escolares, orientação acadêmica e situações disciplinares.</p>
+          <button class="btn btn-purple" onclick="openChatForm('Coordenação')">Abrir Chamado</button>
+        </div>
+        <div class="card">
+          <div class="card-title">🎓 Grêmio Estudantil</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Canal aberto para sugestões, eventos escolares e ideias dos estudantes.</p>
+          <button class="btn btn-green" onclick="openChatForm('Grêmio Estudantil')">Falar com o Grêmio</button>
+        </div>
+      </div>
+
+      <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
+        <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
+        <form onsubmit="submitRegistro(event, 'Atendimento')">
+          <input type="hidden" id="chatChannelInput">
           <div class="form-group">
-            <label>Local / Contexto:</label>
-            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala de Aula...">
+            <label>Sua Mensagem / Solicitação:</label>
+            <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
+          </div>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
+            <button type="submit" class="btn btn-purple">Enviar Atendimento</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- RELATO ANÔNIMO -->
+    <section id="relatos" class="view-section">
+      <div class="card">
+        <div class="card-title">📝 Registrar Relato Anônimo</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Sua identidade permanece 100% protegida. O sistema gerará um ID exclusivo para acompanhamento.</p>
+        <form onsubmit="submitRegistro(event, 'Relato')">
+          <div class="form-group">
+            <label>Local da Ocorrência:</label>
+            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04...">
           </div>
           <div class="form-group">
-            <label>Data aproximada:</label>
+            <label>Data Aproximada:</label>
             <input type="date" id="reportDate" class="form-control" required>
           </div>
-          <div class="form-group">
-            <label>Descrição detalhada:</label>
-            <textarea id="reportDesc" class="form-control" required placeholder="Descreva o ocorrido..."></textarea>
-          </div>
           <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px; accent-color: var(--green);">
-            <label for="reportDanger" style="margin: 0; cursor: pointer;">Caso urgente / risco imediato</label>
+            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px;">
+            <label for="reportDanger" style="margin-bottom: 0; cursor: pointer;">Trata-se de urgência ou risco imediato?</label>
           </div>
-          <button type="submit" class="btn btn-green">Enviar Relato</button>
+          <div class="form-group">
+            <label>Descrição dos Fatos:</label>
+            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com detalhes..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
         </form>
       </div>
     </section>
 
-    <!-- SEÇÃO: CHAT INDIVIDUAL (TEMPO REAL) -->
-    <section id="chat" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-        <h2 style="color: var(--purple-dark);">Atendimento Individual</h2>
-        <span id="chatSessionIdLabel" style="font-size: 0.75rem; background: #E0E7FF; color: var(--purple); padding: 3px 8px; border-radius: 6px; font-weight: 700;">ID: Carregando...</span>
-      </div>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">Suas mensagens chegam diretamente à equipe de coordenação.</p>
-      
-      <div class="chat-container">
-        <div class="chat-messages" id="chatMessagesContainer">
-          <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem;">Inicie a conversa digitando abaixo...</div>
-        </div>
-        <form class="chat-input-area" onsubmit="sendChatMessage(event)">
-          <input type="text" id="chatInputMsg" class="form-control" required placeholder="Digite sua mensagem..." autocomplete="off">
-          <button type="submit" class="btn btn-green" style="width: auto; padding: 0 1.25rem;">Enviar</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: MEDIAÇÃO -->
+    <!-- MEDIAÇÃO -->
     <section id="mediacao" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Solicitação de Mediação</h2>
       <div class="card">
-        <form onsubmit="submitMediacao(event)">
+        <div class="card-title">🤝 Pedido de Mediação Escolar</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Processo voluntário onde um mediador neutro ajuda as partes a encontrarem um acordo.</p>
+        <form onsubmit="submitRegistro(event, 'Mediação')">
           <div class="form-group">
-            <label>Assunto / Motivo:</label>
-            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em grupo...">
+            <label>Tema ou Motivo do Conflito:</label>
+            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho em grupo">
           </div>
           <div class="form-group">
-            <label>Resumo do caso:</label>
-            <textarea id="mediacaoDesc" class="form-control" required placeholder="Explique como a equipe pode ajudar..."></textarea>
+            <label>Resumo da Situação:</label>
+            <textarea id="mediacaoDesc" class="form-control" required placeholder="Descreva brevemente o que aconteceu..."></textarea>
           </div>
-          <button type="submit" class="btn btn-green">Solicitar Mediação</button>
+          <button type="submit" class="btn btn-purple">Solicitar Apoio da Mediação</button>
         </form>
       </div>
     </section>
 
-    <!-- SEÇÃO: ESPAÇO RESPIRE -->
+    <!-- CONSULTAR PROTOCOLO -->
+    <section id="protocolo" class="view-section">
+      <div class="card">
+        <div class="card-title">🔎 Consultar Andamento do Protocolo</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Digite o código do protocolo (ex: ABR-8X92) para verificar o status e mensagens da coordenação.</p>
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+          <input type="text" id="searchProtocolInput" class="form-control" placeholder="Ex: ABR-12345">
+          <button class="btn btn-purple" style="width: auto;" onclick="consultarProtocolo()">Buscar</button>
+        </div>
+        <div id="protocolResultContainer" style="display: none; padding: 1rem; background: #F8FAFC; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <!-- Preenchido dinamicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ESPAÇO RESPIRE -->
     <section id="respire" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Espaço Respire</h2>
-      <div class="card" style="text-align: center;">
-        <div id="respireCircle" style="width: 110px; height: 110px; border-radius: 50%; background: var(--main-gradient); margin: 1.25rem auto; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold; transition: transform 3.5s ease;">
-          <span id="respireInstruction">Inspire</span>
+      <div class="respire-box" style="margin-bottom: 1.5rem;">
+        <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Espaço Respire</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">Siga o ritmo do círculo para acalmar a mente e estabilizar a respiração.</p>
+        <div class="respire-circle" id="respireCircle"><span id="respireInstruction">Inspire</span></div>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-green" onclick="startRespire()">▶ Iniciar</button>
+          <button class="btn btn-outline" onclick="stopRespire()">⏸ Pausar</button>
         </div>
-        <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem;">
-          <button class="btn btn-green" style="width: auto;" onclick="startRespire()">Iniciar</button>
-          <button class="btn btn-outline" style="width: auto;" onclick="stopRespire()">Parar</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎧 Sons e Áudios Relaxantes</div>
+        <div id="audiosListContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+          <!-- Carregado dinamicamente do Firebase -->
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Carregando áudios disponíveis...</p>
         </div>
-        <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem; text-align: left;">Músicas e Sons Relaxantes</h4>
-        <div id="audioListContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
       </div>
     </section>
 
-    <!-- SEÇÃO: DICAS -->
+    <!-- DICAS E GUIAS -->
     <section id="dicas" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Dicas e Orientações</h2>
+      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Guias Práticos e Dicas</h2>
       <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">🛡️ Bullying e Cyberbullying</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Práticas repetidas de violência não devem ser silenciadas. Busque apoio imediato.</p>
+        <div class="card" style="border-top: 4px solid var(--purple);">
+          <div class="card-title">🚨 Bullying e Cyberbullying</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Se causa sofrimento ou humilhação contínua, não é brincadeira. Guarde evidências e reporte.</p>
         </div>
-        <div class="card">
-          <div class="card-title">🧠 Gestão da Ansiedade</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Estratégias de respiração e pausas conscientes auxiliam no bem-estar e foco escolar.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: MURAL ACOLHEDOR -->
-    <section id="mural" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2 style="color: var(--purple-dark);">Mural Acolhedor</h2>
-        <button class="btn btn-green" onclick="openPostModal()" style="width: auto;">+ Publicar</button>
-      </div>
-      <div class="cards-grid" id="muralContainer"></div>
-    </section>
-
-    <!-- SEÇÃO: REDE DE APOIO -->
-    <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Rede de Apoio</h2>
-      <div class="cards-grid" id="apoioGridContainer">
-        <div class="card">
-          <div class="card-title">💛 CVV — Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Atendimento gratuito e sigiloso de apoio emocional.</p>
-          <a href="tel:188" class="btn btn-outline" style="text-decoration: none;">📞 Ligar 188</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: PAINEL GESTOR (ADMIN) -->
-    <section id="dashboard" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h2 style="color: var(--purple-dark);">Painel de Gestão</h2>
-        <span class="status-badge badge-resolvido">Admin Autorizado</span>
-      </div>
-
-      <div class="cards-grid" style="margin-bottom: 1.5rem;">
-        <div class="card">
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">TOTAL DE RELATOS</div>
-          <div style="font-size: 1.6rem; font-weight: 800; color: var(--purple-dark);" id="statTotalRelatos">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">EM ANÁLISE</div>
-          <div style="font-size: 1.6rem; font-weight: 800; color: #D97706;" id="statAnalise">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">EM MEDIAÇÃO</div>
-          <div style="font-size: 1.6rem; font-weight: 800; color: #4338CA;" id="statMediacao">0</div>
-        </div>
-      </div>
-
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Registros Recebidos</h3>
-      <div class="data-table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>ID Usuário</th>
-              <th>Tipo</th>
-              <th>Local / Motivo</th>
-              <th>Data</th>
-              <th>Urgente?</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="adminTableBody"></tbody>
-        </table>
-      </div>
-
-      <h3 style="color: var(--purple-dark); margin-top: 2rem; margin-bottom: 0.75rem;">Gerenciar Chats dos Alunos</h3>
-      <div class="cards-grid" id="adminChatsGrid">
-        <p style="color: var(--text-muted); font-size: 0.85rem;">Carregando conversas ativas...</p>
-      </div>
-
-      <h3 style="color: var(--purple-dark); margin-top: 2rem; margin-bottom: 0.75rem;">Ferramentas do Gestor</h3>
-
-      <div class="cards-grid">
-        <!-- REDE DE APOIO -->
-        <div class="card">
-          <div class="card-title">📞 Add Rede de Apoio</div>
-          <form onsubmit="submitApoio(event)">
-            <div class="form-group">
-              <label>Título / Órgão:</label>
-              <input type="text" id="apoioTitle" class="form-control" required placeholder="Ex: Conselho Tutelar">
-            </div>
-            <div class="form-group">
-              <label>Descrição:</label>
-              <textarea id="apoioDesc" class="form-control" required placeholder="Detalhes do apoio..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Contato (Tel ou Link):</label>
-              <input type="text" id="apoioContact" class="form-control" required placeholder="188 ou https://...">
-            </div>
-            <div class="form-group">
-              <label>Imagem (URL pública):</label>
-              <input type="url" id="apoioImg" class="form-control" placeholder="https://exemplo.com/foto.jpg">
-            </div>
-            <button type="submit" class="btn btn-green">Salvar Apoio</button>
-          </form>
-        </div>
-
-        <!-- MÚSICA / ÁUDIO -->
-        <div class="card">
-          <div class="card-title">🎵 Add Música de Respiração</div>
-          <form onsubmit="submitAudio(event)">
-            <div class="form-group">
-              <label>Nome da Música:</label>
-              <input type="text" id="audioName" class="form-control" required placeholder="Ex: Calmaria Relaxante">
-            </div>
-            <div class="form-group">
-              <label>Link Direto do Áudio (MP3):</label>
-              <input type="url" id="audioUrl" class="form-control" required placeholder="https://.../som.mp3">
-            </div>
-            <button type="submit" class="btn btn-green">Salvar Música</button>
-          </form>
-        </div>
-
-        <!-- MURAL DE AVISOS -->
-        <div class="card">
-          <div class="card-title">📢 Postar Aviso Oficial</div>
-          <form onsubmit="submitAviso(event)">
-            <div class="form-group">
-              <label>Título do Aviso:</label>
-              <input type="text" id="avisoTitle" class="form-control" required placeholder="Ex: Comunicado Geral">
-            </div>
-            <div class="form-group">
-              <label>Descrição:</label>
-              <textarea id="avisoDesc" class="form-control" required placeholder="Informações do aviso..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Imagem (URL pública):</label>
-              <input type="url" id="avisoImg" class="form-control" placeholder="https://exemplo.com/aviso.jpg">
-            </div>
-            <button type="submit" class="btn btn-green">Publicar Aviso</button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- MODAL DE LOGIN (HASH SEGURO PARA SENHA "12345") -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Acesso do Gestor</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Área restrita à coordenação escolar.</p>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label>Usuário:</label>
-          <input type="text" id="loginUser" class="form-control" required placeholder="Usuário">
-        </div>
-        <div class="form-group">
-          <label>Senha:</label>
-          <input type="password" id="loginPass" class="form-control" required placeholder="••••••••">
-        </div>
-        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-          <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-          <button type="submit" class="btn btn-green">Entrar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL MURAL ALUNO -->
-  <div class="modal-overlay" id="postModal">
-    <div class="modal-box">
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Publicar no Mural</h3>
-      <form onsubmit="submitPost(event)">
-        <div class="form-group">
-          <label>Mensagem de Apoio:</label>
-          <textarea id="postText" class="form-control" required placeholder="Escreva algo inspirador..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Assinatura (Opcional):</label>
-          <input type="text" id="postAuthor" class="form-control" placeholder="Ex: Anônimo, Turma 3º Ano...">
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closePostModal()">Cancelar</button>
-          <button type="submit" class="btn btn-green">Publicar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- LÓGICA FIREBASE E SISTEMA -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
-      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
-      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
-      projectId: "escutaacolhimento-a9f15",
-      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
-      messagingSenderId: "639476751207",
-      appId: "1:639476751207:web:571f32f893f4156176adc2",
-      measurementId: "G-WEQXQG0PHH"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    const relatosRef = ref(database, 'relatos');
-    const muralRef = ref(database, 'mural');
-    const apoioRef = ref(database, 'rede_apoio');
-    const audiosRef = ref(database, 'audios_relaxantes');
-    const chatsRef = ref(database, 'chats_individuais');
-
-    /* IDENTIFICADOR ÚNICO DO ESTUDANTE */
-    let userId = localStorage.getItem('user_unique_id');
-    if (!userId) {
-      userId = 'ALUNO-' + Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem('user_unique_id', userId);
-    }
-    document.getElementById('chatSessionIdLabel').innerText = `ID: ${userId}`;
-
-    window.isAdmin = false;
-    let respireInterval = null;
-    let dynamicAudios = {};
-
-    // Hash SHA-256 para senha "12345" protegida no cliente
-    const ADMIN_HASH = '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5';
-
-    async function hashPassword(string) {
-      const utf8 = new TextEncoder().encode(string);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Listener Relatos / Painel Admin
-    onValue(relatosRef, (snapshot) => {
-      const data = snapshot.val();
-      const tbody = document.getElementById('adminTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      let countTotal = 0, countAnalise = 0, countMediacao = 0;
-
-      if (data) {
-        Object.keys(data).forEach((key) => {
-          const item = data[key];
-          countTotal++;
-          if (item.status === 'Em Análise') countAnalise++;
-          if (item.status === 'Em Mediação') countMediacao++;
-
-          const badgeClass = item.status === 'Em Análise' ? 'badge-analise' : (item.status === 'Em Mediação' ? 'badge-mediacao' : 'badge-resolvido');
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><b>${item.id}</b></td>
-            <td>${item.tipo}</td>
-            <td>${item.local}</td>
-            <td>${item.data}</td>
-            <td>${item.urgente ? '<span style="color: red; font-weight: 700;">SIM</span>' : 'Não'}</td>
-            <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
-            <td>
-              <button class="btn btn-outline" style="padding: 0.2rem 0.4rem; font-size: 0.75rem;" onclick="toggleStatus('${key}', '${item.status}')">
-                Mudar Status
-              </button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      document.getElementById('statTotalRelatos').innerText = countTotal;
-      document.getElementById('statAnalise').innerText = countAnalise;
-      document.getElementById('statMediacao').innerText = countMediacao;
-    });
-
-    // Listener Chat Individual em Tempo Real
-    onValue(chatsRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('chatMessagesContainer');
-      const adminGrid = document.getElementById('adminChatsGrid');
-      
-      // Renderização na Visão do Aluno
-      if (container) {
-        container.innerHTML = '';
-        let hasMessages = false;
-        if (data && data[userId]) {
-          Object.values(data[userId]).forEach((msg) => {
-            hasMessages = true;
-            const bubble = document.createElement('div');
-            bubble.className = `chat-bubble ${msg.sender}`;
-            bubble.innerText = msg.text;
-            container.appendChild(bubble);
-          });
-        }
-        if (!hasMessages) {
-          container.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem;">Nenhuma mensagem enviada ainda. Fale com a equipe!</div>`;
-        }
-        container.scrollTop = container.scrollHeight;
-      }
-
-      // Renderização na Visão do Gestor
-      if (adminGrid && window.isAdmin) {
-        adminGrid.innerHTML = '';
-        if (data) {
-          Object.keys(data).forEach((uId) => {
-            const userMsgs = data[uId];
-            const lastMsgKey = Object.keys(userMsgs).pop();
-            const lastMsg = userMsgs[lastMsgKey];
-
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-              <div class="card-title">💬 Canal: ${uId}</div>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Última: "${lastMsg.text}"</p>
-              <button class="btn btn-green" onclick="openAdminChatModal('${uId}')">Responder Chat</button>
-            `;
-            adminGrid.appendChild(card);
-          });
-        } else {
-          adminGrid.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum chat ativo no momento.</p>`;
-        }
-      }
-    });
-
-    // Envio de Mensagem pelo Aluno
-    window.sendChatMessage = function(e) {
-      e.preventDefault();
-      const input = document.getElementById('chatInputMsg');
-      const text = input.value.trim();
-      if (!text) return;
-
-      push(ref(database, `chats_individuais/${userId}`), {
-        sender: 'user',
-        text: text,
-        timestamp: Date.now()
-      }).then(() => {
-        input.value = '';
-      });
-    };
-
-    // Modal de resposta do Gestor
-    window.openAdminChatModal = function(targetUserId) {
-      const response = prompt(`Responder para o aluno [${targetUserId}]:`);
-      if (response && response.trim() !== '') {
-        push(ref(database, `chats_individuais/${targetUserId}`), {
-          sender: 'admin',
-          text: `[Coordenação]: ${response}`,
-          timestamp: Date.now()
-        }).then(() => {
-          alert('Resposta enviada com sucesso!');
-        });
-      }
-    };
-
-    onValue(muralRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('muralContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (data) {
-        Object.values(data).reverse().forEach((post) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.style.borderLeft = post.isAviso ? '4px solid var(--green)' : '4px solid var(--purple)';
-          
-          let imgTag = post.img ? `<img src="${post.img}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin-top: 0.5rem;" alt="Imagem do mural">` : '';
-          
-          card.innerHTML = `
-            ${post.isAviso ? '<span style="font-size: 0.65rem; background: #CCFBF1; color: var(--green-dark); padding: 2px 6px; border-radius: 4px; font-weight: bold;">AVISO OFICIAL</span>' : ''}
-            <h4 style="color: var(--purple-dark); margin-top: 0.25rem;">${post.title || ''}</h4>
-            <p style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 0.9rem;">"${post.text}"</p>
-            ${imgTag}
-            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 0.5rem;">— ${post.author}</div>
-          `;
-          container.appendChild(card);
-        });
-      }
-    });
-
-    onValue(audiosRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('audioListContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (data) {
-        Object.keys(data).forEach((key) => {
-          const item = data[key];
-          dynamicAudios[key] = new Audio(item.url);
-          dynamicAudios[key].loop = true;
-
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-outline';
-          btn.style.justifyContent = 'space-between';
-          btn.onclick = () => toggleDynamicAudio(key);
-          btn.innerHTML = `
-            <span>🎵 ${item.name}</span>
-            <span id="label-audio-${key}" style="font-weight:700; color:var(--green);">Play</span>
-          `;
-          container.appendChild(btn);
-        });
-      }
-    });
-
-    onValue(apoioRef, (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('apoioGridContainer');
-      if (!container) return;
-      container.innerHTML = `
-        <div class="card">
-          <div class="card-title">💛 CVV — Valorização da Vida</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Atendimento gratuito e sigiloso de apoio emocional.</p>
-          <a href="tel:188" class="btn btn-outline" style="text-decoration: none;">📞 Ligar 188</a>
-        </div>
-      `;
-
-      if (data) {
-        Object.values(data).forEach((item) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          let imgTag = item.img ? `<img src="${item.img}" style="width:100%; max-height:140px; object-fit:cover; border-radius:8px; margin-bottom:0.75rem;" alt="Apoio">` : '';
-          let actionBtn = item.contact.startsWith('http') 
-            ? `<a href="${item.contact}" target="_blank" class="btn btn-outline" style="text-decoration:none;">🌐 Acessar Link</a>`
-            : `<a href="tel:${item.contact}" class="btn btn-outline" style="text-decoration:none;">📞 Ligar ${item.contact}</a>`;
-
-          card.innerHTML = `
-            ${imgTag}
-            <div class="card-title">🛡️ ${item.title}</div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${item.desc}</p>
-            ${actionBtn}
-          `;
-          container.appendChild(card);
-        });
-      }
-    });
-
-    /* LOGIN SEGURO COM HASH */
-    window.handleLogin = async function(e) {
-      e.preventDefault();
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
-      const hashedPass = await hashPassword(pass);
-
-      if (user === 'admin' && hashedPass === ADMIN_HASH) {
-        window.isAdmin = true;
-        document.getElementById('roleIcon').innerText = '🛡️';
-        document.getElementById('roleText').innerText = 'Gestor';
-        document.getElementById('adminNavBtn').style.display = 'flex';
-        document.getElementById('btnLoginModal').style.display = 'none';
-        document.getElementById('btnLogoutBtn').style.display = 'flex';
-        closeLoginModal();
-        switchNav('dashboard');
-      } else {
-        alert('Usuário ou senha incorretos!');
-      }
-    };
-
-    window.submitRelato = function(e) {
-      e.preventDefault();
-      const place = document.getElementById('reportPlace').value;
-      const date = document.getElementById('reportDate').value;
-      const danger = document.getElementById('reportDanger').checked;
-      const desc = document.getElementById('reportDesc').value;
-
-      push(relatosRef, {
-        id: userId,
-        tipo: 'Relato Anônimo',
-        local: place,
-        data: date,
-        urgente: danger,
-        status: 'Em Análise',
-        desc: desc,
-        timestamp: Date.now()
-      }).then(() => {
-        alert(`Relato enviado com sucesso!\nSeu ID de acompanhamento: ${userId}`);
-        e.target.reset();
-        switchNav('inicio');
-      });
-    };
-
-    window.submitMediacao = function(e) {
-      e.preventDefault();
-      const topic = document.getElementById('mediacaoTopic').value;
-      const desc = document.getElementById('mediacaoDesc').value;
-
-      push(relatosRef, {
-        id: userId,
-        tipo: 'Mediação',
-        local: topic,
-        data: new Date().toISOString().split('T')[0],
-        urgente: false,
-        status: 'Em Mediação',
-        desc: desc,
-        timestamp: Date.now()
-      }).then(() => {
-        alert(`Mediação solicitada com sucesso!\nSeu ID: ${userId}`);
-        e.target.reset();
-        switchNav('inicio');
-      });
-    };
-
-    window.submitPost = function(e) {
-      e.preventDefault();
-      const text = document.getElementById('postText').value;
-      const author = document.getElementById('postAuthor').value || 'Anônimo';
-
-      push(muralRef, {
-        text: text,
-        author: author,
-        timestamp: Date.now()
-      }).then(() => {
-        closePostModal();
-        e.target.reset();
-      });
-    };
-
-    window.submitApoio = function(e) {
-      e.preventDefault();
-      const title = document.getElementById('apoioTitle').value;
-      const desc = document.getElementById('apoioDesc').value;
-      const contact = document.getElementById('apoioContact').value;
-      const img = document.getElementById('apoioImg').value;
-
-      push(apoioRef, { title, desc, contact, img }).then(() => {
-        alert('Rede de apoio adicionada!');
-        e.target.reset();
-      });
-    };
-
-    window.submitAudio = function(e) {
-      e.preventDefault();
-      const name = document.getElementById('audioName').value;
-      const url = document.getElementById('audioUrl').value      push(audiosRef, { name, url }).then(() => {
-        alert('Música adicionada com sucesso!');
-        e.target.reset();
-      });
-    };
-
-    window.submitAviso = function(e) {
-      e.preventDefault();
-      const title = document.getElementById('avisoTitle').value;
-      const text = document.getElementById('avisoDesc').value;
-      const img = document.getElementById('avisoImg').value;
-
-      push(muralRef, {
-        title,
-        text,
-        img,
-        author: 'Gestão CETI',
-        isAviso: true,
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Aviso institucional publicado!');
-        e.target.reset();
-      });
-    };
-
-    window.toggleStatus = function(key, currentStatus) {
-      const statuses = ['Em Análise', 'Em Mediação', 'Resolvido'];
-      const nextStatus = statuses[(statuses.indexOf(currentStatus) + 1) % statuses.length];
-      update(ref(database, `relatos/${key}`), { status: nextStatus });
-    };
-
-    window.toggleDynamicAudio = function(key) {
-      const audio = dynamicAudios[key];
-      const label = document.getElementById(`label-audio-${key}`);
-
-      if (audio.paused) {
-        audio.play().catch(() => alert('Toque na tela para liberar a reprodução de áudio.'));
-        label.innerText = 'Pause';
-      } else {
-        audio.pause();
-        label.innerText = 'Play';
-      }
-    };
-
-    window.startRespire = function() {
-      stopRespire();
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      let state = 0;
-
-      const cycle = () => {
-        if (state === 0) {
-          text.innerText = 'Inspire...';
-          circle.style.transform = 'scale(1.3)';
-          state = 1;
-        } else if (state === 1) {
-          text.innerText = 'Segure...';
-          state = 2;
-        } else {
-          text.innerText = 'Expire...';
-          circle.style.transform = 'scale(1)';
-          state = 0;
-        }
-      };
-      cycle();
-      respireInterval = setInterval(cycle, 4000);
-    };
-
-    window.stopRespire = function() {
-      if (respireInterval) clearInterval(respireInterval);
-      const circle = document.getElementById('respireCircle');
-      const text = document.getElementById('respireInstruction');
-      if (circle && text) {
-        circle.style.transform = 'scale(1)';
-        text.innerText = 'Inspire';
-      }
-    };
-
-    window.switchNav = function(targetId, element = null) {
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) targetSection.classList.add('active');
-      if (element) element.classList.add('active');
-
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    window.toggleSidebar = function() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('open');
-    };
-
-    window.openPostModal = () => document.getElementById('postModal').classList.add('open');
-    window.closePostModal = () => document.getElementById('postModal').classList.remove('open');
-    window.openLoginModal = () => document.getElementById('loginModal').classList.add('open');
-    window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('open');
-
-    window.logout = function() {
-      window.isAdmin = false;
-      document.getElementById('roleIcon').innerText = '👤';
-      document.getElementById('roleText').innerText = 'Visitante';
-      document.getElementById('adminNavBtn').style.display = 'none';
-      document.getElementById('btnLoginModal').style.display = 'flex';
-      document.getElementById('btnLogoutBtn').style.display = 'none';
-      switchNav('inicio');
-    };
-  </script>
+        <div class="card" style="border-top: 4px solid var(--green);">
+          <div class="card-title">🧠 Acolhimento Emocional</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Sentir-se sobrecarregado faz parte. Conversar sobre suas emoções é um ato de autocuidado.</p>
+</div>
+</div>
+</section>
+<!-- MURAL E AVISOS -->
+<section id="mural" class="view-section">
+<div style="margin-bottom: 2rem;">
+<h2 style="color: var(--purple-dark); margin-bottom: 1rem;">📢 Avisos Oficiais da Gestão</h2>
+<div id="avisosGestaoContainer" style="display: flex; flex-direction: column; gap: 1rem;">
+<!-- Avisos inseridos pelo gestor -->
+<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum aviso oficial no momento.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-title">💚 Mural dos Estudantes</div>
+<p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Deixe uma mensagem positiva ou de incentivo para os colegas do CETI José Marques.</p>
+<div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+<input type="text" id="muralInput" class="form-control" placeholder="Escreva uma mensagem positiva..." maxlength="140">
+<button class="btn btn-green" style="width: auto;" onclick="addMuralPost()">Publicar</button>
+</div>
+<div class="cards-grid" id="muralGrid"></div>
+</div>
+</section>
+<!-- REDE DE APOIO -->
+<section id="apoio" class="view-section">
+<h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais Externos de Emergência</h2>
+<div class="cards-grid">
+<div class="card">
+<div class="card-title">📞 CVV — Centro de Valorização da Vida</div>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Apoio emocional e prevenção do suicídio. Atendimento gratuito 24h.</p>
+<a href="tel:188" class="btn btn-outline" style="text-decoration:none;">Ligar 188</a>
+</div>
+<div class="card">
+<div class="card-title">🛡️ Disque 100</div>
+<p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Violação de direitos humanos, crianças e adolescentes.</p>
+<a href="tel:100" class="btn btn-outline" style="text-decoration:none;">Ligar 100</a>
+</div>
+</div>
+</section>
+<!-- DASHBOARD GESTOR -->
+<section id="dashboard" class="view-section">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+<h2 style="color: var(--purple-dark);">Painel Gestor de Ocorrências</h2>
+<span class="status-badge badge-resolvido">Gestor Autenticado</span>
+</div>
+<div class="cards-grid" style="margin-bottom: 1.5rem;">
+<div class="card">
+<div style="font-size: 0.8rem; color: var(--text-muted);">Relatos / Atendimentos Pendentes</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);" id="statPendentes">0</div>
+</div>
+<div class="card">
+<div style="font-size: 0.8rem; color: var(--text-muted);">Em Mediação</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: #4338CA;" id="statMediacao">0</div>
+</div>
+<div class="card">
+<div style="font-size: 0.8rem; color: var(--text-muted);">Resolvidos</div>
+<div style="font-size: 1.8rem; font-weight: 800; color: var(--green-dark);" id="statResolvidos">0</div>
+</div>
+</div>
+<div class="card">
+<div class="card-title">📋 Gerenciamento Unificado em Tempo Real</div>
+<div class="data-table-container">
+<table>
+<thead>
+<tr>
+<th>Protocolo</th>
+<th>Tipo</th>
+<th>Canal/Local</th>
+<th>Urgente?</th>
+<th>Status</th>
+<th>Ações / Alterar Status</th>
+</tr>
+</thead>
+<tbody id="adminTableBody"></tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- GESTÃO DE ÁUDIOS -->
+<section id="gestaoAudios" class="view-section">
+<div class="card" style="margin-bottom: 1.5rem;">
+<div class="card-title">🎧 Cadastrar Novo Áudio para o Espaço Respire</div>
+<form onsubmit="cadastrarAudio(event)">
+<div class="form-group">
+<label>Nome do Áudio / Música:</label>
+<input type="text" id="audioTitle" class="form-control" required placeholder="Ex: Chuva Suave na Janela">
+</div>
+<div class="form-group">
+<label>Link Direto do Áudio (.mp3 / .ogg):</label>
+<input type="url" id="audioUrl" class="form-control" required placeholder="[https://exemplo.com/audio.mp3](https://exemplo.com/audio.mp3)">
+</div>
+<button type="submit" class="btn btn-green">Adicionar Áudio</button>
+</form>
+</div>
+<div class="card">
+<div class="card-title">📋 Áudios Cadastrados</div>
+<div id="adminAudiosList" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem;"></div>
+</div>
+</section>
+<!-- GESTÃO DE AVISOS -->
+<section id="gestaoAvisos" class="view-section">
+<div class="card">
+<div class="card-title">📢 Publicar Aviso Oficial</div>
+<form onsubmit="publicarAviso(event)">
+<div class="form-group">
+<label>Título do Aviso:</label>
+<input type="text" id="avisoTitle" class="form-control" required placeholder="Ex: Reunião do Grêmio Estudantil">
+</div>
+<div class="form-group">
+<label>Descrição do Aviso:</label>
+<textarea id="avisoDesc" class="form-control" required placeholder="Escreva os detalhes do aviso..."></textarea>
+</div>
+<div class="form-group">
+<label>Imagem Opcional (Galeria):</label>
+<input type="file" id="avisoImageFile" class="form-control" accept="image/*">
+</div>
+<button type="submit" class="btn btn-purple">Publicar Aviso Oficial</button>
+</form>
+</div>
+</section>
+</main>
+<!-- MODAL LOGIN GESTOR -->
+<div class="modal-overlay" id="loginModal">
+<div class="modal-box">
+<div class="card-title">🔐 Acesso Administrativo</div>
+<p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Entre com a conta de e-mail e senha de gestor cadastrada no Firebase.</p>
+<div class="form-group">
+<label>E-mail:</label>
+<input type="email" id="adminEmail" class="form-control" placeholder="gestor@ceti.com">
+</div>
+<div class="form-group">
+<label>Senha:</label>
+<input type="password" id="adminPassword" class="form-control" placeholder="••••••••">
+</div>
+<div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+<button class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
+<button class="btn btn-purple" onclick="loginAdmin()">Entrar</button>
+</div>
+</div>
+</div>
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+const firebaseConfig = {
+apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+projectId: "escutaacolhimento-a9f15",
+storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+messagingSenderId: "639476751207",
+appId: "1:639476751207:web:571f32f893f4156176adc2",
+measurementId: "G-WEQXQG0PHH"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+// Disponibilizar globalmente para funções auxiliares
+window.db = db;
+window.auth = auth;
+window.storage = storage;
+window.addDoc = addDoc;
+window.collection = collection;
+window.serverTimestamp = serverTimestamp;
+window.updateDoc = updateDoc;
+window.deleteDoc = deleteDoc;
+window.doc = doc;
+window.getDocs = getDocs;
+window.query = query;
+window.where = where;
+window.ref = ref;
+window.uploadBytes = uploadBytes;
+window.getDownloadURL = getDownloadURL;
+// Autenticação inicial anônima para alunos lerem mural/áudios com segurança
+signInAnonymously(auth).catch(err => console.error("Erro auth anônima", err));
+// Monitorar estado de autenticação (Gestor vs Visitante)
+onAuthStateChanged(auth, (user) => {
+const isAnonymous = !user || user.isAnonymous;
+const adminNavGroup = document.getElementById('adminNavGroup');
+const btnLoginModal = document.getElementById('btnLoginModal');
+const btnLogoutBtn = document.getElementById('btnLogoutBtn');
+const roleText = document.getElementById('roleText');
+const roleIcon = document.getElementById('roleIcon');
+if (!isAnonymous) {
+roleText.innerText = "Gestor Escolar";
+roleIcon.innerText = "🛡️";
+adminNavGroup.style.display = "block";
+btnLoginModal.style.display = "none";
+btnLogoutBtn.style.display = "block";
+} else {
+roleText.innerText = "Estudante / Visitante";
+roleIcon.innerText = "👤";
+adminNavGroup.style.display = "none";
+btnLoginModal.style.display = "block";
+btnLogoutBtn.style.display = "none";
+}
+});
+// LISTENERS EM TEMPO REAL
+// 1. Áudios Respire
+onSnapshot(query(collection(db, "audios_respire"), orderBy("timestamp", "desc")), (snapshot) => {
+const container = document.getElementById('audiosListContainer');
+const adminContainer = document.getElementById('adminAudiosList');
+if (!container) return;
+container.innerHTML = '';
+if(adminContainer) adminContainer.innerHTML = '';
+if(snapshot.empty) {
+container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum áudio cadastrado ainda.</p>';
+return;
+}
+snapshot.forEach(docSnap => {
+const data = docSnap.data();
+const id = docSnap.id;
+// Visão Aluno
+const div = document.createElement('div');
+div.style.cssText = "padding: 0.75rem; background: #F8FAFC; border-radius: var(--radius-md); border: 1px solid var(--border-color);";
+div.innerHTML = <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--purple-dark);">🎵 ${data.titulo}</div> <audio controls style="width: 100%; height: 36px;"><source src="${data.url}" type="audio/mpeg">Seu navegador não suporta áudio.</audio>;
+container.appendChild(div);
+// Visão Admin
+if(adminContainer) {
+const admDiv = document.createElement('div');
+admDiv.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #F8FAFC; border-radius: var(--radius-md); border: 1px solid var(--border-color);";
+admDiv.innerHTML = <div><strong>${data.titulo}</strong><br><a href="${data.url}" target="_blank" style="font-size:0.75rem; color:var(--purple);">${data.url}</a></div> <button class="btn btn-danger" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="removerAudio('${id}')">Remover</button>;
+adminContainer.appendChild(admDiv);
+}
+});
+});
+// 2. Avisos da Gestão
+onSnapshot(query(collection(db, "avisos_mural"), orderBy("timestamp", "desc")), (snapshot) => {
+const container = document.getElementById('avisosGestaoContainer');
+if (!container) return;
+container.innerHTML = '';
+if(snapshot.empty) {
+container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum aviso oficial no momento.</p>';
+return;
+}
+snapshot.forEach(docSnap => {
+const data = docSnap.data();
+const card = document.createElement('div');
+card.className = 'card';
+card.style.borderLeft = '4px solid var(--purple)';
+card.innerHTML = <div style="font-size: 0.75rem; font-weight: 800; color: var(--purple); text-transform: uppercase; margin-bottom: 0.25rem;">📢 AVISO IMPORTANTE</div> <div style="font-weight: 700; font-size: 1.1rem; color: var(--purple-dark); margin-bottom: 0.5rem;">${data.titulo}</div> <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5; margin-bottom: ${data.imagemUrl ? '1rem' : '0.5rem'};">${data.descricao}</p> ${data.imagemUrl ?<img src="${data.imagemUrl}" style="max-width: 100%; border-radius: var(--radius-md); margin-bottom: 0.5rem;" alt="Imagem do Aviso">: ''} <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">— Gestão ABRAÇAR (CETI José Marques)</span>;
+container.appendChild(card);
+});
+});
+// 3. Mural dos Estudantes
+onSnapshot(query(collection(db, "mural"), orderBy("timestamp", "desc")), (snapshot) => {
+const grid = document.getElementById('muralGrid');
+if (!grid) return;
+grid.innerHTML = '';
+snapshot.forEach((docSnap) => {
+const data = docSnap.data();
+const card = document.createElement('div');
+card.className = 'card';
+card.style.borderLeft = '4px solid var(--green)';
+card.innerHTML = <p style="font-style: italic; font-size: 0.9rem;">"${data.text}"</p> <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">— ID: ${data.authorId || 'Estudante'}</span>;
+grid.appendChild(card);
+});
+});
+// 4. Registros Admin
+onSnapshot(query(collection(db, "registros"), orderBy("timestamp", "desc")), (snapshot) => {
+const tbody = document.getElementById('adminTableBody');
+if (!tbody) return;
+tbody.innerHTML = '';
+let countPendentes = 0;
+let countMediacao = 0;
+let countResolvidos = 0;
+snapshot.forEach((docSnap) => {
+const data = docSnap.data();
+const id = docSnap.id;
+if (data.status === 'Em Análise') countPendentes++;
+else if (data.status === 'Em Mediação') countMediacao++;
+else if (data.status === 'Resolvido') countResolvidos++;
+const tr = document.createElement('tr');
+tr.innerHTML = <td><strong>${data.code}</strong></td> <td>${data.tipo}</td> <td>${data.canalOuLocal || 'Geral'}</td> <td><span style="${data.isDanger ? 'color: red; font-weight:700;' : ''}">${data.isDanger ? 'Sim' : 'Não'}</span></td> <td> <select class="form-control" style="padding: 0.3rem; font-size: 0.75rem;" onchange="alterarStatus('${id}', this.value)"> <option value="Em Análise" ${data.status === 'Em Análise' ? 'selected' : ''}>Em Análise</option> <option value="Em Mediação" ${data.status === 'Em Mediação' ? 'selected' : ''}>Em Mediação</option> <option value="Resolvido" ${data.status === 'Resolvido' ? 'selected' : ''}>Resolvido</option> </select> </td> <td> <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="alert('Detalhes: ${data.description ? data.description.replace(/'/g, "\\'") : 'Sem detalhes'}')">Detalhes</button> </td>;
+tbody.appendChild(tr);
+});
+document.getElementById('statPendentes').innerText = countPendentes;
+document.getElementById('statMediacao').innerText = countMediacao;
+document.getElementById('statResolvidos').innerText = countResolvidos;
+});
+</script>
+<!-- LÓGICA DE INTERFACE -->
+<script>
+let respireInterval = null;
+function generateUniqueID() {
+return 'ABR-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+}
+function toggleSidebar() {
+document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function switchNav(viewId, element) {
+document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+const target = document.getElementById(viewId);
+if (target) target.classList.add('active');
+if (element) element.classList.add('active');
+if (window.innerWidth <= 768) {
+document.getElementById('sidebar').classList.remove('open');
+document.getElementById('sidebarOverlay').classList.remove('open');
+}
+}
+function openChatForm(channelName) {
+document.getElementById('chatChannelInput').value = channelName;
+document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channelName;
+document.getElementById('chatFormCard').style.display = 'block';
+window.scrollTo({ top: document.getElementById('chatFormCard').offsetTop - 20, behavior: 'smooth' });
+}
+async function submitRegistro(e, tipo) {
+e.preventDefault();
+const code = generateUniqueID();
+let payload = {
+code: code,
+tipo: tipo,
+status: 'Em Análise',
+isDanger: false,
+timestamp: window.serverTimestamp()
+};
+if (tipo === 'Atendimento') {
+payload.canalOuLocal = document.getElementById('chatChannelInput').value;
+payload.description = document.getElementById('chatMessageInput').value;
+} else if (tipo === 'Relato') {
+payload.canalOuLocal = document.getElementById('reportPlace').value;
+payload.date = document.getElementById('reportDate').value;
+payload.isDanger = document.getElementById('reportDanger').checked;
+payload.description = document.getElementById('reportDesc').value;
+} else if (tipo === 'Mediação') {
+payload.canalOuLocal = document.getElementById('mediacaoTopic').value;
+payload.description = document.getElementById('mediacaoDesc').value;
+}
+try {
+await window.addDoc(window.collection(window.db, "registros"), payload);
+alert(Solicitação enviada com sucesso!\nGuarde seu ID de protocolo: ${code});
+e.target.reset();
+if(tipo === 'Atendimento') document.getElementById('chatFormCard').style.display='none';
+} catch(err) {
+console.error(err);
+alert(Erro ao enviar. Verifique sua conexão. Seu código seria: ${code});
+}
+}
+async function consultarProtocolo() {
+const code = document.getElementById('searchProtocolInput').value.trim().toUpperCase();
+const container = document.getElementById('protocolResultContainer');
+if (!code) return alert('Digite um código de protocolo.');
+container.style.display = 'block';
+container.innerHTML = 'Buscando protocolo...';
+try {
+const q = window.query(window.collection(window.db, "registros"), window.where("code", "==", code));
+const querySnapshot = await window.getDocs(q);
+if (querySnapshot.empty) {
+container.innerHTML = <p style="color: #EF4444; font-size: 0.9rem;">Nenhum registro encontrado com o protocolo <strong>${code}</strong>.</p>;
+return;
+}
+querySnapshot.forEach((docSnap) => {
+const data = docSnap.data();
+container.innerHTML = <div style="font-weight: 700; color: var(--purple-dark); margin-bottom: 0.5rem;">Protocolo: ${data.code}</div> <p style="font-size: 0.85rem; margin-bottom: 0.25rem;"><strong>Tipo:</strong> ${data.tipo}</p> <p style="font-size: 0.85rem; margin-bottom: 0.25rem;"><strong>Canal/Local:</strong> ${data.canalOuLocal || 'Geral'}</p> <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Status Atual:</strong> <span class="status-badge ${data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${data.status}</span></p> <p style="font-size: 0.85rem; color: var(--text-muted);"><strong>Descrição enviada:</strong> ${data.description}</p>;
+});
+} catch(err) {
+console.error(err);
+container.innerHTML = <p style="color: #EF4444;">Erro ao consultar o protocolo.</p>;
+}
+}
+async function addMuralPost() {
+const input = document.getElementById('muralInput');
+const text = input.value.trim();
+if (!text) return alert('Escreva uma mensagem antes de publicar.');
+try {
+await window.addDoc(window.collection(window.db, "mural"), {
+text: text,
+authorId: generateUniqueID(),
+timestamp: window.serverTimestamp()
+});
+input.value = '';
+} catch(err) {
+console.error(err);
+}
+}
+// GESTÃO ADMIN
+function openLoginModal() { document.getElementById('loginModal').classList.add('open'); }
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
+async function loginAdmin() {
+const email = document.getElementById('adminEmail').value;
+const pass = document.getElementById('adminPassword').value;
+try {
+const { signInWithEmailAndPassword } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+await signInWithEmailAndPassword(window.auth, email, pass);
+closeLoginModal();
+switchNav('dashboard');
+} catch(err) {
+alert('Falha na autenticação: E-mail ou senha incorretos.');
+}
+}
+async function logout() {
+const { signOut } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+await signOut(window.auth);
+switchNav('inicio');
+}
+async function alterarStatus(id, novoStatus) {
+try {
+await window.updateDoc(window.doc(window.db, "registros", id), { status: novoStatus });
+} catch(err) {
+alert('Erro ao atualizar status.');
+}
+}
+async function cadastrarAudio(e) {
+e.preventDefault();
+const titulo = document.getElementById('audioTitle').value;
+const url = document.getElementById('audioUrl').value;
+try {
+await window.addDoc(window.collection(window.db, "audios_respire"), {
+titulo: titulo,
+url: url,
+timestamp: window.serverTimestamp()
+});
+alert('Áudio cadastrado com sucesso!');
+e.target.reset();
+} catch(err) {
+alert('Erro ao cadastrar áudio.');
+}
+}
+async function removerAudio(id) {
+if(!confirm('Deseja realmente remover este áudio?')) return;
+try {
+await window.deleteDoc(window.doc(window.db, "audios_respire", id));
+} catch(err) {
+alert('Erro ao remover áudio.');
+}
+}
+async function publicarAviso(e) {
+e.preventDefault();
+const titulo = document.getElementById('avisoTitle').value;
+const descricao = document.getElementById('avisoDesc').value;
+const fileInput = document.getElementById('avisoImageFile');
+let imagemUrl = "";
+try {
+if (fileInput.files && fileInput.files[0]) {
+const file = fileInput.files[0];
+const storageRef = window.ref(window.storage, 'avisos/' + Date.now() + '_' + file.name);
+const snapshot = await window.uploadBytes(storageRef, file);
+imagemUrl = await window.getDownloadURL(snapshot.ref);
+}
+await window.addDoc(window.collection(window.db, "avisos_mural"), {
+titulo: titulo,
+descricao: descricao,
+imagemUrl: imagemUrl,
+timestamp: window.serverTimestamp()
+});
+alert('Aviso publicado com sucesso!');
+e.target.reset();
+switchNav('mural');
+} catch(err) {
+console.error(err);
+alert('Erro ao publicar aviso.');
+}
+}
+// ESPAÇO RESPIRE (ANIMAÇÃO)
+function startRespire() {
+const circle = document.getElementById('respireCircle');
+const text = document.getElementById('respireInstruction');
+if (!circle || !text) return;
+if (respireInterval) clearInterval(respireInterval);
+let step = 0;
+const steps = [
+{ label: 'Inspire...', scale: 'scale(1.4)', bg: '#40B615' },
+{ label: 'Segure...', scale: 'scale(1.4)', bg: '#4E22A5' },
+{ label: 'Expire...', scale: 'scale(1)', bg: '#64C6ED' }
+];
+function runStep() {
+const current = steps[step];
+text.innerText = current.label;
+circle.style.transform = current.scale;
+circle.style.backgroundColor = current.bg;
+step = (step + 1) % steps.length;
+}
+runStep();
+respireInterval = setInterval(runStep, 4000);
+}
+function stopRespire() {
+if (respireInterval) clearInterval(respireInterval);
+const circle = document.getElementById('respireCircle');
+const text = document.getElementById('respireInstruction');
+if (circle && text) {
+circle.style.transform = 'scale(1)';
+circle.style.backgroundColor = 'var(--green)';
+text.innerText = 'Inspire';
+}
+}
+</script>
 </body>
 </html>

@@ -648,7 +648,16 @@
           wrapper.style.padding = '1rem';
           wrapper.style.borderRadius = '8px';
           wrapper.style.borderLeft = '4px solid var(--purple)';
-          wrapper.innerHTML = `<strong>Status Atual:</strong> <span class="status-badge ${dados.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${dados.status}</span>`;
+
+          const strongEl = document.createElement('strong');
+          strongEl.textContent = 'Status Atual: ';
+          
+          const badgeEl = document.createElement('span');
+          badgeEl.className = `status-badge ${dados.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}`;
+          badgeEl.textContent = dados.status;
+
+          wrapper.appendChild(strongEl);
+          wrapper.appendChild(badgeEl);
           resultBox.appendChild(wrapper);
         } else {
           resultBox.textContent = `Nenhum relato encontrado com este token.`;
@@ -675,22 +684,43 @@
           const r = childSnap.val();
           
           const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><strong style="font-size:0.75rem">${r.code || 'N/D'}</strong></td>
-            <td>${r.place || ''}</td>
-            <td>${r.date || ''}</td>
-            <td>${r.danger ? '🚨 Sim' : 'Não'}</td>
-            <td><span class="status-badge ${r.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}">${r.status}</span></td>
-            <td></td>
-          `;
-          
+
+          const tdCode = document.createElement('td');
+          const strongCode = document.createElement('strong');
+          strongCode.style.fontSize = '0.75rem';
+          strongCode.textContent = r.code || 'N/D';
+          tdCode.appendChild(strongCode);
+
+          const tdPlace = document.createElement('td');
+          tdPlace.textContent = r.place || '';
+
+          const tdDate = document.createElement('td');
+          tdDate.textContent = r.date || '';
+
+          const tdDanger = document.createElement('td');
+          tdDanger.textContent = r.danger ? '🚨 Sim' : 'Não';
+
+          const tdStatus = document.createElement('td');
+          const badge = document.createElement('span');
+          badge.className = `status-badge ${r.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise'}`;
+          badge.textContent = r.status;
+          tdStatus.appendChild(badge);
+
+          const tdAction = document.createElement('td');
           const btnResolver = document.createElement('button');
           btnResolver.className = 'btn btn-purple';
           btnResolver.style.padding = '0.25rem 0.5rem';
           btnResolver.style.fontSize = '0.75rem';
           btnResolver.textContent = 'Resolver';
           btnResolver.onclick = () => resolverRelato(key, r.code);
-          tr.querySelector('td:last-child').appendChild(btnResolver);
+          tdAction.appendChild(btnResolver);
+
+          tr.appendChild(tdCode);
+          tr.appendChild(tdPlace);
+          tr.appendChild(tdDate);
+          tr.appendChild(tdDanger);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAction);
 
           tbody.appendChild(tr);
         });
@@ -707,7 +737,7 @@
       }
     }
 
-    // 3. Atendimentos & Mural
+    // 3. Atendimentos & Mural (Seguro contra XSS)
     window.openChatForm = function(channel) {
       document.getElementById('chatChannelInput').value = channel;
       document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channel;
@@ -738,19 +768,35 @@
       if(!grid) return;
       grid.innerHTML = '';
       if(!snapshot.exists()) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Nenhuma mensagem no mural.</p>';
+        const p = document.createElement('p');
+        p.style.color = 'var(--text-muted)';
+        p.textContent = 'Nenhuma mensagem no mural.';
+        grid.appendChild(p);
         return;
       }
       snapshot.forEach((childSnap) => {
         const r = childSnap.val();
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<p style="font-size: 0.95rem; margin-bottom: 0.5rem;">"${r.msg}"</p><div style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">— ${r.author}</div>`;
+
+        const pMsg = document.createElement('p');
+        pMsg.style.fontSize = '0.95rem';
+        pMsg.style.marginBottom = '0.5rem';
+        pMsg.textContent = `"${r.msg}"`;
+
+        const divAuthor = document.createElement('div');
+        divAuthor.style.fontSize = '0.75rem';
+        divAuthor.style.color = 'var(--purple)';
+        divAuthor.style.fontWeight = '700';
+        divAuthor.textContent = `— ${r.author}`;
+
+        card.appendChild(pMsg);
+        card.appendChild(divAuthor);
         grid.appendChild(card);
       });
     });
 
-    // 4. Avisos & Storage
+    // 4. Avisos & Storage (Seguro contra XSS)
     window.submitAdminAviso = async function(event) {
       event.preventDefault();
       const title = document.getElementById('adminAvisoTitulo')?.value.trim();
@@ -778,22 +824,45 @@
       if(!grid) return;
       grid.innerHTML = '';
       if(!snapshot.exists()) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Nenhum aviso oficial no momento.</p>';
+        const p = document.createElement('p');
+        p.style.color = 'var(--text-muted)';
+        p.style.fontSize = '0.85rem';
+        p.textContent = 'Nenhum aviso oficial no momento.';
+        grid.appendChild(p);
         return;
       }
       snapshot.forEach((childSnap) => {
         const a = childSnap.val();
         const card = document.createElement('div');
         card.className = 'card';
+
         if(a.img) {
-          card.innerHTML += `<img src="${a.img}" style="width:100%; border-radius:8px; margin-bottom:0.75rem; max-height:200px; object-fit:cover;">`;
+          const imgEl = document.createElement('img');
+          imgEl.src = a.img;
+          imgEl.style.width = '100%';
+          imgEl.style.borderRadius = '8px';
+          imgEl.style.marginBottom = '0.75rem';
+          imgEl.style.maxHeight = '200px';
+          imgEl.style.objectFit = 'cover';
+          card.appendChild(imgEl);
         }
-        card.innerHTML += `<div class="card-title">📢 ${a.title}</div><p style="font-size:0.9rem; color: var(--text-muted);">${a.text}</p>`;
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'card-title';
+        titleEl.textContent = `📢 ${a.title}`;
+
+        const textEl = document.createElement('p');
+        textEl.style.fontSize = '0.9rem';
+        textEl.style.color = 'var(--text-muted)';
+        textEl.textContent = a.text;
+
+        card.appendChild(titleEl);
+        card.appendChild(textEl);
         grid.appendChild(card);
       });
     });
 
-    // 5. Áudios & Respire
+    // 5. Áudios & Respire (Seguro contra XSS)
     window.submitAdminAudio = async function(event) {
       event.preventDefault();
       const title = document.getElementById('adminAudioTitulo')?.value.trim();
@@ -819,14 +888,37 @@
       if(!container) return;
       container.innerHTML = '';
       if(!snapshot.exists()) {
-        container.innerHTML = '<p style="font-size:0.85rem; color: var(--text-muted);">Nenhum som relaxante cadastrado.</p>';
+        const p = document.createElement('p');
+        p.style.fontSize = '0.85rem';
+        p.style.color = 'var(--text-muted)';
+        p.textContent = 'Nenhum som relaxante cadastrado.';
+        container.appendChild(p);
         return;
       }
       snapshot.forEach((childSnap) => {
         const audio = childSnap.val();
         const wrapper = document.createElement('div');
         wrapper.style.cssText = 'background: white; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 0.5rem;';
-        wrapper.innerHTML = `<div style="font-size: 0.85rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 0.35rem;">🎵 ${audio.title}</div><audio controls style="width: 100%; height: 35px;"><source src="${audio.url}" type="audio/mpeg"></audio>`;
+
+        const titleDiv = document.createElement('div');
+        titleDiv.style.fontSize = '0.85rem';
+        titleDiv.style.fontWeight = '700';
+        titleDiv.style.color = 'var(--purple-dark)';
+        titleDiv.style.marginBottom = '0.35rem';
+        titleDiv.textContent = `🎵 ${audio.title}`;
+
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.style.width = '100%';
+        audioElement.style.height = '35px';
+
+        const sourceEl = document.createElement('source');
+        sourceEl.src = audio.url;
+        sourceEl.type = 'audio/mpeg';
+        audioElement.appendChild(sourceEl);
+
+        wrapper.appendChild(titleDiv);
+        wrapper.appendChild(audioElement);
         container.appendChild(wrapper);
       });
     });

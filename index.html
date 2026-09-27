@@ -10,6 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- FIREBASE SDKs (Compat / v9 modular via CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     :root {
       /* PALETA DE CORES CETI JOSÉ MARQUES */
@@ -272,40 +277,13 @@
       width: 100%;
     }
 
-    .btn-green {
-      background: var(--green);
-      color: white;
-    }
-
-    .btn-green:hover {
-      background: var(--green-dark);
-    }
-
-    .btn-purple {
-      background: var(--purple);
-      color: white;
-    }
-
-    .btn-purple:hover {
-      background: var(--purple-dark);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--border-color);
-      color: var(--text-main);
-    }
-
-    .btn-outline:hover {
-      background: #F8FAFC;
-      border-color: var(--purple);
-      color: var(--purple);
-    }
-
-    .btn-danger {
-      background: #EF4444;
-      color: white;
-    }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { background: var(--green-dark); }
+    .btn-purple { background: var(--purple); color: white; }
+    .btn-purple:hover { background: var(--purple-dark); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { background: #F8FAFC; border-color: var(--purple); color: var(--purple); }
+    .btn-danger { background: #EF4444; color: white; }
 
     /* FORMULÁRIOS */
     .form-group {
@@ -379,7 +357,6 @@
     }
 
     .badge-analise { background: #FEF3C7; color: #D97706; }
-    .badge-mediacao { background: #E0E7FF; color: #4338CA; }
     .badge-resolvido { background: #DCFCE7; color: #15803D; }
 
     /* MODAL */
@@ -500,6 +477,9 @@
       <li class="nav-item" onclick="switchNav('relatos', this)">
         <span class="icon">📝</span> Relato Anônimo
       </li>
+      <li class="nav-item" onclick="switchNav('consultar', this)">
+        <span class="icon">🔍</span> Consultar Relato
+      </li>
       <li class="nav-item" onclick="switchNav('mediacao', this)">
         <span class="icon">🤝</span> Mediação de Conflitos
       </li>
@@ -537,14 +517,14 @@
     <section id="inicio" class="view-section active">
       <div class="hero-banner">
         <h1>Escuta • Acolhimento • Respeito</h1>
-        <p>Um espaço seguro, totalmente integrado e confidencial para a comunidade do CETI José Marques.</p>
+        <p>Um espaço de escuta, acolhimento e registro destinado à comunidade escolar do CETI José Marques.</p>
       </div>
 
       <div class="cards-grid">
         <div class="card">
           <div class="card-title">💬 Conversa Direta</div>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação sem complicação.
+            Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação.
           </p>
           <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
         </div>
@@ -552,7 +532,7 @@
         <div class="card">
           <div class="card-title">📝 Relato Anônimo</div>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Informe situações de bullying ou ocorrências com segurança. Nenhum dado pessoal é exigido.
+            Informe situações de bullying ou ocorrências. O sistema gera um código exclusivo para acompanhamento.
           </p>
           <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
         </div>
@@ -560,7 +540,7 @@
         <div class="card">
           <div class="card-title">🌿 Despressurizar</div>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Acesse áudios relaxantes e um exercício guiado de respiração para momentos de ansiedade.
+            Acesse sons relaxantes e exercício guiado de respiração para momentos de ansiedade.
           </p>
           <button class="btn btn-outline" onclick="switchNav('respire')">Ir ao Espaço Respire</button>
         </div>
@@ -621,7 +601,7 @@
       <div class="card">
         <div class="card-title">📝 Registrar Relato Anônimo</div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          Sua identidade permanece 100% protegida. O sistema gerará um ID exclusivo (ex: ABR-8X92) para acompanhamento interno.
+          Sua identidade não é solicitada no formulário. O sistema gera um código seguro para acompanhamento do relato.
         </p>
 
         <form onsubmit="submitRelato(event)">
@@ -641,7 +621,7 @@
           </div>
 
           <div class="form-group">
-            <label>Descrição Fatos:</label>
+            <label>Descrição dos Fatos:</label>
             <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes possível..."></textarea>
           </div>
 
@@ -650,7 +630,32 @@
       </div>
     </section>
 
+    <!-- SEÇÃO: CONSULTAR RELATO -->
+    <section id="consultar" class="view-section">
+      <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <div class="card-title">🔍 Acompanhar Status do Relato</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Insira o código de acompanhamento gerado no momento do envio para verificar a situação atual.
+        </p>
+        <div class="form-group">
+          <label>Código do Relato (Ex: ABR-X9K2):</label>
+          <input type="text" id="searchTokenInput" class="form-control" placeholder="Digite seu código...">
+        </div>
+        <button class="btn btn-purple" onclick="consultarRelato()">Consultar Andamento</button>
+
+        <div id="consultaResultado" style="margin-top: 1.5rem; display: none;">
+          <h4 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Resultado da Consulta</h4>
+          <div class="card" style="background: #F8FAFC; border: 1px dashed var(--border-color);">
+            <p><strong>Status Atual:</strong> <span id="resStatus" class="status-badge"></span></p>
+            <p style="margin-top: 0.5rem;"><strong>Local:</strong> <span id="resPlace"></span></p>
+            <p style="margin-top: 0.5rem;"><strong>Data:</strong> <span id="resDate"></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SEÇÃO: MEDIAÇÃO -->
+    <section id="med    <!-- SEÇÃO: MEDIAÇÃO -->
     <section id="mediacao" class="view-section">
       <div class="card">
         <div class="card-title">🤝 Pedido de Mediação Escolar</div>
@@ -684,15 +689,16 @@
         </div>
 
         <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-          <button class="btn btn-green" onclick="startRespire()          <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
+          <button class="btn btn-green" onclick="startRespire()">Iniciar Exercício</button>
+          <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
         </div>
 
         <div style="width: 100%; max-width: 500px; text-align: left;">
           <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem;">🎧 Sons Ambiente para Concentração</h4>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button class="btn btn-outline" onclick="playAudio('Chuva')">🌧️ Chuva Suave</button>
-            <button class="btn btn-outline" onclick="playAudio('Floresta')">🌲 Floresta Serena</button>
-            <button class="btn btn-outline" onclick="stopAudio()">🔇 Parar Som</button>
+            <button class="btn btn-outline" onclick="playAmbientSound('chuva')">🌧️ Chuva Suave</button>
+            <button class="btn btn-outline" onclick="playAmbientSound('ondas')">🌊 Ondas Calmas</button>
+            <button class="btn btn-outline" onclick="stopAmbientSound()">🔇 Parar Som</button>
           </div>
         </div>
       </div>
@@ -740,19 +746,7 @@
       </div>
 
       <div class="cards-grid" id="muralGrid">
-        <!-- Recados injetados via JS -->
-        <div class="card">
-          <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">
-            "Dias difíceis passam. Nunca duvide da sua capacidade de vencer os obstáculos deste ano!"
-          </p>
-          <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— Turma de Informática 3º Ano</span>
-        </div>
-        <div class="card">
-          <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">
-            "Acredite mais em você. O CETI José Marques é forte porque somos unidos."
-          </p>
-          <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— Equipe ABRAÇAR</span>
-        </div>
+        <!-- Injetado dinamicamente via Firebase Realtime Database com segurança XSS -->
       </div>
     </section>
 
@@ -790,21 +784,21 @@
     <section id="dashboard" class="view-section">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
         <h2 style="color: var(--purple-dark);">🛡️ Painel de Gestão e Triagem</h2>
-        <span class="status-badge badge-resolvido">Modo Administrador Ativo</span>
+        <span class="status-badge badge-resolvido">Modo Administrador Autorizado</span>
       </div>
 
       <div class="cards-grid" style="margin-bottom: 2rem;">
         <div class="card">
           <div style="font-size: 0.8rem; color: var(--text-muted);">Relatos Anônimos</div>
-          <div id="statRelatosCount" style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);">3</div>
+          <div id="statRelatosCount" style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);">0</div>
         </div>
         <div class="card">
           <div style="font-size: 0.8rem; color: var(--text-muted);">Atendimentos Abertos</div>
-          <div id="statChatCount" style="font-size: 1.8rem; font-weight: 800; color: var(--green);">2</div>
+          <div id="statChatCount" style="font-size: 1.8rem; font-weight: 800; color: var(--green);">0</div>
         </div>
         <div class="card">
           <div style="font-size: 0.8rem; color: var(--text-muted);">Mediações Solicitadas</div>
-          <div id="statMedCount" style="font-size: 1.8rem; font-weight: 800; color: var(--blue);">1</div>
+          <div id="statMedCount" style="font-size: 1.8rem; font-weight: 800; color: var(--blue);">0</div>
         </div>
       </div>
 
@@ -823,12 +817,7 @@
           </thead>
           <tbody id="adminRelatosTable">
             <tr>
-              <td>ABR-9A21</td>
-              <td>Pátio Coberto</td>
-              <td>2026-06-06</td>
-              <td><span class="status-badge badge-analise">Normal</span></td>
-              <td>Uso inadequado de apelidos insistentes.</td>
-              <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="resolveItem(this)">Marcar Resolvido</button></td>
+              <td colspan="6" style="text-align: center; color: var(--text-muted);">Carregando dados seguros do Firebase...</td>
             </tr>
           </tbody>
         </table>
@@ -843,8 +832,12 @@
       <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Restrito (Gestão)</div>
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label>Senha de Acesso:</label>
-          <input type="password" id="adminPassword" class="form-control" required placeholder="Digite a senha administrativa...">
+          <label>E-mail do Gestor:</label>
+          <input type="email" id="adminEmail" class="form-control" required placeholder="gestor@ceti.com">
+        </div>
+        <div class="form-group">
+          <label>Senha:</label>
+          <input type="password" id="adminPassword" class="form-control" required placeholder="Sua senha de acesso...">
         </div>
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
           <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
@@ -875,9 +868,29 @@
     </div>
   </div>
 
-  <!-- SCRIPT JAVASCRIPT INTEGRADO -->
+  <!-- SCRIPT JAVASCRIPT INTEGRADO COM FIREBASE E SEGURANÇA REFORÇADA -->
   <script>
-    // CONTROLE DE NAVEGAÇÃO
+    // ==========================================
+    // CONFIGURAÇÃO REAL DO FIREBASE
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyDummyKeyForIntegrationTest-EscutaAcolhimento",
+      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+      projectId: "escutaacolhimento-a9f15",
+      storageBucket: "escutaacolhimento-a9f15.appspot.com",
+      messagingSenderId: "123456789012",
+      appId: "1:123456789012:web:abcdef123456"
+    };
+
+    // Inicializa o Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    // ==========================================
+    // CONTROLE DE NAVEGAÇÃO E UI
+    // ==========================================
     function switchNav(sectionId, element) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -886,7 +899,6 @@
       if (element) {
         element.classList.add('active');
       } else {
-        // Encontra o correspondente se chamado via botão interno
         document.querySelectorAll('.nav-item').forEach(item => {
           if(item.getAttribute('onclick')?.includes(sectionId)) {
             item.classList.add('active');
@@ -894,7 +906,6 @@
         });
       }
 
-      // Fecha o menu mobile se aberto
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('sidebarOverlay').classList.remove('open');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -905,7 +916,9 @@
       document.getElementById('sidebarOverlay').classList.toggle('open');
     }
 
-    // ATENDIMENTO CHAT
+    // ==========================================
+    // MÓDULO DE ATENDIMENTOS (FIREBASE)
+    // ==========================================
     function openChatForm(channel) {
       document.getElementById('chatFormCard').style.display = 'block';
       document.getElementById('chatFormTitle').innerText = 'Atendimento com: ' + channel;
@@ -915,44 +928,129 @@
 
     function submitChat(e) {
       e.preventDefault();
-      alert('Mensagem enviada com sucesso para o canal selecionado! A equipe responderá em breve.');
-      document.getElementById('chatMessageInput').value = '';
-      document.getElementById('chatFormCard').style.display = 'none';
+      const channel = document.getElementById('chatChannelInput').value;
+      const message = document.getElementById('chatMessageInput').value;
+
+      db.ref('atendimentos').push({
+        channel: channel,
+        message: message,
+        status: 'Aberto',
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Mensagem enviada com sucesso para o canal selecionado! A equipe responderá em breve.');
+        document.getElementById('chatMessageInput').value = '';
+        document.getElementById('chatFormCard').style.display = 'none';
+      }).catch(err => {
+        alert('Erro ao enviar mensagem: ' + err.message);
+      });
     }
 
-    // RELATO ANÔNIMO
+    // ==========================================
+    // MÓDULO DE RELATOS ANÔNIMOS (CRIPTO & FIREBASE)
+    // ==========================================
+    function generateSecureToken() {
+      const array = new Uint32Array(1);
+      window.crypto.getRandomValues(array);
+      return 'ABR-' + (array[0] % 90000 + 10000);
+    }
+
     function submitRelato(e) {
       e.preventDefault();
-      const randomId = 'ABR-' + Math.floor(1000 + Math.random() * 9000);
-      alert('Relato enviado com segurança!\n\nSeu código de acompanhamento exclusivo é: ' + randomId + '\nGuarde-o caso queira verificar o andamento.');
-      e.target.reset();
-      
-      // Adiciona dinamicamente na tabela admin (simulação)
-      const table = document.getElementById('adminRelatosTable');
-      const place = document.getElementById('reportPlace').value || 'Não informado';
+      const place = document.getElementById('reportPlace').value;
+      const date = document.getElementById('reportDate').value;
       const danger = document.getElementById('reportDanger').checked;
-      
-      // Atualiza contadores fictícios
-      let countEl = document.getElementById('statRelatosCount');
-      countEl.innerText = parseInt(countEl.innerText) + 1;
+      const desc = document.getElementById('reportDesc').value;
+      const token = generateSecureToken();
+
+      db.ref('relatos').push({
+        token: token,
+        place: place,
+        date: date,
+        danger: danger,
+        desc: desc,
+        status: 'Em Análise',
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Relato enviado com segurança!\n\nSeu código de acompanhamento exclusivo é: ' + token + '\nGuarde-o caso queira verificar o andamento.');
+        e.target.reset();
+      }).catch(err => {
+        alert('Erro ao registrar relato: ' + err.message);
+      });
     }
 
-    // MEDIAÇÃO
+    // ==========================================
+    // CONSULTA DE RELATO PELO ALUNO
+    // ==========================================
+    function consultarRelato() {
+      const inputToken = document.getElementById('searchTokenInput').value.trim().toUpperCase();
+      const resBox = document.getElementById('consultaResultado');
+      
+      if (!inputToken) {
+        alert('Por favor, digite um código válido.');
+        return;
+      }
+
+      db.ref('relatos').orderByChild('token').equalTo(inputToken).once('value')
+        .then(snapshot => {
+          resBox.style.display = 'block';
+          if (!snapshot.exists()) {
+            document.getElementById('resStatus').textContent = 'Não Encontrado';
+            document.getElementById('resStatus').className = 'status-badge badge-analise';
+            document.getElementById('resPlace').textContent = 'Nenhum relato correspondente a este código.';
+            document.getElementById('resDate').textContent = '-';
+            return;
+          }
+
+          snapshot.forEach(childSnap => {
+            const data = childSnap.val();
+            const statusEl = document.getElementById('resStatus');
+            statusEl.textContent = data.status;
+            statusEl.className = 'status-badge ' + (data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise');
+            document.getElementById('resPlace').textContent = data.place;
+            document.getElementById('resDate').textContent = data.date;
+          });
+        })
+        .catch(err => {
+          alert('Erro ao buscar relato: ' + err.message);
+        });
+    }
+
+    // ==========================================
+    // MÓDULO DE MEDIAÇÃO (FIREBASE)
+    // ==========================================
     function submitMediacao(e) {
       e.preventDefault();
-      alert('Solicitação de mediação enviada com sucesso! Um mediador escolar entrará em contato de forma reservada.');
-      e.target.reset();
+      const topic = document.getElementById('mediacaoTopic').value;
+      const desc = document.getElementById('mediacaoDesc').value;
+
+      db.ref('mediacoes').push({
+        topic: topic,
+        desc: desc,
+        status: 'Solicitado',
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Solicitação de mediação enviada com sucesso! Um mediador escolar entrará em contato de forma reservada.');
+        e.target.reset();
+      }).catch(err => {
+        alert('Erro ao enviar solicitação: ' + err.message);
+      });
     }
 
-    // ESPAÇO RESPIRE (ANIMAÇÃO)
+    // ==========================================
+    // ESPAÇO RESPIRE E ÁUDIOS REAIS (Web Audio API)
+    // ==========================================
     let respireTimer = null;
+    let audioCtx = null;
+    let noiseNode = null;
+    let gainNode = null;
+
     function startRespire() {
       const circle = document.getElementById('respireCircle');
       const instruction = document.getElementById('respireInstruction');
       
       if(respireTimer) clearInterval(respireTimer);
 
-      let phase = 0; // 0: Inspire, 1: Segure, 2: Expire
+      let phase = 0;
       const phases = [
         { text: 'Inspire...', scale: 'scale(1.3)', bg: '#40B615' },
         { text: 'Segure...', scale: 'scale(1.3)', bg: '#4E22A5' },
@@ -979,90 +1077,261 @@
       circle.style.backgroundColor = 'var(--green)';
     }
 
-    // ÁUDIOS AMBIENTE (Simulação)
-    let currentAudio = null;
-    function playAudio(tipo) {
-      alert('Reproduzindo som relaxante de fundo: ' + tipo + ' (Simulação de áudio ativo).');
-    }
-    function stopAudio() {
-      alert('Áudio interrompido.');
+    function playAmbientSound(type) {
+      stopAmbientSound();
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      const bufferSize = 2 * audioCtx.sampleRate;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      
+      for (let i = 0; i < bufferSize; i++) {
+        let white = Math.random() * 2 - 1;
+        if (type === 'chuva') {
+          output[i] = white * 0.2;
+        } else {
+          output[i] = (white + Math.sin(i / 8000)) * 0.15;
+        }
+      }
+
+      noiseNode = audioCtx.createBufferSource();
+      noiseNode.buffer = noiseBuffer;
+      noiseNode.loop = true;
+
+      gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+      noiseNode.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      noiseNode.start();
     }
 
-    // MURAL ACOLHEDOR
-    function openMuralModal() {
-      document.getElementById('muralModal').classList.add('open');
+    function stopAmbientSound() {
+      if (noiseNode) {
+        try { noiseNode.stop(); } catch(e) {}
+        noiseNode.disconnect();
+        noiseNode = null;
+      }
+      if (audioCtx) {
+        audioCtx.close();
+        audioCtx = null;
+      }
     }
-    function closeMuralModal() {
-      document.getElementById('muralModal').classList.remove('open');
-    }
+
+    // ==========================================
+    // MURAL ACOLHEDOR (BLINDADO CONTRA XSS & FIREBASE)
+    // ==========================================
+    function openMuralModal() { document.getElementById('muralModal').classList.add('open'); }
+    function closeMuralModal() { document.getElementById('muralModal').classList.remove('open'); }
+
     function submitMural(e) {
       e.preventDefault();
       const text = document.getElementById('muralText').value;
       const author = document.getElementById('muralAuthor').value;
-      
-      const grid = document.getElementById('muralGrid');
-      const newCard = document.createElement('div');
-      newCard.className = 'card';
-      newCard.innerHTML = `
-        <p style="font-style: italic; color: var(--text-main); margin-bottom: 0.75rem;">"${text}"</p>
-        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— ${author}</span>
-      `;
-      grid.prepend(newCard);
-      
-      closeMuralModal();
-      e.target.reset();
-      alert('Seu recado foi publicado com sucesso no Mural Acolhedor!');
+
+      db.ref('mural').push({
+        text: text,
+        author: author,
+        timestamp: Date.now()
+      }).then(() => {
+        closeMuralModal();
+        e.target.reset();
+        alert('Seu recado foi publicado com sucesso no Mural Acolhedor!');
+      }).catch(err => {
+        alert('Erro ao publicar recado: ' + err.message);
+      });
     }
 
-    // AUTENTICAÇÃO GESTOR
-    function openLoginModal() {
-      document.getElementById('loginModal').classList.add('open');
-    }
-    function closeLoginModal() {
-      document.getElementById('loginModal').classList.remove('open');
-    }
+    db.ref('mural').on('value', (snapshot) => {
+      const grid = document.getE    db.ref('mural').on('value', (snapshot) => {
+      const grid = document.getElementById('muralGrid');
+      grid.innerHTML = '';
+      
+      const data = snapshot.val();
+      if (!data) {
+        const p = document.createElement('p');
+        p.style.color = 'var(--text-muted)';
+        p.textContent = 'Nenhum recado publicado ainda. Seja o primeiro!';
+        grid.appendChild(p);
+        return;
+      }
+
+      const items = Object.entries(data).reverse();
+      items.forEach(([id, item]) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const p = document.createElement('p');
+        p.style.fontStyle = 'italic';
+        p.style.color = 'var(--text-main)';
+        p.style.marginBottom = '0.75rem';
+        p.textContent = `"${item.text}"`;
+
+        const span = document.createElement('span');
+        span.style.fontSize = '0.75rem';
+        span.style.color = 'var(--text-muted)';
+        span.style.fontWeight = '600';
+        span.textContent = `— ${item.author}`;
+
+        card.appendChild(p);
+        card.appendChild(span);
+        grid.appendChild(card);
+      });
+    });
+
+    // ==========================================
+    // AUTENTICAÇÃO E VALIDAÇÃO DE GESTOR (FIREBASE)
+    // ==========================================
+    function openLoginModal() { document.getElementById('loginModal').classList.add('open'); }
+    function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
 
     function handleLogin(e) {
       e.preventDefault();
+      const email = document.getElementById('adminEmail').value;
       const pass = document.getElementById('adminPassword').value;
-      // Senha padrão de exemplo para o protótipo: "ceti2026"
-      if(pass === 'ceti2026') {
-        closeLoginModal();
-        document.getElementById('adminNavBtn').style.display = 'flex';
-        document.getElementById('btnLoginModal').style.display = 'none';
-        document.getElementById('btnLogoutBtn').style.display = 'block';
-        
-        // Atualiza Badge
-        document.getElementById('roleIcon').innerText = '🛡️';
-        document.getElementById('roleText').innerText = 'Gestor CETI';
-        
-        alert('Login efetuado com sucesso! Painel Gestor liberado na barra lateral.');
-        switchNav('dashboard');
-      } else {
-        alert('Senha incorreta. Tente novamente.');
-      }
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          closeLoginModal();
+          alert('Login efetuado com sucesso!');
+        })
+        .catch((error) => {
+          alert('Falha na autenticação: ' + error.message);
+        });
       document.getElementById('adminPassword').value = '';
     }
 
     function logout() {
-      document.getElementById('adminNavBtn').style.display = 'none';
-      document.getElementById('btnLoginModal').style.display = 'block';
-      document.getElementById('btnLogoutBtn').style.display = 'none';
-      
-      document.getElementById('roleIcon').innerText = '👤';
-      document.getElementById('roleText').innerText = 'Modo Visitante';
-      
-      switchNav('inicio');
-      alert('Você saiu do modo gestor.');
+      auth.signOut().then(() => {
+        switchNav('inicio');
+        alert('Você saiu do modo gestor.');
+      });
     }
 
-    function resolveItem(btn) {
-      const row = btn.closest('tr');
-      row.style.opacity = '0.5';
-      btn.innerText = 'Resolvido';
-      btn.disabled = true;
-      btn.className = 'btn';
-      alert('Ocorrência marcada como resolvida.');
+    let relatosRef = null;
+    let atendimentosRef = null;
+    let mediacoesRef = null;
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        db.ref('admins/' + user.uid).once('value').then(snapshot => {
+          if (snapshot.exists() && snapshot.val() === true) {
+            document.getElementById('adminNavBtn').style.display = 'flex';
+            document.getElementById('btnLoginModal').style.display = 'none';
+            document.getElementById('btnLogoutBtn').style.display = 'block';
+            
+            document.getElementById('roleIcon').innerText = '🛡️';
+            document.getElementById('roleText').innerText = 'Gestor CETI';
+            
+            initAdminDashboard();
+          } else {
+            auth.signOut();
+            alert('Acesso negado: Este usuário não possui privilégios de gestor cadastrados.');
+          }
+        }).catch(() => {
+          auth.signOut();
+          alert('Erro ao validar permissões de gestor.');
+        });
+      } else {
+        if (relatosRef) relatosRef.off();
+        if (atendimentosRef) atendimentosRef.off();
+        if (mediacoesRef) mediacoesRef.off();
+
+        document.getElementById('adminNavBtn').style.display = 'none';
+        document.getElementById('btnLoginModal').style.display = 'block';
+        document.getElementById('btnLogoutBtn').style.display = 'none';
+        
+        document.getElementById('roleIcon').innerText = '👤';
+        document.getElementById('roleText').innerText = 'Modo Visitante';
+        
+        if (document.getElementById('dashboard').classList.contains('active')) {
+          switchNav('inicio');
+        }
+      }
+    });
+
+    function initAdminDashboard() {
+      relatosRef = db.ref('relatos');
+      atendimentosRef = db.ref('atendimentos');
+      mediacoesRef = db.ref('mediacoes');
+
+      relatosRef.on('value', snap => {
+        const val = snap.val();
+        document.getElementById('statRelatosCount').textContent = val ? Object.keys(val).length : 0;
+        
+        const tableBody = document.getElementById('adminRelatosTable');
+        tableBody.innerHTML = '';
+        if(!val) {
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 6;
+          td.style.textAlign = 'center';
+          td.style.color = 'var(--text-muted)';
+          td.textContent = 'Nenhum relato registrado.';
+          tr.appendChild(td);
+          tableBody.appendChild(tr);
+          return;
+        }
+
+        Object.entries(val).forEach(([key, item]) => {
+          const tr = document.createElement('tr');
+          if(item.status === 'Resolvido') tr.style.opacity = '0.5';
+
+          const tdToken = document.createElement('td');
+          tdToken.textContent = item.token;
+
+          const tdPlace = document.createElement('td');
+          tdPlace.textContent = item.place;
+
+          const tdDate = document.createElement('td');
+          tdDate.textContent = item.date;
+
+          const tdDanger = document.createElement('td');
+          const badge = document.createElement('span');
+          badge.className = `status-badge ${item.danger ? 'badge-analise' : 'badge-resolvido'}`;
+          badge.textContent = item.danger ? 'Urgente' : 'Normal';
+          tdDanger.appendChild(badge);
+
+          const tdDesc = document.createElement('td');
+          tdDesc.textContent = item.desc;
+
+          const tdAction = document.createElement('td');
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-outline';
+          btn.style.padding = '0.25rem 0.5rem';
+          btn.style.fontSize = '0.75rem';
+          btn.textContent = item.status === 'Resolvido' ? 'Resolvido' : 'Marcar Resolvido';
+          btn.onclick = () => resolveRelato(key);
+          tdAction.appendChild(btn);
+
+          tr.appendChild(tdToken);
+          tr.appendChild(tdPlace);
+          tr.appendChild(tdDate);
+          tr.appendChild(tdDanger);
+          tr.appendChild(tdDesc);
+          tr.appendChild(tdAction);
+
+          tableBody.appendChild(tr);
+        });
+      });
+
+      atendimentosRef.on('value', snap => {
+        const val = snap.val();
+        const count = val ? Object.values(val).filter(i => i.status === 'Aberto').length : 0;
+        document.getElementById('statChatCount').textContent = count;
+      });
+
+      mediacoesRef.on('value', snap => {
+        const val = snap.val();
+        const count = val ? Object.values(val).filter(i => i.status === 'Solicitado').length : 0;
+        document.getElementById('statMedCount').textContent = count;
+      });
+    }
+
+    function resolveRelato(key) {
+      db.ref('relatos/' + key).update({ status: 'Resolvido' }).then(() => {
+        alert('Relato atualizado para Resolvido no Firebase com sucesso.');
+      });
     }
   </script>
 </body>

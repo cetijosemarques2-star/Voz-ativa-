@@ -33,6 +33,22 @@
       min-height: 100vh;
     }
 
+    /* Botão Menu Mobile */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 105;
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
     /* Sidebar / Navegação */
     .sidebar {
       width: 260px;
@@ -244,13 +260,17 @@
 
     /* Responsividade */
     @media (max-width: 768px) {
+      .mobile-menu-btn { display: block; }
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
-      .main-content { margin-left: 0; padding: 1rem; }
+      .main-content { margin-left: 0; padding: 4rem 1rem 1rem 1rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Botão Menu Mobile -->
+  <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
 
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
@@ -283,7 +303,7 @@
       <div class="card" style="background: linear-gradient(135deg, var(--purple-light) 0%, #FFFFFF 100%); border-left: 5px solid var(--purple);">
         <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Bem-vindo ao ABRAÇAR</h2>
         <p style="font-size: 0.950rem; color: var(--text-muted); line-height: 1.5;">
-          Um espaço seguro, sigiloso e acolhedor para a nossa comunidade escolar. Aqui você pode relatar incidentes com total privacidade, buscar apoio ou desacelerar a mente.
+          Aqui você pode relatar situações de forma sigilosa, buscar apoio e encontrar um espaço de acolhimento na nossa comunidade escolar.
         </p>
       </div>
 
@@ -300,7 +320,7 @@
       <div class="card">
         <div class="card-title">📝 Registrar Relato de Forma Sigilosa</div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-          Sua identidade não é solicitada. Ao enviar, você receberá um <strong>token de alta segurança</strong> exclusivo para acompanhar o andamento.
+          Sua identidade não é solicitada. Ao enviar, você receberá um código exclusivo para acompanhar o andamento do relato.
         </p>
         <form onsubmit="submitRelato(event)">
           <div class="form-group">
@@ -445,7 +465,7 @@
               <input type="text" id="adminAvisoTitulo" class="form-control" required placeholder="Ex: Mudança de horário...">
             </div>
             <div class="form-group">
-              <label>Imagem (Opcional):</label>
+              <label>Imagem (Opcional - Máx 5MB):</label>
               <input type="file" id="adminAvisoImgFile" class="form-control" accept="image/*">
             </div>
             <div class="form-group">
@@ -464,7 +484,7 @@
               <input type="text" id="adminAudioTitulo" class="form-control" required placeholder="Ex: Chuva Suave na Janela">
             </div>
             <div class="form-group">
-              <label>Arquivo de Áudio (.mp3):</label>
+              <label>Arquivo de Áudio (.mp3 - Máx 15MB):</label>
               <input type="file" id="adminAudioFile" class="form-control" accept="audio/mp3,audio/*" required>
             </div>
             <button type="submit" id="btnPubAudio" class="btn btn-purple">Fazer Upload e Cadastrar</button>
@@ -515,6 +535,8 @@
     };
 
     let app, auth, db, storage;
+    let stopRelatosListener = null;
+
     try {
       app = initializeApp(firebaseConfig);
       auth = getAuth(app);
@@ -524,7 +546,11 @@
       console.error("Erro ao inicializar Firebase:", err);
     }
 
-    // UI Globais
+    // Controle de Sidebar Mobile & Navegação
+    window.toggleSidebar = function() {
+      document.getElementById('sidebar')?.classList.toggle('open');
+    }
+
     window.switchNav = function(sectionId, element) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(sectionId)?.classList.add('active');
@@ -532,6 +558,7 @@
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         element.classList.add('active');
       }
+      document.getElementById('sidebar')?.classList.remove('ope      document.getElementById('sidebar')?.classList.remove('open');
       window.scrollTo(0, 0);
     }
 
@@ -548,7 +575,7 @@
         const adminRef = ref(db, 'admins/' + user.uid);
         const snapshot = await get(adminRef);
 
-        if (snaps        if (snapshot.exists() && snapshot.val() === true) {
+        if (snapshot.exists() && snapshot.val() === true) {
           window.closeLoginModal();
           window.switchNav('dashboard');
           alert('Autenticado como Gestor com sucesso!');
@@ -563,6 +590,10 @@
     }
 
     window.logout = async function() {
+      if (stopRelatosListener) {
+        stopRelatosListener();
+        stopRelatosListener = null;
+      }
       await signOut(auth);
       window.switchNav('inicio');
       alert('Sessão encerrada.');
@@ -593,6 +624,10 @@
           } catch(e) { console.error(e); }
         }
         
+        if (stopRelatosListener) {
+          stopRelatosListener();
+          stopRelatosListener = null;
+        }
         if(badgeText) badgeText.innerText = 'Modo Visitante';
         if(roleIcon) roleIcon.innerText = '👤';
         if(adminNavBtn) adminNavBtn.style.display = 'none';
@@ -668,12 +703,16 @@
       });
     }
 
-    // 2. Painel Admin - Relatos
+    // 2. Painel Admin - Relatos com Listener Otimizado
     function carregarRelatosAdmin() {
       const tbody = document.getElementById('adminRelatosTableBody');
       if(!tbody) return;
 
-      onValue(ref(db, 'relatos'), (snapshot) => {
+      if (stopRelatosListener) {
+        stopRelatosListener();
+      }
+
+      stopRelatosListener = onValue(ref(db, 'relatos'), (snapshot) => {
         tbody.innerHTML = '';
         if(!snapshot.exists()) {
           tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum relato registrado.</td></tr>`;
@@ -737,7 +776,7 @@
       }
     }
 
-    // 3. Atendimentos & Mural (Seguro contra XSS)
+    // 3. Atendimentos & Mural
     window.openChatForm = function(channel) {
       document.getElementById('chatChannelInput').value = channel;
       document.getElementById('chatFormTitle').innerText = 'Novo Atendimento: ' + channel;
@@ -796,7 +835,7 @@
       });
     });
 
-    // 4. Avisos & Storage (Seguro contra XSS)
+    // 4. Avisos & Validação/Storage de Imagens
     window.submitAdminAviso = async function(event) {
       event.preventDefault();
       const title = document.getElementById('adminAvisoTitulo')?.value.trim();
@@ -807,7 +846,17 @@
       try {
         if (fileInput && fileInput.files.length > 0) {
           const file = fileInput.files[0];
-          const snapshot = await uploadBytes(storageRef(storage, `avisos/${Date.now()}_${file.name}`), file);
+          if (!file.type.startsWith('image/')) {
+            alert('Selecione uma imagem válida.');
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            alert('A imagem deve ter no máximo 5 MB.');
+            return;
+          }
+          const ext = file.name.split('.').pop().toLowerCase();
+          const filePath = `avisos/${crypto.randomUUID()}.${ext}`;
+          const snapshot = await uploadBytes(storageRef(storage, filePath), file);
           imgUrl = await getDownloadURL(snapshot.ref);
         }
         await push(ref(db, 'avisos'), { title, img: imgUrl, text, timestamp: Date.now() });
@@ -862,7 +911,7 @@
       });
     });
 
-    // 5. Áudios & Respire (Seguro contra XSS)
+    // 5. Áudios, Validação e Respire
     window.submitAdminAudio = async function(event) {
       event.preventDefault();
       const title = document.getElementById('adminAudioTitulo')?.value.trim();
@@ -871,7 +920,17 @@
       try {
         if (!fileInput || fileInput.files.length === 0) throw new Error('Selecione um arquivo.');
         const file = fileInput.files[0];
-        const snapshot = await uploadBytes(storageRef(storage, `audios/${Date.now()}_${file.name}`), file);
+        if (!file.type.startsWith('audio/')) {
+          alert('Selecione um arquivo de áudio válido.');
+          return;
+        }
+        if (file.size > 15 * 1024 * 1024) {
+          alert('O áudio deve ter no máximo 15 MB.');
+          return;
+        }
+        const ext = file.name.split('.').pop().toLowerCase();
+        const filePath = `audios/${crypto.randomUUID()}.${ext}`;
+        const snapshot = await uploadBytes(storageRef(storage, filePath), file);
         const url = await getDownloadURL(snapshot.ref);
 
         await push(ref(db, 'audios'), { title, url, timestamp: Date.now() });

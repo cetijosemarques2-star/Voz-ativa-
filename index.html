@@ -17,7 +17,6 @@
 
   <style>
     :root {
-      /* PALETA DE CORES CETI JOSÉ MARQUES */
       --green-dark: #188607;
       --green: #40B615;
       --purple: #4E22A5;
@@ -56,7 +55,6 @@
       overflow-x: hidden;
     }
 
-    /* BARRA SUPERIOR PARA SMARTPHONES */
     .mobile-header {
       display: none;
       position: fixed;
@@ -89,7 +87,6 @@
       padding: 0.5rem;
     }
 
-    /* BACKDROP MOBILE */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -99,7 +96,6 @@
       z-index: 99;
     }
 
-    /* SIDEBAR LATERAL */
     .sidebar {
       width: var(--sidebar-width);
       background: var(--surface-white);
@@ -191,7 +187,6 @@
       border-top: 1px solid var(--border-color);
     }
 
-    /* CONTEÚDO PRINCIPAL */
     .main-wrapper {
       margin-left: var(--sidebar-width);
       flex: 1;
@@ -214,7 +209,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* CARDS E GRIDS */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -261,7 +255,6 @@
       margin-bottom: 0.5rem;
     }
 
-    /* BOTÕES */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -285,7 +278,6 @@
     .btn-outline:hover { background: #F8FAFC; border-color: var(--purple); color: var(--purple); }
     .btn-danger { background: #EF4444; color: white; }
 
-    /* FORMULÁRIOS */
     .form-group {
       margin-bottom: 1.25rem;
     }
@@ -318,7 +310,6 @@
       resize: vertical;
     }
 
-    /* TABELAS */
     .data-table-container {
       overflow-x: auto;
       border-radius: var(--radius-md);
@@ -347,7 +338,6 @@
       color: var(--text-main);
     }
 
-    /* BADGES DE STATUS */
     .status-badge {
       display: inline-block;
       padding: 0.25rem 0.6rem;
@@ -359,7 +349,6 @@
     .badge-analise { background: #FEF3C7; color: #D97706; }
     .badge-resolvido { background: #DCFCE7; color: #15803D; }
 
-    /* MODAL */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -385,7 +374,6 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
-    /* ESPAÇO RESPIRE */
     .respire-box {
       display: flex;
       flex-direction: column;
@@ -414,7 +402,6 @@
       box-shadow: 0 0 20px rgba(64, 182, 21, 0.3);
     }
 
-    /* ADAPTAÇÕES RESPONSIVAS */
     @media (max-width: 768px) {
       .mobile-header { display: flex; }
       .sidebar {
@@ -532,7 +519,7 @@
         <div class="card">
           <div class="card-title">📝 Relato Anônimo</div>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-            Informe situações de bullying ou ocorrências. O sistema gera um código exclusivo para acompanhamento.
+            Informe situações de bullying ou ocorrências. O sistema gera um código seguro para acompanhamento.
           </p>
           <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
         </div>
@@ -577,17 +564,14 @@
         </div>
       </div>
 
-      <!-- FORMULÁRIO DE CHAT -->
       <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
         <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
         <form onsubmit="submitChat(event)">
           <input type="hidden" id="chatChannelInput">
-          
           <div class="form-group">
             <label>Sua Mensagem / Solicitação:</label>
             <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
           </div>
-
           <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
             <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
             <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
@@ -635,10 +619,10 @@
       <div class="card" style="max-width: 600px; margin: 0 auto;">
         <div class="card-title">🔍 Acompanhar Status do Relato</div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-          Insira o código de acompanhamento gerado no momento do envio para verificar a situação atual.
+          Insira o código de acompanhamento seguro gerado no momento do envio para verificar a situação atual.
         </p>
         <div class="form-group">
-          <label>Código do Relato (Ex: ABR-X9K2):</label>
+          <label>Código do Relato (Ex: ABR-7F3A92...):</label>
           <input type="text" id="searchTokenInput" class="form-control" placeholder="Digite seu código...">
         </div>
         <button class="btn btn-purple" onclick="consultarRelato()">Consultar Andamento</button>
@@ -647,15 +631,13 @@
           <h4 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Resultado da Consulta</h4>
           <div class="card" style="background: #F8FAFC; border: 1px dashed var(--border-color);">
             <p><strong>Status Atual:</strong> <span id="resStatus" class="status-badge"></span></p>
-            <p style="margin-top: 0.5rem;"><strong>Local:</strong> <span id="resPlace"></span></p>
-            <p style="margin-top: 0.5rem;"><strong>Data:</strong> <span id="resDate"></span></p>
+            <p style="margin-top: 0.5rem;"><strong>Mensagem do Gestor:</strong> <span id="resMsg">Em análise pela equipe escolar.</span></p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SEÇÃO: MEDIAÇÃO -->
-    <section id="med    <!-- SEÇÃO: MEDIAÇÃO -->
     <section id="mediacao" class="view-section">
       <div class="card">
         <div class="card-title">🤝 Pedido de Mediação Escolar</div>
@@ -664,6 +646,7 @@
         </p>
         <form onsubmit="submitMediacao(event)">
           <div class="form-group">
+            <la<div class="form-group">
             <label>Tema ou Motivo do Conflito:</label>
             <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em trabalho em grupo">
           </div>
@@ -746,7 +729,7 @@
       </div>
 
       <div class="cards-grid" id="muralGrid">
-        <!-- Injetado dinamicamente via Firebase Realtime Database com segurança XSS -->
+        <!-- Injetado via Firebase -->
       </div>
     </section>
 
@@ -874,13 +857,13 @@
     // CONFIGURAÇÃO REAL DO FIREBASE
     // ==========================================
     const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyForIntegrationTest-EscutaAcolhimento",
+      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
       authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
       databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
       projectId: "escutaacolhimento-a9f15",
-      storageBucket: "escutaacolhimento-a9f15.appspot.com",
-      messagingSenderId: "123456789012",
-      appId: "1:123456789012:web:abcdef123456"
+      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+      messagingSenderId: "639476751207",
+      appId: "1:639476751207:web:571f32f893f4156176adc2"
     };
 
     // Inicializa o Firebase
@@ -946,12 +929,15 @@
     }
 
     // ==========================================
-    // MÓDULO DE RELATOS ANÔNIMOS (CRIPTO & FIREBASE)
+    // MÓDULO DE RELATOS ANÔNIMOS (TOKEN SEGURO)
     // ==========================================
     function generateSecureToken() {
-      const array = new Uint32Array(1);
-      window.crypto.getRandomValues(array);
-      return 'ABR-' + (array[0] % 90000 + 10000);
+      const bytes = new Uint8Array(12);
+      crypto.getRandomValues(bytes);
+      return 'ABR-' + Array.from(bytes)
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('')
+        .toUpperCase();
     }
 
     function submitRelato(e) {
@@ -962,7 +948,11 @@
       const desc = document.getElementById('reportDesc').value;
       const token = generateSecureToken();
 
-      db.ref('relatos').push({
+      const newRelatoRef = db.ref('relatos').push();
+      const relatoId = newRelatoRef.key;
+
+      const relatoData = {
+        id: relatoId,
         token: token,
         place: place,
         date: date,
@@ -970,8 +960,19 @@
         desc: desc,
         status: 'Em Análise',
         timestamp: Date.now()
-      }).then(() => {
-        alert('Relato enviado com segurança!\n\nSeu código de acompanhamento exclusivo é: ' + token + '\nGuarde-o caso queira verificar o andamento.');
+      };
+
+      const consultaData = {
+        status: 'Em Análise',
+        timestamp: Date.now()
+      };
+
+      // Gravação segregada para proteger dados sensíveis
+      Promise.all([
+        newRelatoRef.set(relatoData),
+        db.ref('consultaRelatos/' + token).set(consultaData)
+      ]).then(() => {
+        alert('Relato enviado com segurança!\n\nSeu código de acompanhamento exclusivo é: ' + token + '\nGuarde-o para verificar o andamento.');
         e.target.reset();
       }).catch(err => {
         alert('Erro ao registrar relato: ' + err.message);
@@ -979,7 +980,7 @@
     }
 
     // ==========================================
-    // CONSULTA DE RELATO PELO ALUNO
+    // CONSULTA ISOLADA DE STATUS DO RELATO
     // ==========================================
     function consultarRelato() {
       const inputToken = document.getElementById('searchTokenInput').value.trim().toUpperCase();
@@ -990,25 +991,21 @@
         return;
       }
 
-      db.ref('relatos').orderByChild('token').equalTo(inputToken).once('value')
+      db.ref('consultaRelatos/' + inputToken).once('value')
         .then(snapshot => {
           resBox.style.display = 'block';
           if (!snapshot.exists()) {
             document.getElementById('resStatus').textContent = 'Não Encontrado';
             document.getElementById('resStatus').className = 'status-badge badge-analise';
-            document.getElementById('resPlace').textContent = 'Nenhum relato correspondente a este código.';
-            document.getElementById('resDate').textContent = '-';
+            document.getElementById('resMsg').textContent = 'Nenhum registro correspondente a este código.';
             return;
           }
 
-          snapshot.forEach(childSnap => {
-            const data = childSnap.val();
-            const statusEl = document.getElementById('resStatus');
-            statusEl.textContent = data.status;
-            statusEl.className = 'status-badge ' + (data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise');
-            document.getElementById('resPlace').textContent = data.place;
-            document.getElementById('resDate').textContent = data.date;
-          });
+          const data = snapshot.val();
+          const statusEl = document.getElementById('resStatus');
+          statusEl.textContent = data.status;
+          statusEl.className = 'status-badge ' + (data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise');
+          document.getElementById('resMsg').textContent = data.status === 'Resolvido' ? 'Seu caso foi tratado e finalizado pela equipe de apoio.' : 'Em análise pela equipe escolar.';
         })
         .catch(err => {
           alert('Erro ao buscar relato: ' + err.message);
@@ -1119,7 +1116,7 @@
     }
 
     // ==========================================
-    // MURAL ACOLHEDOR (BLINDADO CONTRA XSS & FIREBASE)
+    // MURAL ACOLHEDOR
     // ==========================================
     function openMuralModal() { document.getElementById('muralModal').classList.add('open'); }
     function closeMuralModal() { document.getElementById('muralModal').classList.remove('open'); }
@@ -1143,13 +1140,13 @@
     }
 
     db.ref('mural').on('value', (snapshot) => {
-      const grid = document.getE    db.ref('mural').on('value', (snapshot) => {
       const grid = document.getElementById('muralGrid');
       grid.innerHTML = '';
       
       const data = snapshot.val();
       if (!data) {
         const p = document.createElement('p');
+              const p = document.createElement('p');
         p.style.color = 'var(--text-muted)';
         p.textContent = 'Nenhum recado publicado ainda. Seja o primeiro!';
         grid.appendChild(p);
@@ -1301,7 +1298,7 @@
           btn.style.padding = '0.25rem 0.5rem';
           btn.style.fontSize = '0.75rem';
           btn.textContent = item.status === 'Resolvido' ? 'Resolvido' : 'Marcar Resolvido';
-          btn.onclick = () => resolveRelato(key);
+          btn.onclick = () => resolveRelato(key, item.token);
           tdAction.appendChild(btn);
 
           tr.appendChild(tdToken);
@@ -1328,9 +1325,13 @@
       });
     }
 
-    function resolveRelato(key) {
-      db.ref('relatos/' + key).update({ status: 'Resolvido' }).then(() => {
-        alert('Relato atualizado para Resolvido no Firebase com sucesso.');
+    function resolveRelato(key, token) {
+      const updates = {};
+      updates['relatos/' + key + '/status'] = 'Resolvido';
+      updates['consultaRelatos/' + token + '/status'] = 'Resolvido';
+
+      db.ref().update(updates).then(() => {
+        alert('Relato atualizado para Resolvido com sucesso.');
       });
     }
   </script>

@@ -1,771 +1,5220 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma ABRAÇAR — CETI José Marques</title>
-  
-  <!-- GOOGLE FONTS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FIREBASE SDKs (Compat / v9 modular via CDN) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<title>Portal ABRAÇAR — Painel Gestão</title>
 
-  <style>
-    :root {
-      --green-dark: #188607;
-      --green: #40B615;
-      --purple: #4E22A5;
-      --purple-dark: #230A80;
-      --blue: #64C6ED;
-      --gold: #F1DC22;
-      --main-gradient: linear-gradient(135deg, #188607 0%, #40B615 38%, #4E22A5 72%, #230A80 100%);
-      --bg-light: #F8FAFC;
-      --surface-white: #FFFFFF;
-      --text-main: #1E293B;
-      --text-muted: #64748B;
-      --border-color: #E2E8F0;
-      --sidebar-width: 280px;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-      --shadow-md: 0 10px 15px -3px rgba(35, 10, 128, 0.08);
-      --radius-lg: 16px;
-      --radius-md: 12px;
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+<style>
+:root{
+  --verde:#0B8F3A;
+  --verde2:#32C85A;
+  --roxo:#4B2CA3;
+  --roxo2:#341A84;
+  --dourado:#F4C430;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#202124;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --danger:#dc3545;
+  --warning:#f59e0b;
+  --success:#16803c;
+  --sidebar:270px;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg-light); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
+*{
+  box-sizing:border-box;
+}
 
-    .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--surface-white); border-bottom: 1px solid var(--border-color); z-index: 90; align-items: center; justify-content: space-between; padding: 0 1rem; }
-    .mobile-brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--purple-dark); }
-    .mobile-toggle-btn { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--purple); padding: 0.5rem; }
-    
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(35, 10, 128, 0.4); backdrop-filter: blur(4px); z-index: 99; }
-    .sidebar { width: var(--sidebar-width); background: var(--surface-white); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; transition: var(--transition); }
-    .sidebar-header { padding: 1.5rem; background: var(--main-gradient); color: white; position: relative; }
-    .sidebar-brand { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.5rem; }
-    .sidebar-sub { font-size: 0.75rem; opacity: 0.9; margin-top: 0.25rem; font-weight: 500; }
-    .user-badge { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.7rem; margin-top: 0.75rem; font-weight: 600; }
-    
-    .nav-list { list-style: none; padding: 1rem 0.75rem; flex: 1; overflow-y: auto; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; border-radius: var(--radius-md); color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; transition: var(--transition); }
-    .nav-item:hover { background: #F1F5F9; color: var(--purple); }
-    .nav-item.active { background: #F3E8FF; color: var(--purple-dark); border-left: 4px solid var(--purple); }
-    .nav-item .icon { font-size: 1.2rem; }
-    
-    .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border-color); }
-    .main-wrapper { margin-left: var(--sidebar-width); flex: 1; padding: 2rem; transition: var(--transition); max-width: 1200px; }
-    
-    .view-section { display: none; animation: fadeIn 0.3s ease-out; }
-    .view-section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
-    .card { background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: var(--transition); }
-    .card:hover { box-shadow: var(--shadow-md); border-color: #CBD5E1; }
-    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-    
-    .hero-banner { background: var(--main-gradient); color: white; border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-md); }
-    .hero-banner h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
-    
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: var(--transition); width: 100%; }
-    .btn-green { background: var(--green); color: white; }
-    .btn-green:hover { background: var(--green-dark); }
-    .btn-purple { background: var(--purple); color: white; }
-    .btn-purple:hover { background: var(--purple-dark); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--border-color); color: var(--text-main); }
-    .btn-outline:hover { background: #F8FAFC; border-color: var(--purple); color: var(--purple); }
-    .btn-danger { background: #EF4444; color: white; }
+/* =========================
+   LOGIN
+========================= */
 
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-main); }
-    .form-control { width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); font-size: 0.95rem; outline: none; transition: var(--transition); }
-    .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(78, 34, 165, 0.1); }
-    textarea.form-control { min-height: 110px; resize: vertical; }
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at top left,rgba(50,200,90,.25),transparent 35%),
+    linear-gradient(135deg,#0B8F3A,#4B2CA3);
+}
 
-    .data-table-container { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 1rem; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem; }
-    th { background: #F8FAFC; padding: 0.85rem 1rem; font-weight: 700; color: var(--purple-dark); border-bottom: 1px solid var(--border-color); }
-    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
-    
-    .status-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
-    .badge-analise { background: #FEF3C7; color: #D97706; }
-    .badge-resolvido { background: #DCFCE7; color: #15803D; }
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  padding:35px;
+  border-radius:24px;
+  box-shadow:0 25px 70px rgba(0,0,0,.2);
+}
 
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: var(--surface-white); border-radius: var(--radius-lg); padding: 1.75rem; width: 100%; max-width: 480px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+.login-logo{
+  width:90px;
+  height:90px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 15px;
+}
 
-    .respire-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1.5rem; background: linear-gradient(180deg, #F3E8FF 0%, #FFFFFF 100%); border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center; }
-    .respire-circle { width: 140px; height: 140px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; margin: 1.5rem 0; transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1), background-color 4s linear; box-shadow: 0 0 20px rgba(64, 182, 21, 0.3); }
+.logo-fallback{
+  width:90px;
+  height:90px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--verde),var(--roxo));
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  font-weight:bold;
+}
 
-    @media (max-width: 768px) {
-      .mobile-header { display: flex; }
-      .sidebar { transform: translateX(-100%); top: 0; }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-overlay.open { display: block; }
-      .main-wrapper { margin-left: 0; padding: 1rem; padding-top: 80px; }
-      .hero-banner { padding: 1.5rem; }
-      .hero-banner h1 { font-size: 1.5rem; }
-    }
-  </style>
+.login-box h1{
+  text-align:center;
+  margin:5px 0;
+}
+
+.login-box p{
+  text-align:center;
+  color:var(--muted);
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-weight:600;
+  margin-bottom:7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  font:inherit;
+  background:white;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--verde);
+  box-shadow:0 0 0 3px rgba(11,143,58,.1);
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:11px 16px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--verde),var(--roxo));
+  color:white;
+}
+
+.btn-secondary{
+  background:#eef1f5;
+  color:#333;
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:white;
+}
+
+.btn-success{
+  background:var(--success);
+  color:white;
+}
+
+.btn-warning{
+  background:var(--warning);
+  color:white;
+}
+
+.full{
+  width:100%;
+}
+
+.error{
+  color:var(--danger);
+  background:#fff1f2;
+  border:1px solid #fecdd3;
+  padding:10px;
+  border-radius:9px;
+  margin-top:10px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   APP
+========================= */
+
+#app{
+  display:none;
+}
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:var(--sidebar);
+  background:linear-gradient(180deg,#0B8F3A,#341A84);
+  color:white;
+  padding:18px 12px;
+  z-index:1000;
+  transition:.25s;
+  overflow-y:auto;
+}
+
+.sidebar.collapsed{
+  width:78px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  margin-bottom:20px;
+}
+
+.brand img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:10px;
+  background:white;
+}
+
+.brand-fallback{
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:white;
+  color:var(--verde);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.brand-text{
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.brand-text strong{
+  display:block;
+}
+
+.brand-text span{
+  font-size:12px;
+  opacity:.8;
+}
+
+.sidebar.collapsed .brand-text{
+  display:none;
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.menu button{
+  border:0;
+  background:transparent;
+  color:white;
+  padding:12px;
+  border-radius:10px;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  font-size:14px;
+}
+
+.menu button:hover,
+.menu button.active{
+  background:rgba(255,255,255,.16);
+}
+
+.menu-icon{
+  min-width:28px;
+  text-align:center;
+  font-size:19px;
+}
+
+.menu-label{
+  white-space:nowrap;
+}
+
+.sidebar.collapsed .menu-label{
+  display:none;
+}
+
+.sidebar-footer{
+  position:absolute;
+  bottom:15px;
+  left:12px;
+  right:12px;
+}
+
+.sidebar-footer button{
+  width:100%;
+}
+
+.sidebar.collapsed .sidebar-footer span{
+  display:none;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  margin-left:var(--sidebar);
+  min-height:100vh;
+  transition:.25s;
+}
+
+.main.expanded{
+  margin-left:78px;
+}
+
+.topbar{
+  height:70px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  position:sticky;
+  top:0;
+  z-index:500;
+}
+
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.toggle{
+  border:0;
+  background:#f1f3f5;
+  border-radius:10px;
+  width:42px;
+  height:42px;
+  cursor:pointer;
+  font-size:20px;
+}
+
+.user-info{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.content{
+  padding:25px;
+  max-width:1500px;
+  margin:auto;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.page-title{
+  margin-bottom:20px;
+}
+
+.page-title h1{
+  margin:0;
+}
+
+.page-title p{
+  color:var(--muted);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:25px;
+}
+
+.stat{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+}
+
+.stat-icon{
+  font-size:28px;
+}
+
+.stat-number{
+  font-size:30px;
+  font-weight:800;
+  margin-top:8px;
+}
+
+.stat-label{
+  color:var(--muted);
+}
+
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.card-header h2{
+  margin:0;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:12px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  vertical-align:top;
+}
+
+th{
+  color:#4b5563;
+  font-size:13px;
+  background:#fafafa;
+}
+
+.actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.actions .btn{
+  padding:7px 10px;
+  font-size:12px;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.badge-green{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.badge-yellow{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.badge-red{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.badge-blue{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:2000;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:18px;
+  padding:25px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.close{
+  border:0;
+  background:#f1f1f1;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.form-grid .full-width{
+  grid-column:1/-1;
+}
+
+.checkbox{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.checkbox input{
+  width:auto;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile-menu{
+  display:none;
+}
+
+@media(max-width:900px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .sidebar{
+    transform:translateX(-100%);
+  }
+
+  .sidebar.mobile-open{
+    transform:translateX(0);
+    width:270px;
+  }
+
+  .main,
+  .main.expanded{
+    margin-left:0;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+}
+
+@media(max-width:600px){
+
+  .content{
+    padding:15px;
+  }
+
+  .topbar{
+    padding:0 15px;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .user-info{
+    display:none;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <!-- MOBILE HEADER -->
-  <header class="mobile-header">
-    <div class="mobile-brand"><span>🟢🟣</span> ABRAÇAR</div>
-    <button class="mobile-toggle-btn" onclick="toggleSidebar()">☰</button>
-  </header>
+<!-- ======================================================
+     LOGIN
+====================================================== -->
 
-  <!-- OVERLAY MOBILE -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<section id="loginScreen">
 
-  <!-- SIDEBAR LATERAL -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-brand"><span>🟢🟣</span> ABRAÇAR</div>
-      <div class="sidebar-sub">CETI José Marques</div>
-      <div class="user-badge" id="userBadge">
-        <span id="roleIcon">👤</span>
-        <span id="roleText">Modo Visitante</span>
+  <div class="login-box">
+
+    <div id="loginLogoArea"></div>
+
+    <h1>Portal ABRAÇAR</h1>
+
+    <p>Painel de Gestão — CETI José Marques</p>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label for="email">E-mail administrativo</label>
+        <input
+          type="email"
+          id="email"
+          required
+          autocomplete="username"
+          placeholder="admin@escola.com"
+        >
       </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          required
+          autocomplete="current-password"
+          placeholder="Digite sua senha"
+        >
+      </div>
+
+      <button class="btn btn-primary full" type="submit">
+        Entrar no painel
+      </button>
+
+      <div id="loginError" class="error hidden"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     APLICAÇÃO
+====================================================== -->
+
+<div id="app">
+
+  <!-- SIDEBAR -->
+
+  <aside id="sidebar" class="sidebar">
+
+    <div class="brand">
+
+      <div id="brandLogo"></div>
+
+      <div class="brand-text">
+        <strong>PORTAL ABRAÇAR</strong>
+        <span>CETI José Marques</span>
+      </div>
+
     </div>
 
-    <ul class="nav-list">
-      <li class="nav-item active" onclick="switchNav('inicio', this)"><span class="icon">🏠</span> Início</li>
-      <li class="nav-item" onclick="switchNav('atendimento', this)"><span class="icon">💬</span> Atendimento</li>
-      <li class="nav-item" onclick="switchNav('relatos', this)"><span class="icon">📝</span> Relato Anônimo</li>
-      <li class="nav-item" onclick="switchNav('consultar', this)"><span class="icon">🔍</span> Consultar Relato</li>
-      <li class="nav-item" onclick="switchNav('mediacao', this)"><span class="icon">🤝</span> Mediação de Conflitos</li>
-      <li class="nav-item" onclick="switchNav('respire', this)"><span class="icon">🌿</span> Espaço Respire</li>
-      <li class="nav-item" onclick="switchNav('dicas', this)"><span class="icon">💡</span> Dicas e Guias</li>
-      <li class="nav-item" onclick="switchNav('mural', this)"><span class="icon">📢</span> Mural Acolhedor</li>
-      <li class="nav-item" onclick="switchNav('apoio', this)"><span class="icon">☎️</span> Rede de Apoio</li>
-      <li class="nav-item" id="adminNavBtn" style="display: none;" onclick="switchNav('dashboard', this)"><span class="icon">🛡️</span> Painel Gestor</li>
-    </ul>
+
+    <nav class="menu">
+
+      <button class="nav-btn active" data-page="dashboard">
+        <span class="menu-icon">📊</span>
+        <span class="menu-label">Visão Geral</span>
+      </button>
+
+      <button class="nav-btn" data-page="relatos">
+        <span class="menu-icon">📝</span>
+        <span class="menu-label">Relatos</span>
+      </button>
+
+      <button class="nav-btn" data-page="acolhimento">
+        <span class="menu-icon">💬</span>
+        <span class="menu-label">Acolhimento</span>
+      </button>
+
+      <button class="nav-btn" data-page="guias">
+        <span class="menu-icon">📚</span>
+        <span class="menu-label">Guias e Dicas</span>
+      </button>
+
+      <button class="nav-btn" data-page="mural">
+        <span class="menu-icon">💚</span>
+        <span class="menu-label">Mural Positivo</span>
+      </button>
+
+      <button class="nav-btn" data-page="apoio">
+        <span class="menu-icon">🆘</span>
+        <span class="menu-label">Rede de Apoio</span>
+      </button>
+
+      <button class="nav-btn" data-page="respire">
+        <span class="menu-icon">🎵</span>
+        <span class="menu-label">Espaço Respire</span>
+      </button>
+
+      <button class="nav-btn" data-page="usuarios">
+        <span class="menu-icon">👥</span>
+        <span class="menu-label">Usuários</span>
+      </button>
+
+      <button class="nav-btn" data-page="config">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-label">Configurações</span>
+      </button>
+
+      <button class="nav-btn" data-page="logs">
+        <span class="menu-icon">📋</span>
+        <span class="menu-label">Logs</span>
+      </button>
+
+    </nav>
+
 
     <div class="sidebar-footer">
-      <button class="btn btn-outline" id="btnLoginModal" onclick="openLoginModal()">🔐 Acesso Gestor</button>
-      <button class="btn btn-danger" id="btnLogoutBtn" style="display: none;" onclick="logout()">🚪 Sair do Sistema</button>
+
+      <button id="logoutBtn" class="btn btn-secondary">
+        🚪 <span>Sair</span>
+      </button>
+
     </div>
+
   </aside>
 
-  <!-- CONTEÚDO PRINCIPAL -->
-  <main class="main-wrapper">
 
-    <!-- SEÇÃO: INÍCIO -->
-    <section id="inicio" class="view-section active">
-      <div class="hero-banner">
-        <h1>Escuta • Acolhimento • Respeito</h1>
-        <p>Um espaço de escuta, acolhimento e registro destinado à comunidade escolar do CETI José Marques.</p>
+  <!-- MAIN -->
+
+  <main id="main" class="main">
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button id="mobileMenuBtn" class="toggle mobile-menu">
+          ☰
+        </button>
+
+        <button id="toggleSidebar" class="toggle">
+          ☰
+        </button>
+
+        <strong id="pageName">Visão Geral</strong>
+
       </div>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">💬 Conversa Direta</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Fale com a Coordenação, Grêmio Estudantil ou Equipe de Mediação.</p>
-          <button class="btn btn-purple" onclick="switchNav('atendimento')">Iniciar Atendimento</button>
-        </div>
-        <div class="card">
-          <div class="card-title">📝 Relato Anônimo</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Informe situações de bullying ou ocorrências de forma segura.</p>
-          <button class="btn btn-green" onclick="switchNav('relatos')">Fazer Relato</button>
-        </div>
-        <div class="card">
-          <div class="card-title">🌿 Despressurizar</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Acesse sons relaxantes e exercício guiado de respiração.</p>
-          <button class="btn btn-outline" onclick="switchNav('respire')">Ir ao Espaço Respire</button>
-        </div>
+
+      <div class="user-info">
+        Administrador: <span id="adminEmail"></span>
       </div>
+
+    </header>
+
+
+    <section class="content">
+
+
+      <!-- ==================================================
+           DASHBOARD
+      ================================================== -->
+
+      <section id="page-dashboard" class="page active">
+
+        <div class="page-title">
+
+          <h1>Visão Geral</h1>
+
+          <p>
+            Acompanhe o funcionamento do Portal ABRAÇAR.
+          </p>
+
+        </div>
+
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-icon">📝</div>
+            <div id="statRelatos" class="stat-number">0</div>
+            <div class="stat-label">Relatos</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">💬</div>
+            <div id="statAcolhimento" class="stat-number">0</div>
+            <div class="stat-label">Atendimentos</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">📚</div>
+            <div id="statGuias" class="stat-number">0</div>
+            <div class="stat-label">Guias publicados</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">💚</div>
+            <div id="statMural" class="stat-number">0</div>
+            <div class="stat-label">Mensagens publicadas</div>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Bem-vindo ao painel</h2>
+
+          </div>
+
+          <p>
+            Utilize o menu lateral para administrar os conteúdos
+            e serviços do Portal ABRAÇAR.
+          </p>
+
+          <p>
+            Os números exibidos acima são carregados diretamente
+            do Firebase e não são dados fictícios.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           RELATOS
+      ================================================== -->
+
+      <section id="page-relatos" class="page">
+
+        <div class="page-title">
+
+          <h1>Relatos Anônimos</h1>
+
+          <p>
+            Gerencie os relatos enviados pelos estudantes.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Relatos registrados</h2>
+
+            <button
+              class="btn btn-secondary"
+              onclick="loadReports()"
+            >
+              ↻ Atualizar
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>ID</th>
+                  <th>Categoria</th>
+                  <th>Descrição</th>
+                  <th>Data</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="reportsTable">
+
+                <tr>
+                  <td colspan="6">
+                    Carregando...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           ACOLHIMENTO
+      ================================================== -->
+
+      <section id="page-acolhimento" class="page">
+
+        <div class="page-title">
+
+          <h1>Acolhimento Virtual</h1>
+
+          <p>
+            Acompanhe os atendimentos realizados pela equipe.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Atendimentos</h2>
+
+            <button
+              class="btn btn-secondary"
+              onclick="loadChats()"
+            >
+              ↻ Atualizar
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>ID</th>
+                  <th>Assunto</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="chatsTable">
+
+                <tr>
+                  <td colspan="5">
+                    Carregando...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           GUIAS
+      ================================================== -->
+
+      <section id="page-guias" class="page">
+
+        <div class="page-title">
+
+          <h1>Guias e Dicas</h1>
+
+          <p>
+            Gerencie os conteúdos educativos do portal.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Conteúdos</h2>
+
+            <button
+              class="btn btn-primary"
+              onclick="openGuideModal()"
+            >
+              + Novo guia
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Título</th>
+                  <th>Categoria</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="guidesTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           MURAL
+      ================================================== -->
+
+      <section id="page-mural" class="page">
+
+        <div class="page-title">
+
+          <h1>Mural Positivo</h1>
+
+          <p>
+            Aprove ou rejeite mensagens enviadas pelos estudantes.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Mensagem</th>
+                  <th>Autor</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="muralTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           REDE DE APOIO
+      ================================================== -->
+
+      <section id="page-apoio" class="page">
+
+        <div class="page-title">
+
+          <h1>Rede de Apoio</h1>
+
+          <p>
+            Gerencie os canais de apoio disponíveis aos estudantes.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Canais</h2>
+
+            <button
+              class="btn btn-primary"
+              onclick="openSupportModal()"
+            >
+              + Adicionar canal
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Nome</th>
+                  <th>Tipo</th>
+                  <th>Contato</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="supportTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           ESPAÇO RESPIRE
+      ================================================== -->
+
+      <section id="page-respire" class="page">
+
+        <div class="page-title">
+
+          <h1>Espaço Respire</h1>
+
+          <p>
+            Configure os exercícios de respiração e as músicas.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Configuração da respiração</h2>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label>Inspiração (segundos)</label>
+
+              <input
+                         type="number"
+                id="respireInspire"
+                min="1"
+                max="60"
+                value="4"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Segurar (segundos)</label>
+
+              <input
+                type="number"
+                id="respireHold"
+                min="0"
+                max="60"
+                value="4"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Expiração (segundos)</label>
+
+              <input
+                type="number"
+                id="respireExhale"
+                min="1"
+                max="60"
+                value="6"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Ciclos</label>
+
+              <input
+                type="number"
+                id="respireCycles"
+                min="1"
+                max="20"
+                value="5"
+              >
+
+            </div>
+
+
+            <div class="field full-width">
+
+              <label>Texto de orientação</label>
+
+              <textarea
+                id="respireInstruction"
+                placeholder="Ex.: Inspire lentamente pelo nariz..."
+              ></textarea>
+
+            </div>
+
+
+            <div class="field full-width">
+
+              <label>Link da música de relaxamento</label>
+
+              <input
+                type="url"
+                id="respireMusicUrl"
+                placeholder="https://..."
+              >
+
+              <small style="color:var(--muted);display:block;margin-top:6px;">
+                Cole o link de uma música ou áudio permitido para reprodução.
+              </small>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Nome da música</label>
+
+              <input
+                type="text"
+                id="respireMusicName"
+                placeholder="Ex.: Música para relaxar"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Ativar música</label>
+
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  id="respireMusicEnabled"
+                  checked
+                >
+                <span>Permitir reprodução no Espaço Respire</span>
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;">
+
+            <button
+              class="btn btn-primary"
+              onclick="saveRespireSettings()"
+            >
+              💾 Salvar configuração
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              onclick="testRespireMusic()"
+            >
+              ▶ Testar música
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Músicas cadastradas</h2>
+
+            <button
+              class="btn btn-primary"
+              onclick="openMusicModal()"
+            >
+              + Adicionar música
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Nome</th>
+                  <th>Link</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="musicTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           USUÁRIOS
+      ================================================== -->
+
+      <section id="page-usuarios" class="page">
+
+        <div class="page-title">
+
+          <h1>Usuários</h1>
+
+          <p>
+            Gerenciamento dos usuários administrativos do portal.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Administradores</h2>
+
+            <button
+              class="btn btn-primary"
+              onclick="openUserModal()"
+            >
+              + Novo administrador
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>E-mail</th>
+                  <th>Nome</th>
+                  <th>Função</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="usersTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           CONFIGURAÇÕES
+      ================================================== -->
+
+      <section id="page-config" class="page">
+
+        <div class="page-title">
+
+          <h1>Configurações</h1>
+
+          <p>
+            Personalize a identidade e o funcionamento do Portal ABRAÇAR.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Identidade visual</h2>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label>Nome do portal</label>
+
+              <input
+                type="text"
+                id="configPortalName"
+                value="Portal ABRAÇAR"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Nome da escola</label>
+
+              <input
+                type="text"
+                id="configSchoolName"
+                value="CETI José Marques"
+              >
+
+            </div>
+
+
+            <div class="field full-width">
+
+              <label>URL do logo</label>
+
+              <input
+                type="url"
+                id="configLogoUrl"
+                placeholder="https://..."
+              >
+
+              <small style="color:var(--muted);">
+                O arquivo local <strong>logo.png</strong> também será
+                utilizado automaticamente pelo portal.
+              </small>
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Cor principal</label>
+
+              <input
+                type="color"
+                id="configPrimaryColor"
+                value="#0B8F3A"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>Cor secundária</label>
+
+              <input
+                type="color"
+                id="configSecondaryColor"
+                value="#4B2CA3"
+              >
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary"
+            onclick="saveGeneralSettings()"
+          >
+            💾 Salvar configurações
+          </button>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Configurações do portal</h2>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="checkbox">
+
+              <input
+                type="checkbox"
+                id="configReportsEnabled"
+                checked
+              >
+
+              <span>Permitir novos relatos anônimos</span>
+
+            </label>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="checkbox">
+
+              <input
+                type="checkbox"
+                id="configChatEnabled"
+                checked
+              >
+
+              <span>Permitir Acolhimento Virtual</span>
+
+            </label>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="checkbox">
+
+              <input
+                type="checkbox"
+                id="configMuralModeration"
+                checked
+              >
+
+              <span>Exigir aprovação das mensagens do Mural Positivo</span>
+
+            </label>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary"
+            onclick="savePortalSettings()"
+          >
+            💾 Salvar
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ==================================================
+           LOGS
+      ================================================== -->
+
+      <section id="page-logs" class="page">
+
+        <div class="page-title">
+
+          <h1>Logs do Sistema</h1>
+
+          <p>
+            Histórico das principais ações administrativas.
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-header">
+
+            <h2>Atividades</h2>
+
+            <button
+              class="btn btn-secondary"
+              onclick="loadLogs()"
+            >
+              ↻ Atualizar
+            </button>
+
+          </div>
+
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Data</th>
+                  <th>Administrador</th>
+                  <th>Ação</th>
+                  <th>Detalhes</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="logsTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
     </section>
 
-    <!-- SEÇÃO: ATENDIMENTO -->
-    <section id="atendimento" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Canais de Atendimento</h2>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">🏛️ Coordenação Pedagógica</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Suporte para dúvidas escolares e orientação acadêmica.</p>
-          <button class="btn btn-purple" onclick="openChatForm('Coordenação')">Abrir Chamado</button>
-        </div>
-        <div class="card">
-          <div class="card-title">🎓 Grêmio Estudantil</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Canal aberto para sugestões e ideias dos estudantes.</p>
-          <button class="btn btn-green" onclick="openChatForm('Grêmio Estudantil')">Falar com o Grêmio</button>
-        </div>
-        <div class="card">
-          <div class="card-title">🤝 Mediação de Conflitos</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Ajuda para resolver divergências de forma pacífica.</p>
-          <button class="btn btn-purple" onclick="openChatForm('Mediação')">Solicitar Mediação</button>
-        </div>
-      </div>
-
-      <div class="card" id="chatFormCard" style="display: none; margin-top: 1.5rem;">
-        <div class="card-title" id="chatFormTitle">Novo Atendimento</div>
-        <form onsubmit="submitChat(event)">
-          <input type="hidden" id="chatChannelInput">
-          <div class="form-group">
-            <label>Sua Mensagem / Solicitação:</label>
-            <textarea id="chatMessageInput" class="form-control" required placeholder="Escreva detalhadamente o que você precisa..."></textarea>
-          </div>
-          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-            <button type="button" class="btn btn-outline" onclick="document.getElementById('chatFormCard').style.display='none'">Cancelar</button>
-            <button type="submit" class="btn btn-purple">Enviar Mensagem</button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: RELATO ANÔNIMO -->
-    <section id="relatos" class="view-section">
-      <div class="card">
-        <div class="card-title">📝 Registrar Relato Anônimo</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Sua identidade não é solicitada. O sistema gera um código seguro para acompanhamento.</p>
-        <form onsubmit="submitRelato(event)">
-          <div class="form-group">
-            <label>Local da Ocorrência:</label>
-            <input type="text" id="reportPlace" class="form-control" required placeholder="Ex: Pátio, Sala 04...">
-          </div>
-          <div class="form-group">
-            <label>Data Aproximada:</label>
-            <input type="date" id="reportDate" class="form-control" required>
-          </div>
-          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-            <input type="checkbox" id="reportDanger" style="width: 18px; height: 18px;">
-            <label for="reportDanger" style="margin-bottom: 0; cursor: pointer;">Trata-se de uma urgência ou risco imediato?</label>
-          </div>
-          <div class="form-group">
-            <label>Descrição dos Fatos:</label>
-            <textarea id="reportDesc" class="form-control" required placeholder="Relate o ocorrido com o máximo de detalhes..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-green">Enviar Relato Protegido</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: CONSULTAR RELATO -->
-    <section id="consultar" class="view-section">
-      <div class="card" style="max-width: 600px; margin: 0 auto;">
-        <div class="card-title">🔍 Acompanhar Status do Relato</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Insira o código exclusivo gerado no momento do envio.</p>
-        <div class="form-group">
-          <label>Código do Relato (Ex: ABR-...):</label>
-          <input type="text" id="searchTokenInput" class="form-control" placeholder="Digite seu código...">
-        </div>
-        <button class="btn btn-purple" onclick="consultarRelato()">Consultar Andamento</button>
-
-        <div id="consultaResultado" style="margin-top: 1.5rem; display: none;">
-          <h4 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Resultado da Consulta</h4>
-          <div class="card" style="background: #F8FAFC; border: 1px dashed var(--border-color);">
-            <p><strong>Status Atual:</strong> <span id="resStatus" class="status-badge"></span></p>
-            <p style="margin-top: 0.5rem;"><strong>Mensagem:</strong> <span id="resMsg">Em análise pela equipe escolar.</span></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: MEDIAÇÃO -->
-    <section id="mediacao" class="view-section">
-      <div class="card">
-        <div class="card-title">🤝 Pedido de Mediação Escolar</div>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Um mediador neutro ajuda as partes a encontrarem um acordo respeitoso.</p>
-        <form onsubmit="submitMediacao(event)">
-          <div class="form-group">
-            <label>Tema ou Motivo do Conflito:</label>
-            <input type="text" id="mediacaoTopic" class="form-control" required placeholder="Ex: Desentendimento em grupo">
-          </div>
-          <div class="form-group">
-            <label>Resumo da Situação:</label>
-            <textarea id="mediacaoDesc" class="form-control" required placeholder="Descreva brevemente..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-purple">Solicitar Apoio da Mediação</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: ESPAÇO RESPIRE -->
-    <section id="respire" class="view-section">
-      <div class="respire-box">
-        <h2 style="color: var(--purple-dark); margin-bottom: 0.5rem;">Espaço Respire</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px;">Siga o ritmo do círculo para acalmar a mente.</p>
-        <div class="respire-circle" id="respireCircle">
-          <span id="respireInstruction">Inspire</span>
-        </div>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-          <button class="btn btn-green" onclick="startRespire()">Iniciar Exercício</button>
-          <button class="btn btn-outline" onclick="stopRespire()">Parar</button>
-        </div>
-        <div style="width: 100%; max-width: 500px; text-align: left;">
-          <h4 style="color: var(--purple-dark); margin-bottom: 0.75rem;">🎧 Sons Ambiente</h4>
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button class="btn btn-outline" onclick="playAmbientSound('chuva')">🌧️ Chuva Suave</button>
-            <button class="btn btn-outline" onclick="playAmbientSound('ondas')">🌊 Ondas Calmas</button>
-            <button class="btn btn-outline" onclick="stopAmbientSound()">🔇 Parar Som</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: DICAS -->
-    <section id="dicas" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Dicas e Guias de Bem-Estar</h2>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">🧠 Lidando com a Ansiedade</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Técnicas rápidas para momentos de crise.</p>
-          <span style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">LLeitura de 3 min</span>
-        </div>
-        <div class="card">
-          <div class="card-title">🛡️ Combate ao Cyberbullying</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Saiba como identificar ofensas virtuais e denunciar.</p>
-          <span style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">Leitura de 4 min</span>
-        </div>
-        <div class="card">
-          <div class="card-title">🤝 Comunicação Não-Violenta</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Como expressar sentimentos sem ferir o colega.</p>
-          <span style="font-size: 0.75rem; color: var(--purple); font-weight: 700;">Leitura de 5 min</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: MURAL -->
-    <section id="mural" class="view-section">
-      <div class="hero-banner" style="background: linear-gradient(135deg, #4E22A5 0%, #64C6ED 100%);">
-        <h1>Mural Acolhedor</h1>
-        <p>Palavras de incentivo e empatia enviadas pela comunidade.</p>
-      </div>
-      <div style="margin-bottom: 1.5rem;">
-        <button class="btn btn-green" onclick="openMuralModal()">✨ Enviar Recado Positivo</button>
-      </div>
-      <div class="cards-grid" id="muralGrid"></div>
-    </section>
-
-    <!-- SEÇÃO: REDE DE APOIO -->
-    <section id="apoio" class="view-section">
-      <h2 style="color: var(--purple-dark); margin-bottom: 1rem;">Rede de Apoio</h2>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title">📞 CVV (188)</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Apoio emocional gratuito e sigiloso 24h.</p>
-          <a href="tel:188" class="btn btn-purple" style="text-decoration: none;">Ligar 188</a>
-        </div>
-        <div class="card">
-          <div class="card-title">⚖️ Conselho Tutelar</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Garantia de direitos infantojuvenis.</p>
-          <span class="btn btn-outline">Horário Comercial</span>
-        </div>
-        <div class="card">
-          <div class="card-title">🏫 Direção CETI</div>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Atendimento presencial na secretaria.</p>
-          <span class="btn btn-outline">Segunda a Sexta</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEÇÃO: DASHBOARD GESTOR -->
-    <section id="dashboard" class="view-section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h2 style="color: var(--purple-dark);">🛡️ Painel de Gestão e Triagem</h2>
-        <span class="status-badge badge-resolvido">Admin Autorizado</span>
-      </div>
-      <div class="cards-grid" style="margin-bottom: 2rem;">
-        <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Relatos Anônimos</div>
-          <div id="statRelatosCount" style="font-size: 1.8rem; font-weight: 800; color: var(--purple-dark);">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Atendimentos Abertos</div>
-          <div id="statChatCount" style="font-size: 1.8rem; font-weight: 800; color: var(--green);">0</div>
-        </div>
-        <div class="card">
-          <div style="font-size: 0.8rem; color: var(--text-muted);">Mediações Solicitadas</div>
-          <div id="statMedCount" style="font-size: 1.8rem; font-weight: 800; color: var(--blue);">0</div>
-        </div>
-      </div>
-      <h3 style="color: var(--purple-dark); margin-bottom: 0.75rem;">Relatos Recebidos</h3>
-      <div class="data-table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Local</th>
-              <th>Data</th>
-              <th>Urgência</th>
-              <th>Descrição</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody id="adminRelatosTable">
-            <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Carregando dados...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
   </main>
 
-  <!-- MODAL LOGIN -->
-  <div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-      <div class="card-title" style="margin-bottom: 1rem;">🔐 Acesso Gestão</div>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label>E-mail:</label>
-          <input type="email" id="adminEmail" class="form-control" required placeholder="gestor@ceti.com">
-        </div>
-        <div class="form-group">
-          <label>Senha:</label>
-          <input type="password" id="adminPassword" class="form-control" required placeholder="Senha...">
-        </div>
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-          <button type="submit" class="btn btn-purple">Entrar</button>
-        </div>
-      </form>
+</div>
+
+
+<!-- ======================================================
+     MODAL — GUIA
+====================================================== -->
+
+<div id="guideModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2 id="guideModalTitle">Novo guia</h2>
+
+      <button
+        class="close"
+        onclick="closeModal('guideModal')"
+      >
+        ×
+      </button>
+
     </div>
+
+
+    <form id="guideForm">
+
+      <input
+        type="hidden"
+        id="guideId"
+      >
+
+
+      <div class="field">
+
+        <label>Título</label>
+
+        <input
+          type="text"
+          id="guideTitle"
+          required
+          placeholder="Ex.: Como identificar o bullying"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Categoria</label>
+
+        <select id="guideCategory">
+
+          <option value="bullying">
+            Bullying
+          </option>
+
+          <option value="cyberbullying">
+            Cyberbullying
+          </option>
+
+          <option value="violencia">
+            Violência
+          </option>
+
+          <option value="convivencia">
+            Convivência
+          </option>
+
+          <option value="saude">
+            Bem-estar
+          </option>
+
+          <option value="outros">
+            Outros
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Conteúdo</label>
+
+        <textarea
+          id="guideContent"
+          required
+          placeholder="Digite o conteúdo do guia..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Link externo (opcional)</label>
+
+        <input
+          type="url"
+          id="guideUrl"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label class="checkbox">
+
+          <input
+            type="checkbox"
+            id="guidePublished"
+            checked
+          >
+
+          <span>Publicar imediatamente</span>
+
+        </label>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary full"
+      >
+        Salvar guia
+      </button>
+
+    </form>
+
   </div>
 
-  <!-- MODAL MURAL -->
-  <div class="modal-overlay" id="muralModal">
-    <div class="modal-box">
-      <div class="card-title" style="margin-bottom: 1rem;">✨ Novo Recado</div>
-      <form onsubmit="submitMural(event)">
-        <div class="form-group">
-          <label>Mensagem:</label>
-          <textarea id="muralText" class="form-control" required placeholder="Escreva algo inspirador..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Assinatura:</label>
-          <input type="text" id="muralAuthor" class="form-control" required placeholder="Ex: Aluno(a) 2º Ano">
-        </div>
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closeMuralModal()">Cancelar</button>
-          <button type="submit" class="btn btn-green">Publicar</button>
-        </div>
-      </form>
+</div>
+
+
+<!-- ======================================================
+     MODAL — REDE DE APOIO
+====================================================== -->
+
+<div id="supportModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2>Canal de apoio</h2>
+
+      <button
+        class="close"
+        onclick="closeModal('supportModal')"
+      >
+        ×
+      </button>
+
     </div>
+
+
+    <form id="supportForm">
+
+      <input
+        type="hidden"
+        id="supportId"
+      >
+
+
+      <div class="field">
+
+        <label>Nome</label>
+
+        <input
+          type="text"
+          id="supportName"
+          required
+          placeholder="Ex.: Coordenação Escolar"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Tipo</label>
+
+        <select id="supportType">
+
+          <option value="telefone">
+            Telefone
+          </option>
+
+          <option value="whatsapp">
+            WhatsApp
+          </option>
+
+          <option value="email">
+            E-mail
+          </option>
+
+          <option value="site">
+            Site
+          </option>
+
+          <option value="presencial">
+            Atendimento presencial
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Contato / Link</label>
+
+        <input
+          type="text"
+          id="supportContact"
+          required
+          placeholder="Telefone, e-mail ou link"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Descrição</label>
+
+        <textarea
+          id="supportDescription"
+          placeholder="Explique como o estudante pode utilizar este canal."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label class="checkbox">
+
+          <input
+            type="checkbox"
+            id="supportActive"
+            checked
+          >
+
+          <span>Canal ativo</span>
+
+        </label>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary full"
+      >
+        Salvar canal
+      </button>
+
+    </form>
+
   </div>
 
-  <!-- SCRIPT -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
-      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
-      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
-      projectId: "escutaacolhimento-a9f15",
-      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
-      messagingSenderId: "639476751207",
-      appId: "1:639476751207:web:571f32f893f4156176adc2"
+</div>
+
+
+<!-- ======================================================
+     MODAL — MÚSICA
+====================================================== -->
+
+<div id="musicModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2>Música do Espaço Respire</h2>
+
+      <button
+        class="close"
+        onclick="closeModal('musicModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="musicForm">
+
+      <input
+        type="hidden"
+        id="musicId"
+      >
+
+
+      <div class="field">
+
+        <label>Nome da música</label>
+
+        <input
+          type="text"
+          id="musicName"
+          required
+          placeholder="Ex.: Sons da natureza"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>URL do áudio</label>
+
+        <input
+          type="url"
+          id="musicUrl"
+          required
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label class="checkbox">
+
+          <input
+            type="checkbox"
+            id="musicActive"
+            checked
+          >
+
+          <span>Disponível no Espaço Respire</span>
+
+        </label>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary full"
+      >
+        Salvar música
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     MODAL — USUÁRIO
+====================================================== -->
+
+<div id="userModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2>Novo administrador</h2>
+
+      <button
+        class="close"
+        onclick="closeModal('userModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="userForm">
+
+      <div class="field">
+
+        <label>Nome</label>
+
+        <input
+          type="text"
+          id="userName"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>E-mail</label>
+
+        <input
+          type="email"
+          id="userEmail"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Função</label>
+
+        <select id="userRole">
+
+          <option value="administrador">
+            Administrador
+          </option>
+
+          <option value="moderador">
+            Moderador
+          </option>
+
+          <option value="coordenacao">
+            Coordenação
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary full"
+      >      <button
+        type="submit"
+        class="btn btn-primary full"
+      >
+        Criar administrador
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script type="module">
+
+/* ======================================================
+   FIREBASE
+====================================================== */
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  push,
+  update,
+  remove,
+  onValue
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+  authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+  databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+  projectId: "escutaacolhimento-a9f15",
+  storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+  messagingSenderId: "639476751207",
+  appId: "1:639476751207:web:571f32f893f4156176adc2"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getDatabase(app);
+
+
+/* ======================================================
+   ELEMENTOS
+====================================================== */
+
+const loginScreen = document.getElementById("loginScreen");
+const appScreen = document.getElementById("app");
+
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementById("loginError");
+
+const sidebar = document.getElementById("sidebar");
+const main = document.getElementById("main");
+
+const toggleSidebar = document.getElementById("toggleSidebar");
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+const adminEmail = document.getElementById("adminEmail");
+const pageName = document.getElementById("pageName");
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+
+/* ======================================================
+   LOGO
+====================================================== */
+
+function createLogo(container){
+
+  container.innerHTML = "";
+
+  const img = document.createElement("img");
+
+  img.src = "logo.png";
+
+  img.alt = "Logo do Grêmio";
+
+  img.className =
+    container.id === "brandLogo"
+      ? "brand-logo-img"
+      : "login-logo";
+
+  img.onerror = () => {
+
+    container.innerHTML = "";
+
+    const fallback =
+      document.createElement("div");
+
+    fallback.className =
+      container.id === "brandLogo"
+        ? "brand-fallback"
+        : "logo-fallback";
+
+    fallback.textContent = "A";
+
+    container.appendChild(fallback);
+
+  };
+
+  container.appendChild(img);
+
+}
+
+
+createLogo(
+  document.getElementById("loginLogoArea")
+);
+
+createLogo(
+  document.getElementById("brandLogo")
+);
+
+
+/* ======================================================
+   LOGIN
+====================================================== */
+
+loginForm.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  loginError.classList.add("hidden");
+
+  try {
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+  } catch(error){
+
+    console.error(error);
+
+    loginError.textContent =
+      "E-mail ou senha incorretos.";
+
+    loginError.classList.remove("hidden");
+
+  }
+
+});
+
+
+/* ======================================================
+   AUTENTICAÇÃO
+====================================================== */
+
+onAuthStateChanged(auth, async (user) => {
+
+  if(user){
+
+    loginScreen.style.display = "none";
+
+    appScreen.style.display = "block";
+
+    adminEmail.textContent =
+      user.email || "";
+
+    await loadDashboard();
+
+    await loadGeneralSettings();
+
+    await loadRespireSettings();
+
+    await loadReports();
+
+    await loadChats();
+
+    await loadGuides();
+
+    await loadMural();
+
+    await loadSupport();
+
+    await loadMusic();
+
+    await loadUsers();
+
+    await loadLogs();
+
+  }else{
+
+    loginScreen.style.display = "flex";
+
+    appScreen.style.display = "none";
+
+  }
+
+});
+
+
+/* ======================================================
+   LOGOUT
+====================================================== */
+
+logoutBtn.addEventListener("click", async () => {
+
+  await signOut(auth);
+
+});
+
+
+/* ======================================================
+   MENU LATERAL
+====================================================== */
+
+const navButtons =
+  document.querySelectorAll(".nav-btn");
+
+const pages =
+  document.querySelectorAll(".page");
+
+
+const pageTitles = {
+
+  dashboard: "Visão Geral",
+
+  relatos: "Relatos Anônimos",
+
+  acolhimento: "Acolhimento Virtual",
+
+  guias: "Guias e Dicas",
+
+  mural: "Mural Positivo",
+
+  apoio: "Rede de Apoio",
+
+  respire: "Espaço Respire",
+
+  usuarios: "Usuários",
+
+  config: "Configurações",
+
+  logs: "Logs do Sistema"
+
+};
+
+
+navButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const page =
+      button.dataset.page;
+
+    navButtons.forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+    button.classList.add("active");
+
+    pages.forEach(section =>
+      section.classList.remove("active")
+    );
+
+    const target =
+      document.getElementById(
+        "page-" + page
+      );
+
+    if(target){
+
+      target.classList.add("active");
+
+    }
+
+    pageName.textContent =
+      pageTitles[page] || "Portal ABRAÇAR";
+
+    if(window.innerWidth <= 900){
+
+      sidebar.classList.remove(
+        "mobile-open"
+      );
+
+    }
+
+  });
+
+});
+
+
+/* ======================================================
+   RECOLHER SIDEBAR
+====================================================== */
+
+toggleSidebar.addEventListener("click", () => {
+
+  sidebar.classList.toggle("collapsed");
+
+  main.classList.toggle("expanded");
+
+});
+
+
+/* ======================================================
+   MENU MOBILE
+====================================================== */
+
+mobileMenuBtn.addEventListener("click", () => {
+
+  sidebar.classList.toggle("mobile-open");
+
+});
+
+
+/* ======================================================
+   MODAIS
+====================================================== */
+
+window.closeModal = function(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(modal){
+
+    modal.classList.remove("show");
+
+  }
+
+};
+
+
+window.openGuideModal = function(id = null){
+
+  const modal =
+    document.getElementById("guideModal");
+
+  const form =
+    document.getElementById("guideForm");
+
+  form.reset();
+
+  document.getElementById("guideId").value =
+    "";
+
+  document.getElementById("guideModalTitle")
+    .textContent =
+    id
+      ? "Editar guia"
+      : "Novo guia";
+
+  if(id){
+
+    get(
+      ref(db, "guias/" + id)
+    ).then(snapshot => {
+
+      if(!snapshot.exists()) return;
+
+      const data =
+        snapshot.val();
+
+      document.getElementById("guideId")
+        .value = id;
+
+      document.getElementById("guideTitle")
+        .value =
+        data.title || "";
+
+      document.getElementById("guideCategory")
+        .value =
+        data.category || "outros";
+
+      document.getElementById("guideContent")
+        .value =
+        data.content || "";
+
+      document.getElementById("guideUrl")
+        .value =
+        data.url || "";
+
+      document.getElementById("guidePublished")
+        .checked =
+        data.published !== false;
+
+    });
+
+  }
+
+  modal.classList.add("show");
+
+};
+
+
+window.openSupportModal = function(id = null){
+
+  const modal =
+    document.getElementById("supportModal");
+
+  document
+    .getElementById("supportForm")
+    .reset();
+
+  document.getElementById("supportId")
+    .value = "";
+
+  if(id){
+
+    get(
+      ref(db, "redeApoio/" + id)
+    ).then(snapshot => {
+
+      if(!snapshot.exists()) return;
+
+      const data =
+        snapshot.val();
+
+      document.getElementById("supportId")
+        .value = id;
+
+      document.getElementById("supportName")
+        .value =
+        data.name || "";
+
+      document.getElementById("supportType")
+        .value =
+        data.type || "telefone";
+
+      document.getElementById("supportContact")
+        .value =
+        data.contact || "";
+
+      document.getElementById("supportDescription")
+        .value =
+        data.description || "";
+
+      document.getElementById("supportActive")
+        .checked =
+        data.active !== false;
+
+    });
+
+  }
+
+  modal.classList.add("show");
+
+};
+
+
+window.openMusicModal = function(id = null){
+
+  const modal =
+    document.getElementById("musicModal");
+
+  document
+    .getElementById("musicForm")
+    .reset();
+
+  document.getElementById("musicId")
+    .value = "";
+
+  if(id){
+
+    get(
+      ref(db, "musicas/" + id)
+    ).then(snapshot => {
+
+      if(!snapshot.exists()) return;
+
+      const data =
+        snapshot.val();
+
+      document.getElementById("musicId")
+        .value = id;
+
+      document.getElementById("musicName")
+        .value =
+        data.name || "";
+
+      document.getElementById("musicUrl")
+        .value =
+        data.url || "";
+
+      document.getElementById("musicActive")
+        .checked =
+        data.active !== false;
+
+    });
+
+  }
+
+  modal.classList.add("show");
+
+};
+
+
+window.openUserModal = function(){
+
+  document
+    .getElementById("userForm")
+    .reset();
+
+  document
+    .getElementById("userModal")
+    .classList.add("show");
+
+};
+
+
+/* ======================================================
+   DASHBOARD
+====================================================== */
+
+async function countPath(path){
+
+  try{
+
+    const snapshot =
+      await get(ref(db,path));
+
+    if(!snapshot.exists()) return 0;
+
+    return Object.keys(
+      snapshot.val()
+    ).length;
+
+  }catch{
+
+    return 0;
+
+  }
+
+}
+
+
+window.loadDashboard = async function(){
+
+  const [
+
+    relatos,
+    acolhimento,
+    guias,
+    mural
+
+  ] = await Promise.all([
+
+    countPath("relatos"),
+
+    countPath("atendimentos"),
+
+    countPath("guias"),
+
+    countPath("mural")
+
+  ]);
+
+
+  document.getElementById(
+    "statRelatos"
+  ).textContent = relatos;
+
+
+  document.getElementById(
+    "statAcolhimento"
+  ).textContent = acolhimento;
+
+
+  document.getElementById(
+    "statGuias"
+  ).textContent = guias;
+
+
+  document.getElementById(
+    "statMural"
+  ).textContent = mural;
+
+};
+
+
+/* ======================================================
+   RELATOS
+====================================================== */
+
+window.loadReports = async function(){
+
+  const table =
+    document.getElementById(
+      "reportsTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="6">
+        Carregando...
+      </td>
+    </tr>`;
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"relatos")
+      );
+
+    table.innerHTML = "";
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="6">
+            Nenhum relato encontrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+    const data =
+      snapshot.val();
+
+    Object.entries(data)
+      .reverse()
+      .forEach(([id,item]) => {
+
+        const tr =
+          document.createElement("tr");
+
+        const date =
+          formatDate(
+            item.data ||
+            item.createdAt ||
+            item.timestamp
+          );
+
+        const status =
+          item.status || "novo";
+
+        tr.innerHTML = `
+
+          <td>${escapeHtml(id)}</td>
+
+          <td>
+            ${escapeHtml(
+              item.categoria ||
+              item.category ||
+              "Não informado"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.descricao ||
+              item.description ||
+              item.mensagem ||
+              "—"
+            )}
+          </td>
+
+          <td>${date}</td>
+
+          <td>
+            <span class="badge ${
+              status === "resolvido"
+              ? "badge-green"
+              : status === "em_analise"
+              ? "badge-yellow"
+              : "badge-red"
+            }">
+              ${escapeHtml(status)}
+            </span>
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="btn btn-warning"
+                onclick="updateReportStatus('${id}','em_analise')"
+              >
+                Analisar
+              </button>
+
+              <button
+                class="btn btn-success"
+                onclick="updateReportStatus('${id}','resolvido')"
+              >
+                Resolver
+              </button>
+
+              <button
+                class="btn btn-danger"
+                onclick="deleteItem('relatos','${id}')"
+              >
+                Excluir
+              </button>
+
+            </div>
+
+          </td>
+
+        `;
+
+        table.appendChild(tr);
+
+      });
+
+  }catch(error){
+
+    console.error(error);
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="6">
+          Erro ao carregar relatos.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+window.updateReportStatus =
+async function(id,status){
+
+  try{
+
+    await update(
+      ref(db,"relatos/"+id),
+      {
+        status:status,
+        updatedAt:Date.now()
+      }
+    );
+
+    await createLog(
+      "Atualização de relato",
+      `Relato ${id} → ${status}`
+    );
+
+    loadReports();
+
+  }catch(error){
+
+    alert(
+      "Não foi possível atualizar o relato."
+    );
+
+    console.error(error);
+
+  }
+
+};
+
+
+/* ======================================================
+   ACOLHIMENTO
+====================================================== */
+
+window.loadChats = async function(){
+
+  const table =
+    document.getElementById(
+      "chatsTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="5">
+        Carregando...
+      </td>
+    </tr>`;
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"atendimentos")
+      );
+
+    table.innerHTML = "";
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            Nenhum atendimento encontrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+    Object.entries(
+      snapshot.val()
+    )
+    .reverse()
+    .forEach(([id,item]) => {
+
+      const tr =
+        document.createElement("tr");
+
+      const status =
+        item.status || "aberto";
+
+      tr.innerHTML = `
+
+        <td>${escapeHtml(id)}</td>
+
+        <td>
+          ${escapeHtml(
+            item.assunto ||
+            item.subject ||
+            item.mensagem ||
+            "—"
+          )}
+        </td>
+
+        <td>
+          <span class="badge badge-blue">
+            ${escapeHtml(status)}
+          </span>
+        </td>
+
+        <td>
+          ${formatDate(
+            item.data ||
+            item.createdAt
+          )}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteItem('atendimentos','${id}')"
+          >
+            Excluir
+          </button>
+
+        </td>
+
+      `;
+
+      table.appendChild(tr);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+};
+
+
+/* ======================================================
+   GUIAS
+====================================================== */
+
+window.loadGuides = async function(){
+
+  const table =
+    document.getElementById(
+      "guidesTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="5">
+        Carregando...
+      </td>
+    </tr>`;
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"guias")
+      );
+
+    table.innerHTML = "";
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            Nenhum guia cadastrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+    Object.entries(
+      snapshot.val()
+    )
+    .reverse()
+    .forEach(([id,item]) => {
+
+      const tr =
+        document.createElement("tr");
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(
+            item.title || "Sem título"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.category || "—"
+          )}
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            item.published !== false
+            ? "badge-green"
+            : "badge-yellow"
+          }">
+
+            ${
+              item.published !== false
+              ? "Publicado"
+              : "Rascunho"
+            }
+
+          </span>
+
+        </td>
+
+        <td>
+          ${formatDate(
+            item.createdAt
+          )}
+        </td>
+
+        <td>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="openGuideModal('${id}')"
+            >
+              Editar
+            </button>
+
+            <button
+              class="btn btn-danger"
+              onclick="deleteItem('guias','${id}')"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </td>
+
+      `;
+
+      table.appendChild(tr);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+};
+
+
+document
+  .getElementById("guideForm")
+  .addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    const id =
+      document.getElementById(
+        "guideId"
+      ).value;
+
+    const data = {
+
+      title:
+        document.getElementById(
+          "guideTitle"
+        ).value.trim(),
+
+      category:
+        document.getElementById(
+          "guideCategory"
+        ).value,
+
+      content:
+        document.getElementById(
+          "guideContent"
+        ).value.trim(),
+
+      url:
+        document.getElementById(
+          "guideUrl"
+        ).value.trim(),
+
+      published:
+        document.getElementById(
+          "guidePublished"
+        ).checked,
+
+      updatedAt:
+        Date.now()
+
     };
 
-    try {
-      firebase.initializeApp(firebaseConfig);
-    } catch (e) {
-      console.error("Erro ao iniciar Firebase:", e);
+
+    try{
+
+      if(id){
+
+        await update(
+          ref(db,"guias/"+id),
+          data
+        );
+
+        await createLog(
+          "Edição de guia",
+          data.title
+        );
+
+      }else{
+
+        data.createdAt =
+          Date.now();
+
+        const newRef =
+          push(ref(db,"guias"));
+
+        await set(
+          newRef,
+          data
+        );
+
+        await createLog(
+          "Novo guia",
+          data.title
+        );
+
+      }
+
+      closeModal("guideModal");
+
+      loadGuides();
+
+      loadDashboard();
+
+    }catch(error){
+
+      alert(
+        "Erro ao salvar o guia."
+      );
+
+      console.error(error);
+
     }
 
-    const auth = firebase.auth();
-    const db = firebase.database();
+  });
 
-    function switchNav(sectionId, element) {
-      try {
-        document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        
-        const targetSec = document.getElementById(sectionId);
-        if(targetSec) targetSec.classList.add('active');
 
-        if (element) {
-          element.classList.add('active');
-        } else {
-          document.querySelectorAll('.nav-item').forEach(item => {
-            if(item.getAttribute('onclick')?.includes(sectionId)) {
-              item.classList.add('active');
+/* ======================================================
+   MURAL
+====================================================== */
+
+window.loadMural = async function(){
+
+  const table =
+    document.getElementById(
+      "muralTable"
+    );
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"mural")
+      );
+
+    table.innerHTML = "";
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            Nenhuma mensagem encontrada.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+    Object.entries(
+      snapshot.val()
+    )
+    .reverse()
+    .forEach(([id,item]) => {
+
+      const status =
+        item.status || "pendente";
+
+      const tr =
+        document.createElement("tr");
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(
+            item.mensagem ||
+            item.message ||
+            "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.autor ||
+            item.nome ||
+            "Anônimo"
+          )}
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            status === "aprovado"
+            ? "badge-green"
+            : status === "rejeitado"
+            ? "badge-red"
+            : "badge-yellow"
+          }">
+
+            ${escapeHtml(status)}
+
+          </span>
+
+        </td>
+
+        <td>
+          ${formatDate(
+            item.data ||
+            item.createdAt
+          )}
+        </td>
+
+        <td>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-success"
+                   <button
+              class="btn btn-success"
+              onclick="moderateMural('${id}','aprovado')"
+            >
+              Aprovar
+            </button>
+
+            <button
+              class="btn btn-warning"
+              onclick="moderateMural('${id}','rejeitado')"
+            >
+              Rejeitar
+            </button>
+
+            <button
+              class="btn btn-danger"
+              onclick="deleteItem('mural','${id}')"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </td>
+
+      `;
+
+      table.appendChild(tr);
+
+    });
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar mural:",
+      error
+    );
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="5">
+          Erro ao carregar o mural.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+/* ======================================================
+   MODERAÇÃO DO MURAL
+====================================================== */
+
+window.moderateMural =
+async function(id,status){
+
+  try{
+
+    await update(
+      ref(db,"mural/"+id),
+      {
+        status: status,
+        moderatedAt: Date.now()
+      }
+    );
+
+    await createLog(
+      "Moderação do mural",
+      `Mensagem ${id}: ${status}`
+    );
+
+    await loadMural();
+
+    await loadDashboard();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Não foi possível atualizar a mensagem."
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   REDE DE APOIO
+====================================================== */
+
+window.loadSupport = async function(){
+
+  const table =
+    document.getElementById(
+      "supportTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="5">
+        Carregando...
+      </td>
+    </tr>`;
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"redeApoio")
+      );
+
+    table.innerHTML = "";
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            Nenhum canal cadastrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+    Object.entries(
+      snapshot.val()
+    ).forEach(([id,item]) => {
+
+      const tr =
+        document.createElement("tr");
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(
+            item.name || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.type || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.contact || "—"
+          )}
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            item.active !== false
+              ? "badge-green"
+              : "badge-red"
+          }">
+
+            ${
+              item.active !== false
+                ? "Ativo"
+                : "Inativo"
             }
-          });
-        }
-        document.getElementById('sidebar')?.classList.remove('open');
-        document.getElementById('sidebarOverlay')?.classList.remove('open');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        console.error("Erro na navegação:", err);
-      }
-    }
 
-    function toggleSidebar() {
-      document.getElementById('sidebar')?.classList.toggle('open');
-      document.getElementById('sidebarOverlay')?.classList.toggle('open');
-    }
+          </span>
 
-    function openChatForm(channel) {
-      const card = document.getElementById('chatFormCard');
-      const title = document.getElementById('chatFormTitle');
-      const input = document.getElementById('chatChannelInput');
-      if(card && title && input) {
-        card.style.display = 'block';
-        title.innerText = 'Atendimento com: ' + channel;
-        input.value = channel;
-        card.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+        </td>
 
-    function submitChat(e) {
-      e.preventDefault();
-      const channel = document.getElementById('chatChannelInput').value;
-      const message = document.getElementById('chatMessageInput').value;
+        <td>
 
-      db.ref('atendimentos').push({
-        channel, message, status: 'Aberto', timestamp: Date.now()
-      }).then(() => {
-        alert('Mensagem enviada com sucesso!');
-        document.getElementById('chatMessageInput').value = '';
-        document.getElementById('chatFormCard').style.display = 'none';
-      }).catch(err => alert('Erro: ' + err.message));
-    }
+          <div class="actions">
 
-    function generateSecureToken() {
-      try {
-        const bytes = new Uint8Array(12);
-        crypto.getRandomValues(bytes);
-        return 'ABR-' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-      } catch(e) {
-        return 'ABR-' + Math.random().toString(36).substring(2, 10).toUpperCase();
-      }
-    }
+            <button
+              class="btn btn-secondary"
+              onclick="openSupportModal('${id}')"
+            >
+              Editar
+            </button>
 
-    function submitRelato(e) {
-      e.preventDefault();
-      const place = document.getElementById('reportPlace').value;
-      const date = document.getElementById('reportDate').value;
-      const danger = document.getElementById('reportDanger').checked;
-      const desc = document.getElementById('reportDesc').value;
-      const token = generateSecureToken();
+            <button
+              class="btn btn-danger"
+              onclick="deleteItem('redeApoio','${id}')"
+            >
+              Excluir
+            </button>
 
-      const newRef = db.ref('relatos').push();
-      Promise.all([
-        newRef.set({ id: newRef.key, token, place, date, danger, desc, status: 'Em Análise', timestamp: Date.now() }),
-        db.ref('consultaRelatos/' + token).set({ status: 'Em Análise', timestamp: Date.now() })
-      ]).then(() => {
-        alert('Relato enviado!\n\nSeu código de acompanhamento: ' + token);
-        e.target.reset();
-      }).catch(err => alert('Erro: ' + err.message));
-    }
+          </div>
 
-    function consultarRelato() {
-      const inputToken = document.getElementById('searchTokenInput').value.trim().toUpperCase();
-      const resBox = document.getElementById('consultaResultado');
-      if (!inputToken) return alert('Digite um código válido.');
+        </td>
 
-      db.ref('consultaRelatos/' + inputToken).once('value').then(snapshot => {
-        resBox.style.display = 'block';
-        const statusEl = document.getElementById('resStatus');
-        if (!snapshot.exists()) {
-          statusEl.textContent = 'Não Encontrado';
-          statusEl.className = 'status-badge badge-analise';
-          document.getElementById('resMsg').textContent = 'Código inválido.';
-          return;
-        }
-        const data = snapshot.val();
-        statusEl.textContent = data.status;
-        statusEl.className = 'status-badge ' + (data.status === 'Resolvido' ? 'badge-resolvido' : 'badge-analise');
-        document.getElementById('resMsg').textContent = data.status === 'Resolvido' ? 'Caso finalizado.' : 'Em análise.';
-      }).catch(err => alert('Erro: ' + err.message));
-    }
+      `;
 
-    function submitMediacao(e) {
-      e.preventDefault();
-      db.ref('mediacoes').push({
-        topic: document.getElementById('mediacaoTopic').value,
-        desc: document.getElementById('mediacaoDesc').value,
-        status: 'Solicitado',
-        timestamp: Date.now()
-      }).then(() => {
-        alert('Mediação solicitada com sucesso!');
-        e.target.reset();
-      }).catch(err => alert('Erro: ' + err.message));
-    }
+      table.appendChild(tr);
 
-    let respireTimer = null;
-    function startRespire() {
-      const circle = document.getElementById('respireCircle');
-      const instruction = document.getElementById('respireInstruction');
-      if(respireTimer) clearInterval(respireTimer);
-
-      let phase = 0;
-      const phases = [
-        { text: 'Inspire...', scale: 'scale(1.3)', bg: '#40B615' },
-        { text: 'Segure...', scale: 'scale(1.3)', bg: '#4E22A5' },
-        { text: 'Expire...', scale: 'scale(1)', bg: '#64C6ED' }
-      ];
-
-      function runPhase() {
-        if(!instruction || !circle) return;
-        instruction.innerText = phases[phase].text;
-        circle.style.transform = phases[phase].scale;
-        circle.style.backgroundColor = phases[phase].bg;
-        phase = (phase + 1) % phases.length;
-      }
-      runPhase();
-      respireTimer = setInterval(runPhase, 4000);
-    }
-
-    function stopRespire() {
-      if(respireTimer) clearInterval(respireTimer);
-      const circle = document.getElementById('respireCircle');
-      const instruction = document.getElementById('respireInstruction');
-      if(instruction) instruction.innerText = 'Inspire';
-      if(circle) {
-        circle.style.transform = 'scale(1)';
-        circle.style.backgroundColor = 'var(--green)';
-      }
-    }
-
-    let audioCtx = null, noiseNode = null;
-    function playAmbientSound(type) {
-      stopAmbientSound();
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const bufferSize = 2 * audioCtx.sampleRate;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          let white = Math.random() * 2 - 1;
-          output[i] = type === 'chuva' ? white * 0.2 : (white + Math.sin(i / 8000)) * 0.15;
-        }
-        noiseNode = audioCtx.createBufferSource();
-        noiseNode.buffer = noiseBuffer;
-        noiseNode.loop = true;
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        noiseNode.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        noiseNode.start();
-      } catch (e) { console.error("Áudio bloqueado pelo navegador", e); }
-    }
-
-    function stopAmbientSound() {
-      if (noiseNode) { try { noiseNode.stop(); } catch(e){} noiseNode = null; }
-      if (audioCtx) { audioCtx.close(); audioCtx = null; }
-    }
-
-    function openMuralModal() { document.getElementById('muralModal')?.classList.add('open'); }
-    function closeMuralModal() { document.getElementById('muralModal')?.classList.remove('open'); }
-
-    function submitMural(e) {
-      e.preventDefault();
-      db.ref('mural').push({
-        text: document.getElementById('muralText').value,
-        author: document.getElementById('muralAuthor').value,
-        timestamp: Date.now()
-      }).then(() => {
-        closeMuralModal();
-        e.target.reset();
-        alert('Recado publicado!');
-      }).catch(err => alert('Erro: ' + err.message));
-    }
-
-    db.ref('mural').on('value', (snapshot) => {
-      const grid = document.getElementById('muralGrid');
-      if(!grid) return;
-      grid.innerHTML = '';
-      const data = snapshot.val();
-      if (!data) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Nenhum recado ainda.</p>';
-        return;
-      }
-      Object.entries(data).reverse().forEach(([id, item]) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<p style="font-style: italic; margin-bottom: 0.75rem;">"${item.text}"</p><span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">— ${item.author}</span>`;
-        grid.appendChild(card);
-      });
     });
 
-    function openLoginModal() { document.getElementById('loginModal')?.classList.add('open'); }
-    function closeLoginModal() { document.getElementById('loginModal')?.classList.remove('open'); }
+  }catch(error){
 
-    function handleLogin(e) {
-      e.preventDefault();
-      auth.signInWithEmailAndPassword(
-        document.getElementById('adminEmail').value,
-        document.getElementById('adminPassword').value
-      ).then(() => {
-        closeLoginModal();
-        alert('Login efetuado!');
-      }).catch(err => alert('Falha: ' + err.message));
-      document.getElementById('adminPassword').value = '';
+    console.error(
+      "Erro ao carregar rede de apoio:",
+      error
+    );
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="5">
+          Erro ao carregar os canais.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+/* ======================================================
+   FORMULÁRIO — REDE DE APOIO
+====================================================== */
+
+document
+  .getElementById("supportForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      const id =
+        document.getElementById(
+          "supportId"
+        ).value;
+
+      const data = {
+
+        name:
+          document.getElementById(
+            "supportName"
+          ).value.trim(),
+
+        type:
+          document.getElementById(
+            "supportType"
+          ).value,
+
+        contact:
+          document.getElementById(
+            "supportContact"
+          ).value.trim(),
+
+        description:
+          document.getElementById(
+            "supportDescription"
+          ).value.trim(),
+
+        active:
+          document.getElementById(
+            "supportActive"
+          ).checked,
+
+        updatedAt:
+          Date.now()
+
+      };
+
+
+      try{
+
+        if(id){
+
+          await update(
+            ref(db,"redeApoio/"+id),
+            data
+          );
+
+          await createLog(
+            "Edição de canal de apoio",
+            data.name
+          );
+
+        }else{
+
+          data.createdAt =
+            Date.now();
+
+          await set(
+            push(ref(db,"redeApoio")),
+            data
+          );
+
+          await createLog(
+            "Novo canal de apoio",
+            data.name
+          );
+
+        }
+
+        closeModal(
+          "supportModal"
+        );
+
+        await loadSupport();
+
+      }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Erro ao salvar o canal de apoio."
+        );
+
+      }
+
+    }
+  );
+
+
+/* ======================================================
+   ESPAÇO RESPIRE
+====================================================== */
+
+window.loadRespireSettings =
+async function(){
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "configuracoes/respire"
+        )
+      );
+
+    if(!snapshot.exists()){
+
+      return;
+
     }
 
-    function logout() {
-      auth.signOut().then(() => { switchNav('inicio'); alert('Você saiu.'); });
+    const data =
+      snapshot.val();
+
+
+    document.getElementById(
+      "respireInspire"
+    ).value =
+      data.inspire ?? 4;
+
+
+    document.getElementById(
+      "respireHold"
+    ).value =
+      data.hold ?? 4;
+
+
+    document.getElementById(
+      "respireExhale"
+    ).value =
+      data.exhale ?? 6;
+
+
+    document.getElementById(
+      "respireCycles"
+    ).value =
+      data.cycles ?? 5;
+
+
+    document.getElementById(
+      "respireInstruction"
+    ).value =
+      data.instruction || "";
+
+
+    document.getElementById(
+      "respireMusicUrl"
+    ).value =
+      data.musicUrl || "";
+
+
+    document.getElementById(
+      "respireMusicName"
+    ).value =
+      data.musicName || "";
+
+
+    document.getElementById(
+      "respireMusicEnabled"
+    ).checked =
+      data.musicEnabled !== false;
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar configuração do Respire:",
+      error
+    );
+
+  }
+
+};
+
+
+window.saveRespireSettings =
+async function(){
+
+  const inspire =
+    Number(
+      document.getElementById(
+        "respireInspire"
+      ).value
+    );
+
+  const hold =
+    Number(
+      document.getElementById(
+        "respireHold"
+      ).value
+    );
+
+  const exhale =
+    Number(
+      document.getElementById(
+        "respireExhale"
+      ).value
+    );
+
+  const cycles =
+    Number(
+      document.getElementById(
+        "respireCycles"
+      ).value
+    );
+
+
+  if(
+    inspire < 1 ||
+    exhale < 1 ||
+    cycles < 1
+  ){
+
+    alert(
+      "Verifique os valores da respiração."
+    );
+
+    return;
+
+  }
+
+
+  const data = {
+
+    inspire: inspire,
+
+    hold: Math.max(
+      0,
+      hold
+    ),
+
+    exhale: exhale,
+
+    cycles: cycles,
+
+    instruction:
+      document.getElementById(
+        "respireInstruction"
+      ).value.trim(),
+
+    musicUrl:
+      document.getElementById(
+        "respireMusicUrl"
+      ).value.trim(),
+
+    musicName:
+      document.getElementById(
+        "respireMusicName"
+      ).value.trim(),
+
+    musicEnabled:
+      document.getElementById(
+        "respireMusicEnabled"
+      ).checked,
+
+    updatedAt:
+      Date.now()
+
+  };
+
+
+  try{
+
+    await set(
+      ref(
+        db,
+        "configuracoes/respire"
+      ),
+      data
+    );
+
+
+    await createLog(
+      "Configuração do Respire",
+      "Configuração atualizada"
+    );
+
+
+    alert(
+      "Configuração do Espaço Respire salva!"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Erro ao salvar a configuração."
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   TESTAR MÚSICA
+====================================================== */
+
+window.testRespireMusic =
+function(){
+
+  const url =
+    document.getElementById(
+      "respireMusicUrl"
+    ).value.trim();
+
+
+  if(!url){
+
+    alert(
+      "Cole primeiro o link do áudio."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * O link precisa apontar diretamente
+   * para um arquivo de áudio reproduzível,
+   * como MP3, OGG ou WAV.
+   */
+
+  const audio =
+    new Audio(url);
+
+
+  audio.volume = 0.8;
+
+
+  audio.play()
+    .then(() => {
+
+      setTimeout(() => {
+
+        audio.pause();
+
+        audio.currentTime = 0;
+
+      }, 5000);
+
+    })
+    .catch(error => {
+
+      console.error(error);
+
+      alert(
+        "Não foi possível reproduzir este link. Use uma URL direta de áudio."
+      );
+
+    });
+
+};
+
+
+/* ======================================================
+   MÚSICAS CADASTRADAS
+====================================================== */
+
+window.loadMusic = async function(){
+
+  const table =
+    document.getElementById(
+      "musicTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="4">
+        Carregando...
+      </td>
+    </tr>`;
+
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(db,"musicas")
+      );
+
+    table.innerHTML = "";
+
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="4">
+            Nenhuma música cadastrada.
+          </td>
+        </tr>`;
+
+      return;
+
     }
 
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        db.ref('admins/' + user.uid).once('value').then(snapshot => {
-          if (snapshot.exists() && snapshot.val() === true) {
-            document.getElementById('adminNavBtn').style.display = 'flex';
-            document.getElementById('btnLoginModal').style.display = 'none';
-            document.getElementById('btnLogoutBtn').style.display = 'block';
-            document.getElementById('roleIcon').innerText = '🛡️';
-            document.getElementById('roleText').innerText = 'Gestor CETI';
-            initAdminDashboard();
-          } else {
-            auth.signOut();
-            alert('Acesso negado.');
+
+    Object.entries(
+      snapshot.val()
+    ).reverse()
+    .forEach(([id,item]) => {
+
+      const tr =
+        document.createElement("tr");
+
+
+      const url =
+        item.url || "";
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(
+            item.name || "Sem nome"
+          )}
+        </td>
+
+        <td>
+
+          ${
+            url
+              ? `
+                <a
+                  href="${escapeAttribute(url)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir áudio
+                </a>
+              `
+              : "—"
           }
-        });
-      } else {
-        document.getElementById('adminNavBtn').style.display = 'none';
-        document.getElementById('btnLoginModal').style.display = 'block';
-        document.getElementById('btnLogoutBtn').style.display = 'none';
-        document.getElementById('roleIcon').innerText = '👤';
-        document.getElementById('roleText').innerText = 'Modo Visitante';
-        if (document.getElementById('dashboard')?.classList.contains('active')) {
-          switchNav('inicio');
-        }
-      }
+
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            item.active !== false
+              ? "badge-green"
+              : "badge-red"
+          }">
+
+            ${
+              item.active !== false
+                ? "Ativa"
+                : "Inativa"
+            }
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="openMusicModal('${id}')"
+            >
+              Editar
+            </button>
+
+            <button
+              class="btn btn-danger"
+              onclick="deleteItem('musicas','${id}')"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(tr);
+
     });
 
-    function initAdminDashboard() {
-      db.ref('relatos').on('value', snap => {
-        const val = snap.val();
-        document.getElementById('statRelatosCount').textContent = val ? Object.keys(val).length : 0;
-        const tableBody = document.getElementById('adminRelatosTable');
-        if(!tableBody) return;
-        tableBody.innerHTML = '';
-        if(!val) {
-          tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Nenhum relato.</td></tr>';
-          return;
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar músicas:",
+      error
+    );
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="4">
+          Erro ao carregar músicas.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+/* ======================================================
+   FORMULÁRIO — MÚSICA
+====================================================== */
+
+document
+  .getElementById("musicForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const id =
+        document.getElementById(
+          "musicId"
+        ).value;
+
+
+      const data = {
+
+        name:
+          document.getElementById(
+            "musicName"
+          ).value.trim(),
+
+        url:
+          document.getElementById(
+            "musicUrl"
+          ).value.trim(),
+
+        active:
+          document.getElementById(
+            "musicActive"
+          ).checked,
+
+        updatedAt:
+          Date.now()
+
+      };
+
+
+      try{
+
+        if(id){
+
+          await update(
+            ref(db,"musicas/"+id),
+            data
+          );
+
+          await createLog(
+            "Edição de música",
+            data.name
+          );
+
+        }else{
+
+          data.createdAt =
+            Date.now();
+
+          await set(
+            push(ref(db,"musicas")),
+            data
+          );
+
+          await createLog(
+            "Nova música",
+            data.name
+          );
+
         }
-        Object.entries(val).forEach(([key, item]) => {
-          const tr = document.createElement('tr');
-          if(item.status === 'Resolvido') tr.style.opacity = '0.5';
-          tr.innerHTML = `<td>${item.token}</td><td>${item.place}</td><td>${item.date}</td><td><span class="status-badge ${item.danger ? 'badge-analise' : 'badge-resolvido'}">${item.danger ? 'Urgente' : 'Normal'}</span></td><td>${item.desc}</td><td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="resolveRelato('${key}', '${item.token}')">${item.status === 'Resolvido' ? 'Resolvido' : 'Marcar Resolvido'}</button></td>`;
-          tableBody.appendChild(tr);
-        });
-      });
 
-      db.ref('atendimentos').on('value', snap => {
-        const val = snap.val();
-        document.getElementById('statChatCount').textContent = val ? Object.values(val).filter(i => i.status === 'Aberto').length : 0;
-      });
 
-      db.ref('mediacoes').on('value', snap => {
-        const val = snap.val();
-        document.getElementById('statMedCount').textContent = val ? Object.values(val).filter(i => i.status === 'Solicitado').length : 0;
-      });
+        closeModal(
+          "musicModal"
+        );
+
+
+        await loadMusic();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Erro ao salvar a música."
+        );
+
+      }
+
+    }
+  );
+
+
+/* ======================================================
+   CONFIGURAÇÕES GERAIS
+====================================================== */
+
+window.loadGeneralSettings =
+async function(){
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "configuracoes/geral"
+        )
+      );
+
+
+    if(!snapshot.exists()){
+
+      return;
+
     }
 
-    function resolveRelato(key, token) {
-      db.ref().update({
-        ['relatos/' + key + '/status']: 'Resolvido',
-        ['consultaRelatos/' + token + '/status']: 'Resolvido'
-      }).then(() => alert('Atualizado para Resolvido.'));
+
+    const data =
+      snapshot.val();
+
+
+    document.getElementById(
+      "configPortalName"
+    ).value =
+      data.portalName ||
+      "Portal ABRAÇAR";
+
+
+    document.getElementById(
+      "configSchoolName"
+    ).value =
+      data.schoolName ||
+      "CETI José Marques";
+
+
+    document.getElementById(
+      "configLogoUrl"
+    ).value =
+      data.logoUrl || "";
+
+
+    document.getElementById(
+      "configPrimaryColor"
+    ).value =
+      data.primaryColor ||
+      "#0B8F3A";
+
+
+    document.getElementById(
+      "configSecondaryColor"
+    ).value =
+      data.secondaryColor ||
+      "#4B2CA3";
+
+
+    applyColors(
+      data.primaryColor ||
+      "#0B8F3A",
+
+      data.secondaryColor ||
+      "#4B2CA3"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar configurações:",
+      error
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   APLICAR CORES
+====================================================== */
+
+function applyColors(
+  primary,
+  secondary
+){
+
+  document.documentElement
+    .style
+    .setProperty(
+      "--verde",
+      primary
+    );
+
+
+  document.documentElement
+    .style
+    .setProperty(
+      "--roxo",
+      secondary
+    );
+
+}
+
+
+window.saveGeneralSettings =
+async function(){
+
+  const data = {
+
+    portalName:
+      document.getElementById(
+        "configPortalName"
+      ).value.trim(),
+
+    schoolName:
+      document.getElementById(
+        "configSchoolName"
+      ).value.trim(),
+
+    logoUrl:
+      document.getElementById(
+        "configLogoUrl"
+      ).value.trim(),
+
+    primaryColor:
+      document.getElementById(
+        "configPrimaryColor"
+      ).value,
+
+    secondaryColor:
+      document.getElementById(
+        "configSecondaryColor"
+      ).value,
+
+    updatedAt:
+      Date.now()
+
+  };
+
+
+  try{
+
+    await set(
+      ref(
+        db,
+        "configuracoes/geral"
+      ),
+      data
+    );
+
+
+    applyColors(
+      data.primaryColor,
+      data.secondaryColor
+    );
+
+
+    await createLog(
+      "Identidade visual",
+      "Configurações gerais atualizadas"
+    );
+
+
+    alert(
+      "Configurações salvas com sucesso!"
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Erro ao salvar configurações."
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   CONFIGURAÇÕES DO PORTAL
+====================================================== */
+
+window.loadPortalSettings =
+async function(){
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "configuracoes/portal"
+        )
+      );
+
+
+    if(!snapshot.exists()){
+
+      return;
+
     }
-  </script>
+
+
+    const data =
+      snapshot.val();
+
+
+    document.getElementById(
+      "configReportsEnabled"
+    ).checked =
+      data.reportsEnabled !== false;
+
+
+    document.getElementById(
+      "configChatEnabled"
+    ).checked =
+      data.chatEnabled !== false;
+
+
+    document.getElementById(
+      "configMuralModeration"
+    ).checked =
+      data.muralModeration !== false;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+};
+
+
+window.savePortalSettings =
+async function(){
+
+  const data = {
+
+    reportsEnabled:
+      document.getElementById(
+        "configReportsEnabled"
+      ).checked,
+
+    chatEnabled:
+      document.getElementById(
+        "configChatEnabled"
+      ).checked,
+
+    muralModeration:
+      document.getElementById(
+        "configMuralModeration"
+      ).checked,
+
+    updatedAt:
+      Date.now()
+
+  };
+
+
+  try{
+
+    await set(
+      ref(
+        db,
+        "configuracoes/portal"
+      ),
+      data
+    );
+
+
+    await createLog(
+      "Configurações do portal",
+      "Funcionalidades atualizadas"
+    );
+
+
+    alert(
+      "Configurações do portal salvas!"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Erro ao salvar."
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   USUÁRIOS
+====================================================== */
+
+window.loadUsers = async function(){
+
+  const table =
+    document.getElementById(
+      "usersTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="5">
+        Carregando...
+      </td>
+    </tr>`;
+
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "administradores"
+        )
+      );
+
+
+    table.innerHTML = "";
+
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            Nenhum administrador cadastrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    Object.entries(
+      snapshot.val()
+    ).forEach(([id,item]) => {
+
+      const tr =
+        document.createElement("tr");
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(
+            item.email || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.name || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.role ||
+            "administrador"
+          )}
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            item.active !== false
+              ? "badge-green"
+              : "badge-red"
+          }">
+
+            ${
+              item.active !== false
+                ? "Ativo"
+                : "Inativo"
+            }
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteItem('administradores','${id}')"
+          >
+            Excluir
+          </button>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(tr);
+
+    });
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar usuários:",
+      error
+    );
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="5">
+          Erro ao carregar usuários.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+/* ======================================================
+   NOVO ADMINISTRADOR
+====================================================== */
+
+document
+  .getElementById("userForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const name =
+        document.getElementById(
+          "userName"
+        ).value.trim();
+
+
+      const email =
+        document.getElementById(
+          "userEmail"
+        ).value.trim();
+
+
+      const role =
+        document.getElementById(
+          "userRole"
+        ).value;
+
+
+      if(!name || !email){
+
+        alert(
+          "Preencha nome e e-mail."
+        );
+
+        return;
+
+      }
+
+
+      const key =
+        btoa(email)
+          .replace(
+            /[^a-zA-Z0-9]/g,
+            ""
+          );
+
+
+      const data = {
+
+        name:name,
+
+        email:email,
+
+        role:role,
+
+        active:true,
+
+        createdAt:
+          Date.now()
+
+      };
+
+
+      try{
+
+        await set(
+          ref(
+            db,
+            "administradores/" + key
+          ),
+          data
+        );
+
+
+        await createLog(
+          "Novo administrador",
+          email
+        );
+
+
+        closeModal(
+          "userModal"
+        );
+
+
+        await loadUsers();
+
+
+        alert(
+            alert(
+          "Administrador cadastrado com sucesso!"
+        );
+
+      }catch(error){
+
+        console.error(
+          "Erro ao cadastrar administrador:",
+          error
+        );
+
+        alert(
+          "Erro ao cadastrar administrador."
+        );
+
+      }
+
+    }
+  );
+
+
+/* ======================================================
+   LOGS
+====================================================== */
+
+window.loadLogs = async function(){
+
+  const table =
+    document.getElementById(
+      "logsTable"
+    );
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="4">
+        Carregando...
+      </td>
+    </tr>`;
+
+
+  try{
+
+    const snapshot =
+      await get(
+        ref(
+          db,
+          "logs"
+        )
+      );
+
+
+    table.innerHTML = "";
+
+
+    if(!snapshot.exists()){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="4">
+            Nenhum registro encontrado.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    Object.entries(
+      snapshot.val()
+    )
+    .reverse()
+    .forEach(
+      ([id,item]) => {
+
+        const tr =
+          document.createElement("tr");
+
+
+        tr.innerHTML = `
+
+          <td>
+            ${formatDate(
+              item.createdAt
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.adminEmail ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.action ||
+              "—"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              item.details ||
+              "—"
+            )}
+          </td>
+
+        `;
+
+
+        table.appendChild(tr);
+
+      }
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar logs:",
+      error
+    );
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="4">
+          Erro ao carregar os logs.
+        </td>
+      </tr>`;
+
+  }
+
+};
+
+
+/* ======================================================
+   CRIAR LOG
+====================================================== */
+
+window.createLog =
+async function(
+  action,
+  details = ""
+){
+
+  try{
+
+    const adminEmail =
+      auth.currentUser
+        ? auth.currentUser.email
+        : "sistema";
+
+
+    const data = {
+
+      adminEmail:
+
+        adminEmail,
+
+      action:
+
+        action,
+
+      details:
+
+        details,
+
+      createdAt:
+
+        Date.now()
+
+    };
+
+
+    await set(
+      push(
+        ref(
+          db,
+          "logs"
+        )
+      ),
+      data
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao criar log:",
+      error
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   EXCLUSÃO GENÉRICA
+====================================================== */
+
+window.deleteItem =
+async function(
+  collection,
+  id
+){
+
+  const confirmed =
+    confirm(
+      "Tem certeza que deseja excluir este registro?"
+    );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  try{
+
+    await remove(
+      ref(
+        db,
+        collection + "/" + id
+      )
+    );
+
+
+    await createLog(
+      "Exclusão",
+      `${collection}/${id}`
+    );
+
+
+    /*
+     * Atualiza a tabela correspondente.
+     */
+
+    switch(collection){
+
+      case "relatos":
+
+        await loadReports();
+
+        await loadDashboard();
+
+        break;
+
+
+      case "atendimentos":
+
+        await loadAttendances();
+
+        await loadDashboard();
+
+        break;
+
+
+      case "guias":
+
+        await loadGuides();
+
+        break;
+
+
+      case "mural":
+
+        await loadMural();
+
+        await loadDashboard();
+
+        break;
+
+
+      case "redeApoio":
+
+        await loadSupport();
+
+        break;
+
+
+      case "musicas":
+
+        await loadMusic();
+
+        break;
+
+
+      case "administradores":
+
+        await loadUsers();
+
+        break;
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "Erro ao excluir:",
+      error
+    );
+
+    alert(
+      "Não foi possível excluir o registro."
+    );
+
+  }
+
+};
+
+
+/* ======================================================
+   FORMATAÇÃO DE DATA
+====================================================== */
+
+function formatDate(
+  timestamp
+){
+
+  if(!timestamp){
+
+    return "—";
+
+  }
+
+
+  const date =
+    new Date(
+      timestamp
+    );
+
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
+    return "—";
+
+  }
+
+
+  return date.toLocaleString(
+    "pt-BR",
+    {
+      day:
+        "2-digit",
+
+      month:
+        "2-digit",
+
+      year:
+        "numeric",
+
+      hour:
+        "2-digit",
+
+      minute:
+        "2-digit"
+    }
+  );
+
+}
+
+
+/* ======================================================
+   ESCAPE HTML
+====================================================== */
+
+function escapeHtml(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* ======================================================
+   ESCAPE ATTRIBUTE
+====================================================== */
+
+function escapeAttribute(
+  value
+){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  );
+
+}
+
+
+/* ======================================================
+   FECHAR MODAL AO CLICAR FORA
+====================================================== */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target.classList.contains(
+        "modal-overlay"
+      )
+    ){
+
+      event.target.classList.remove(
+        "active"
+      );
+
+    }
+
+  }
+);
+
+
+/* ======================================================
+   FECHAR MODAIS COM ESC
+====================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key !== "Escape"
+    ){
+
+      return;
+
+    }
+
+
+    document
+      .querySelectorAll(
+        ".modal-overlay.active"
+      )
+      .forEach(
+        modal => {
+
+          modal.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+  }
+);
+
+
+/* ======================================================
+   ATUALIZAÇÃO AUTOMÁTICA DO DASHBOARD
+====================================================== */
+
+setInterval(
+  async () => {
+
+    if(
+      auth.currentUser
+    ){
+
+      try{
+
+        await loadDashboard();
+
+      }catch(error){
+
+        console.error(
+          "Erro na atualização automática:",
+          error
+        );
+
+      }
+
+    }
+
+  },
+  30000
+);
+
+
+/* ======================================================
+   FIM DO JAVASCRIPT
+====================================================== */
+
+</script>
+
 </body>
 </html>

@@ -707,431 +707,547 @@
           <p style="font-size: 0.85rem;">Siga o ritmo do círculo para acalmar a mente e reduzir o estresse.</p>
 
           <div class="breathing-box">
-            <div class="circle-container">
-<div class="breathing-circle" id="breathCircle"></div>
-<div class="breathing-text" id="breathText">Iniciar</div>
-</div>
-<button class="btn-primary" id="startBreathBtn" onclick="toggleBreathing()"><i class="fa-solid fa-play"></i> Iniciar Respiração</button>
-</div>
-</div>
-<div class="tips-grid">
-<div class="tip-card">
-<i class="fa-solid fa-hand" style="color: var(--verde); font-size: 1.3rem;"></i>
-<h4 style="margin-top: 5px;">Técnica 5-4-3-2-1</h4>
-<p style="font-size: 0.8rem; margin-top: 4px;">Observe 5 coisas visíveis, 4 para tocar, 3 sons, 2 cheiros e 1 sabor.</p>
-</div>
-<div class="tip-card">
-<i class="fa-solid fa-glass-water" style="color: var(--verde); font-size: 1.3rem;"></i><h4 style="margin-top: 5px;">Beba Água</h4>
-<p style="font-size: 0.8rem; margin-top: 4px;">Pausar para beber um copo de água ajuda a desacelerar a frequência cardíaca.</p>
-</div>
-</div>
-</section>
-<!-- ABA 4: RELATO ANÔNIMO -->
-<section id="relatoTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-user-shield"></i> Enviar Relato / Denúncia Anônima</h2>
-<p style="font-size: 0.88rem; margin-bottom: 15px;">
-Este canal é totalmente seguro. Nenhuma informação pessoal será coletada ou vinculada a você.
-</p>
-<form id="reportForm" onsubmit="submitReport(event)">
-<div class="form-group">
-<label for="reportType"><i class="fa-solid fa-tag"></i> Tipo de Ocorrência</label>
-<select id="reportType" class="form-control" required>
-<option value="">Selecione a categoria...</option>
-<option value="Bullying / Cyberbullying">Bullying / Cyberbullying</option>
-<option value="Conflito entre Estudantes">Conflito entre Estudantes</option>
-<option value="Problema Estrutural / Limpeza">Problema Estrutural / Limpeza</option>
-<option value="Problema Comportamental">Problema Comportamental</option>
-<option value="Sugestão ou Elogio">Sugestão ou Elogio</option>
-<option value="Outro">Outro Motivo</option>
-</select>
-</div>
-<div class="form-group">
-<label for="reportLocation"><i class="fa-solid fa-location-dot"></i> Local ou Turma Relevante (Opcional)</label>
-<input type="text" id="reportLocation" class="form-control" placeholder="Ex: Pátio principal, Turma 2ºB, Banheiro superior">
-</div>
-<div class="form-group">
-<label for="reportMessage"><i class="fa-solid fa-pen"></i> Descrição Detalhada</label>
-<textarea id="reportMessage" class="form-control" rows="5" placeholder="Descreva a situação com o máximo de detalhes possível para que possamos atuar..." required></textarea>
-</div>
-<button type="submit" class="btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Anônimo</button>
-</form>
-</div>
-</section>
-<!-- ABA 5: CANAIS DE APOIO -->
-<section id="apoioTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio Emocional e Urgência</h2>
-<p style="font-size: 0.88rem;">Precisa de conversa imediata ou ajuda especializada fora da escola? Ligue para estes serviços gratuitos:</p>
-<div class="emergency-grid">
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-<div>
-<strong>CVV (Apoio Emocional)</strong>
+            <div class="ci    <circle-container">
+              <div class="breathing-circle" id="breathCircle"></div>
+              <div class="breathing-text" id="breathText">Iniciar</div>
+            </div>
+            <button class="btn-primary" id="startBreathBtn" onclick="toggleBreathing()"><i class="fa-solid fa-play"></i> Iniciar Respiração</button>
+          </div>
+        </div>
 
-<a href="tel:188" class="emergency-number">188</a> <span style="font-size: 0.75rem;">(Gratuito 24h)</span>
-</div>
-</div>
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-child"></i></div>
-<div>
-<strong>Disque Direitos Humanos</strong>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <i class="fa-solid fa-hand" style="color: var(--verde); font-size: 1.3rem;"></i>
+            <h4 style="margin-top: 5px;">Técnica 5-4-3-2-1</h4>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Observe 5 coisas visíveis, 4 para tocar, 3 sons, 2 cheiros e 1 sabor.</p>
+          </div>
+          <div class="tip-card">
+            <i class="fa-solid fa-glass-water" style="color: var(--verde); font-size: 1.3rem;"></i>
+            <h4 style="margin-top: 5px;">Beba Água</h4>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Pausar para beber um copo de água ajuda a desacelerar a frequência cardíaca.</p>
+          </div>
+        </div>
+      </section>
 
-<a href="tel:100" class="emergency-number">100</a> <span style="font-size: 0.75rem;">(Disque 100)</span>
-</div>
-</div>
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div>
-<div>
-<strong>Polícia Militar (Urgência)</strong>
+      <!-- ABA 4: RELATO ANÔNIMO -->
+      <section id="relatoTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-user-shield"></i> Enviar Relato / Denúncia Anônima</h2>
+          <p style="font-size: 0.88rem; margin-bottom: 15px;">
+            Este canal é totalmente seguro. Nenhuma informação pessoal será coletada ou vinculada a você.
+          </p>
 
-<a href="tel:190" class="emergency-number">190</a>
-</div>
-</div>
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-user-nurse"></i></div>
-<div>
-<strong>SAMU (Emergência Médica)</strong>
+          <form id="reportForm" onsubmit="submitReport(event)">
+            <div class="form-group">
+              <label for="reportType"><i class="fa-solid fa-tag"></i> Tipo de Ocorrência</label>
+              <select id="reportType" class="form-control" required>
+                <option value="">Selecione a categoria...</option>
+                <option value="Bullying / Cyberbullying">Bullying / Cyberbullying</option>
+                <option value="Conflito entre Estudantes">Conflito entre Estudantes</option>
+                <option value="Problema Estrutural / Limpeza">Problema Estrutural / Limpeza</option>
+                <option value="Problema Comportamental">Problema Comportamental</option>
+                <option value="Sugestão ou Elogio">Sugestão ou Elogio</option>
+                <option value="Outro">Outro Motivo</option>
+              </select>
+            </div>
 
-<a href="tel:192" class="emergency-number">192</a>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ABA 6: MURAL DE AVISOS -->
-<section id="muralTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos do Grêmio</h2>
-<p style="font-size: 0.88rem;">Fique por dentro das últimas novidades, projetos e eventos organizados na escola.</p>
-<div class="mural-grid" id="muralPostsContainer">
-<!-- Posts gerados via Firebase -->
-</div>
-</div>
-</section>
-<!-- ABA 7: ÁREA ADMINISTRATIVA -->
-<section id="adminTab" class="tab-content">
-<div class="card" id="adminAuthCard">
-<h2><i class="fa-solid fa-lock"></i> Acesso Restrito</h2>
-<p style="font-size: 0.88rem; margin-bottom: 15px;">Área exclusiva para os representantes do Grêmio Estudantil e Gestão Escolar.</p>
-<div style="display: flex; gap: 10px; max-width: 400px;">
-<input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha de Acesso">
-<button class="btn-primary" onclick="loginAdmin()"><i class="fa-solid fa-right-to-bracket"></i> Entrar</button>
-</div>
-</div>
-<div id="adminPanel" style="display: none;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-<h2 style="color: var(--roxo-escuro); margin: 0;"><i class="fa-solid fa-chart-line"></i> Painel de Controle</h2>
-<button class="btn-danger" onclick="logoutAdmin()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair do Admin</button>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-<div class="card" style="margin: 0; text-align: center; border-left-color: var(--verde);">
-<h3 id="statTotalReports" style="font-size: 1.8rem; color: var(--verde);">0</h3>
-<p style="font-size: 0.8rem; font-weight: 600;">Relatos Recebidos</p>
-</div>
-<div class="card" style="margin: 0; text-align: center; border-left-color: var(--roxo);">
-<h3 id="statTotalChats" style="font-size: 1.8rem; color: var(--roxo);">0</h3>
-<p style="font-size: 0.8rem; font-weight: 600;">Conversas Ativas</p>
-</div>
-</div>
-<div class="card">
-<h2><i class="fa-solid fa-headset"></i> Resposta aos Chats de Escuta</h2>
-<div class="admin-chat-layout">
-<div class="room-list" id="adminRoomList">
-<div style="padding: 15px; text-align: center; font-size: 0.8rem; color: #888;">Carregando conversas...</div>
-</div>
-<div style="display: flex; flex-direction: column; height: 100%; border: 1px solid var(--cinza-borda); border-radius: 12px; overflow: hidden;">
-<div id="adminSelectedRoomTitle" style="padding: 10px 15px; background: #F8FAFC; border-bottom: 1px solid var(--cinza-borda); font-weight: 700; font-size: 0.85rem;">
-Selecione uma conversa ao lado
-</div>
-<div class="chat-messages" id="adminChatMessages"></div>
-<div class="chat-input-area">
-<input type="text" id="adminChatInput" class="form-control" placeholder="Digite a resposta oficial..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
-<button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2><i class="fa-solid fa-clipboard-list"></i> Relatos e Denúncias Recebidas</h2>
-<div id="adminReportsList" style="display: flex; flex-direction: column; gap: 10px;">
-<p style="font-size: 0.85rem; color: #888;">Carregando relatos...</p>
-</div>
-</div>
-<div class="card">
-<h2><i class="fa-solid fa-bullhorn"></i> Publicar Novo Aviso no Mural</h2>
-<form onsubmit="createMuralPost(event)">
-<div class="form-group">
-<label>Título do Aviso</label>
-<input type="text" id="muralTitleInput" class="form-control" required placeholder="Ex: Reunião do Grêmio, Torneio de Xadrez">
-</div>
-<div class="form-group">
-<label>Conteúdo</label>
-<textarea id="muralContentInput" class="form-control" rows="3" required placeholder="Escreva o comunicado aqui..."></textarea>
-</div>
-<button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Publicar Aviso</button>
-</form>
-</div>
-</div>
-</section>
-</main>
-</div>
-<script>
-let userAnonId = '';
-let allChatsData = {};
-let allReportsData = {};
-let allMuralData = {};
-let currentAdminRoom = null;
-let breathingInterval = null;
-window.addEventListener('firebaseReady', () => {
-initUserAnonId();
-initFirebaseListeners();
-});
-function initUserAnonId() {
-userAnonId = localStorage.getItem('PORTAL_ABRACAR_USER_ID');
-if (!userAnonId) {
-userAnonId = 'Estudante#' + Math.floor(1000 + Math.random() * 9000);
-localStorage.setItem('PORTAL_ABRACAR_USER_ID', userAnonId);
-}
-document.getElementById('userAnonId').innerText = 'ID: ' + userAnonId;
-}
-function initFirebaseListeners() {
-// Escutar Chats em tempo real
-const chatsRef = window.dbRef(window.db, 'chats');
-window.dbOnValue(chatsRef, (snapshot) => {
-allChatsData = snapshot.val() || {};
-loadStudentChatMessages();
-if (document.getElementById('adminPanel').style.display === 'block') {
-updateAdminView();
-}
-});
-// Escutar Relatos em tempo real
-const reportsRef = window.dbRef(window.db, 'reports');
-window.dbOnValue(reportsRef, (snapshot) => {
-allReportsData = snapshot.val() || {};
-if (document.getElementById('adminPanel').style.display === 'block') {
-updateAdminView();
-}
-});
-// Escutar Mural em tempo real
-const muralRef = window.dbRef(window.db, 'mural');
-window.dbOnValue(muralRef, (snapshot) => {
-allMuralData = snapshot.val() || {};
-renderMuralPosts();
-});
-}
-function switchTab(tabId, element) {
-document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-document.getElementById(tabId).classList.add('active');
-if (element) element.classList.add('active');
-const titleMap = {
-'inicioTab': 'Portal ABRAÇAR',
-'chatTab': 'Chat de Escuta',
-'respiracaoTab': 'Respiração Guiada',
-'relatoTab': 'Relato Anônimo',
-'apoioTab': 'Canais de Apoio',
-'muralTab': 'Mural de Avisos',
-'adminTab': 'Painel Administrativo'
-};
-document.getElementById('headerTitle').innerText = titleMap[tabId] || 'Portal ABRAÇAR';
-if (tabId === 'chatTab') loadStudentChatMessages();
-if (window.innerWidth <= 768) closeMobileSidebar();
-}
-function openMobileSidebar() {
-document.getElementById('sidebar').classList.add('mobile-open');
-document.getElementById('sidebarOverlay').classList.add('active');
-}
-function closeMobileSidebar() {
-document.getElementById('sidebar').classList.remove('mobile-open');
-document.getElementById('sidebarOverlay').classList.remove('active');
-}
-document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
-document.getElementById('sidebar').classList.toggle('collapsed');
-});
-// CHAT DO ESTUDANTE
-function sendStudentMessage() {
-const input = document.getElementById('chatInput');
-const text = input.value.trim();
-const recipient = document.getElementById('chatRecipient').value;
-if (!text) return;
-const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-const newMsg = { sender: userAnonId, recipient: recipient, text: text, time: time };
-const chatRoomRef = window.dbRef(window.db, 'chats/' + userAnonId.replace('#', '_'));
-window.dbPush(chatRoomRef, newMsg);
-input.value = '';
-}
-function loadStudentChatMessages() {
-const container = document.getElementById('studentChatMessages');
-const roomKey = userAnonId.replace('#', '_');
-const messagesObj = allChatsData[roomKey] || {};
-const messages = Object.values(messagesObj);
-if (messages.length === 0) {
-container.innerHTML =  <div class="message gremio"> <strong>Atendimento ABRAÇAR</strong><br> Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar. <div class="message-time">Início</div> </div>;
-return;
-}
-container.innerHTML = messages.map(msg => <div class="message ${msg.sender === userAnonId ? 'user' : 'gremio'}"> <strong>${msg.sender === userAnonId ? 'Você' : msg.sender}</strong><br> ${msg.text} <div class="message-time">${msg.time}</div> </div>).join('');
-container.scrollTop = container.scrollHeight;
-}
-// RESPIRAÇÃO GUIADA
-function toggleBreathing() {
-const circle = document.getElementById('breathCircle');
-const text = document.getElementById('breathText');
-const btn = document.getElementById('startBreathBtn');
-if (breathingInterval) {
-clearInterval(breathingInterval);
-breathingInterval = null;
-circle.className = 'breathing-circle';
-text.innerText = 'Iniciar';
-btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Respiração';
-return;
-}
-btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar Respiração';
-let step = 0;
-const runCycle = () => {
-if (step === 0) {
-circle.className = 'breathing-circle inhale';
-text.innerText = 'Inspire... (4s)';
-step = 1;
-} else if (step === 1) {
-circle.className = 'breathing-circle hold';
-text.innerText = 'Segure... (4s)';
-step = 2;
-} else {
-circle.className = 'breathing-circle exhale';
-text.innerText = 'Expire... (4s)';
-step = 0;
-}
-};
-runCycle();
-breathingInterval = setInterval(runCycle, 4000);
-}
-// RELATO ANÔNIMO
-function submitReport(e) {
-e.preventDefault();
-const type = document.getElementById('reportType').value;
-const location = document.getElementById('reportLocation').value.trim() || 'Não especificado';
-const message = document.getElementById('reportMessage').value.trim();
-const newReport = {
-type,
-location,
-message,
-date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-};
-const reportsRef = window.dbRef(window.db, 'reports');
-window.dbPush(reportsRef, newReport);
-alert('Seu relato foi enviado anonimamente com sucesso. Obrigado por contribuir!');
-document.getElementById('reportForm').reset();
-}
-// MURAL DE AVISOS
-function renderMuralPosts() {
-const container = document.getElementById('muralPostsContainer');
-const postsArray = Object.entries(allMuralData).map(([id, post]) => ({ id, ...post }));
-if (postsArray.length === 0) {
-container.innerHTML = '<p style="font-size: 0.85rem; color: #888;">Nenhum aviso publicado ainda.</p>';
-return;
-}
-postsArray.reverse();
-container.innerHTML = postsArray.map(post => <div class="mural-card"> <span style="font-size: 0.75rem; color: #888; font-weight: 600;">${post.date || ''}</span> <h4 style="color: var(--roxo-escuro); margin: 6px 0;">${post.title}</h4> <p style="font-size: 0.85rem; line-height: 1.4;">${post.content}</p> </div>).join('');
-}
-// ÁREA ADMINISTRATIVA
-function loginAdmin() {
-const pass = document.getElementById('adminPasswordInput').value;
-if (pass === 'abracar2025' || pass === 'admin') {
-document.getElementById('adminAuthCard').style.display = 'none';
-document.getElementById('adminPanel').style.display = 'block';
-updateAdminView();
-} else {
-alert('Senha incorreta! Tente novamente.');
-}
-}
-function logoutAdmin() {
-document.getElementById('adminAuthCard').style.display = 'block';
-document.getElementById('adminPanel').style.display = 'none';
-document.getElementById('adminPasswordInput').value = '';
-}
-function updateAdminView() {
-const reportsCount = Object.keys(allReportsData).length;
-const chatsCount = Object.keys(allChatsData).length;
-document.getElementById('statTotalReports').innerText = reportsCount;
-document.getElementById('statTotalChats').innerText = chatsCount;
-renderAdminRooms();
-renderAdminReports();
-}
-function renderAdminRooms() {
-const roomList = document.getElementById('adminRoomList');
-const chatKeys = Object.keys(allChatsData);
-if (chatKeys.length === 0) {
-roomList.innerHTML = '<div style="padding: 15px; text-align: center; font-size: 0.8rem; color: #888;">Nenhuma conversa iniciada.</div>';
-return;
-}
-roomList.innerHTML = chatKeys.map(roomKey => {
-const studentId = roomKey.replace('_', '#');
-return <div class="room-item ${currentAdminRoom === roomKey ? 'active' : ''}" onclick="selectAdminRoom('${roomKey}')"> <i class="fa-solid fa-user-secret"></i> ${studentId} </div>;
-}).join('');
-}
-function selectAdminRoom(roomKey) {
-currentAdminRoom = roomKey;
-renderAdminRooms();
-document.getElementById('adminSelectedRoomTitle').innerText = 'Atendendo: ' + roomKey.replace('_', '#');
-renderAdminMessages();
-}
-function renderAdminMessages() {
-const container = document.getElementById('adminChatMessages');
-if (!currentAdminRoom || !allChatsData[currentAdminRoom]) {
-container.innerHTML = '';
-return;
-}
-const messages = Object.values(allChatsData[currentAdminRoom]);
-container.innerHTML = messages.map(msg => <div class="message ${msg.sender === 'Equipe ABRAÇAR (Admin)' ? 'user' : 'gremio'}"> <strong>${msg.sender}</strong> (Para: ${msg.recipient || 'Geral'})<br> ${msg.text} <div class="message-time">${msg.time}</div> </div>).join('');
-container.scrollTop = container.scrollHeight;
-}
-function sendAdminMessage() {
-const input = document.getElementById('adminChatInput');
-const text = input.value.trim();
-if (!text || !currentAdminRoom) return;
-const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-const newMsg = {
-sender: 'Equipe ABRAÇAR (Admin)',
-recipient: currentAdminRoom.replace('_', '#'),
-text: text,
-time: time
-};
-const chatRoomRef = window.dbRef(window.db, 'chats/' + currentAdminRoom);
-window.dbPush(chatRoomRef, newMsg);
-input.value = '';
-}
-function renderAdminReports() {
-const container = document.getElementById('adminReportsList');
-const reportsArray = Object.entries(allReportsData).map(([id, rep]) => ({ id, ...rep }));
-if (reportsArray.length === 0) {
-container.innerHTML = '<p style="font-size: 0.85rem; color: #888;">Nenhum relato registrado até o momento.</p>';
-return;
-}
-reportsArray.reverse();
-container.innerHTML = reportsArray.map(rep => <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 10px;"> <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; margin-bottom: 6px;"> <span style="font-weight: 700; color: var(--roxo);">${rep.type}</span> <span>${rep.date || ''}</span> </div> <p style="font-size: 0.85rem; margin-bottom: 6px;"><strong>Local/Turma:</strong> ${rep.location}</p> <p style="font-size:0.85rem; line-height: 1.4; color: var(--cinza-texto);">${rep.message}</p> <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport('${rep.id}')"><i class="fa-solid fa-trash"></i> Excluir</button> </div>).join('');
-}
-function deleteReport(id) {
-if (confirm('Deseja realmente excluir este relato?')) {
-const reportRef = window.dbRef(window.db, 'reports/' + id);
-window.dbRemove(reportRef);
-}
-}
-function createMuralPost(e) {
-e.preventDefault();
-const title = document.getElementById('muralTitleInput').value.trim();
-const content = document.getElementById('muralContentInput').value.trim();
-const newPost = {
-title,
-content,
-date: new Date().toLocaleDateString('pt-BR')
-};
-const muralRef = window.dbRef(window.db, 'mural');
-window.dbPush(muralRef, newPost);
-document.getElementById('muralTitleInput').value = '';
-document.getElementById('muralContentInput').value = '';
-alert('Aviso publicado com sucesso no Mural!');
-}
-</script>
+            <div class="form-group">
+              <label for="reportLocation"><i class="fa-solid fa-location-dot"></i> Local ou Turma Relevante (Opcional)</label>
+              <input type="text" id="reportLocation" class="form-control" placeholder="Ex: Pátio principal, Turma 2ºB, Banheiro superior">
+            </div>
+
+            <div class="form-group">
+              <label for="reportMessage"><i class="fa-solid fa-pen"></i> Descrição Detalhada</label>
+              <textarea id="reportMessage" class="form-control" rows="5" placeholder="Descreva a situação com o máximo de detalhes possível para que possamos atuar..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%;"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Anônimo</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ABA 5: CANAIS DE APOIO -->
+      <section id="apoioTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio Emocional e Urgência</h2>
+          <p style="font-size: 0.88rem;">Precisa de conversa imediata ou ajuda especializada fora da escola? Ligue para estes serviços gratuitos:</p>
+
+          <div class="emergency-grid">
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div>
+                <strong>CVV (Apoio Emocional)</strong><br>
+                <a href="tel:188" class="emergency-number">188</a> <span style="font-size: 0.75rem;">(Gratuito 24h)</span>
+              </div>
+            </div>
+
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-child"></i></div>
+              <div>
+                <strong>Disque Direitos Humanos</strong><br>
+                <a href="tel:100" class="emergency-number">100</a> <span style="font-size: 0.75rem;">(Disque 100)</span>
+              </div>
+            </div>
+
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div>
+                <strong>Polícia Militar (Urgência)</strong><br>
+                <a href="tel:190" class="emergency-number">190</a>
+              </div>
+            </div>
+
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-user-nurse"></i></div>
+              <div>
+                <strong>SAMU (Emergência Médica)</strong><br>
+                <a href="tel:192" class="emergency-number">192</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 6: MURAL DE AVISOS -->
+      <section id="muralTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos do Grêmio</h2>
+          <p style="font-size: 0.88rem;">Fique por dentro das últimas novidades, projetos e eventos organizados na escola.</p>
+
+          <div class="mural-grid" id="muralPostsContainer">
+            <!-- Posts gerados via Firebase -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 7: ÁREA ADMINISTRATIVA -->
+      <section id="adminTab" class="tab-content">
+        <div class="card" id="adminAuthCard">
+          <h2><i class="fa-solid fa-lock"></i> Acesso Restrito</h2>
+          <p style="font-size: 0.88rem; margin-bottom: 15px;">Área exclusiva para os representantes do Grêmio Estudantil e Gestão Escolar.</p>
+          
+          <div style="display: flex; gap: 10px; max-width: 400px;">
+            <input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha de Acesso">
+            <button class="btn-primary" onclick="loginAdmin()"><i class="fa-solid fa-right-to-bracket"></i> Entrar</button>
+          </div>
+        </div>
+
+        <div id="adminPanel" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <h2 style="color: var(--roxo-escuro); margin: 0;"><i class="fa-solid fa-chart-line"></i> Painel de Controle</h2>
+            <button class="btn-danger" onclick="logoutAdmin()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair do Admin</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+            <div class="card" style="margin: 0; text-align: center; border-left-color: var(--verde);">
+              <h3 id="statTotalReports" style="font-size: 1.8rem; color: var(--verde);">0</h3>
+              <p style="font-size: 0.8rem; font-weight: 600;">Relatos Recebidos</p>
+            </div>
+            <div class="card" style="margin: 0; text-align: center; border-left-color: var(--roxo);">
+              <h3 id="statTotalChats" style="font-size: 1.8rem; color: var(--roxo);">0</h3>
+              <p style="font-size: 0.8rem; font-weight: 600;">Conversas Ativas</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2><i class="fa-solid fa-headset"></i> Resposta aos Chats de Escuta</h2>
+            <div class="admin-chat-layout">
+              <div class="room-list" id="adminRoomList">
+                <div style="padding: 15px; text-align: center; font-size: 0.8rem; color: #888;">Carregando conversas...</div>
+              </div>
+              <div style="display: flex; flex-direction: column; height: 100%; border: 1px solid var(--cinza-borda); border-radius: 12px; overflow: hidden;">
+                <div id="adminSelectedRoomTitle" style="padding: 10px 15px; background: #F8FAFC; border-bottom: 1px solid var(--cinza-borda); font-weight: 700; font-size: 0.85rem;">
+                  Selecione uma conversa ao lado
+                </div>
+                <div class="chat-messages" id="adminChatMessages"></div>
+                <div class="chat-input-area">
+                  <input type="text" id="adminChatInput" class="form-control" placeholder="Digite a resposta oficial..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
+                  <button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2><i class="fa-solid fa-clipboard-list"></i> Relatos e Denúncias Recebidas</h2>
+            <div id="adminReportsList" style="display: flex; flex-direction: column; gap: 10px;">
+              <p style="font-size: 0.85rem; color: #888;">Carregando relatos...</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2><i class="fa-solid fa-bullhorn"></i> Publicar Novo Aviso no Mural</h2>
+            <form onsubmit="createMuralPost(event)">
+              <div class="form-group">
+                <label>Título do Aviso</label>
+                <input type="text" id="muralTitleInput" class="form-control" required placeholder="Ex: Reunião do Grêmio, Torneio de Xadrez">
+              </div>
+              <div class="form-group">
+                <label>Conteúdo</label>
+                <textarea id="muralContentInput" class="form-control" rows="3" required placeholder="Escreva o comunicado aqui..."></textarea>
+              </div>
+              <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Publicar Aviso</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    let userAnonId = '';
+    let allChatsData = {};
+    let allReportsData = {};
+    let allMuralData = {};
+    let currentAdminRoom = null;
+    let breathingInterval = null;
+
+    window.addEventListener('firebaseReady', () => {
+      initUserAnonId();
+      initFirebaseListeners();
+    });
+
+    function initUserAnonId() {
+      userAnonId = localStorage.getItem('PORTAL_ABRACAR_USER_ID');
+      if (!userAnonId) {
+        userAnonId = 'Estudante#' + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('PORTAL_ABRACAR_USER_ID', userAnonId);
+      }
+      document.getElementById('userAnonId').innerText = 'ID: ' + userAnonId;
+    }
+
+    function initFirebaseListeners() {
+      // Escutar Chats em tempo real
+      const chatsRef = window.dbRef(window.db, 'chats');
+      window.dbOnValue(chatsRef, (snapshot) => {
+        allChatsData = snapshot.val() || {};
+        loadStudentChatMessages();
+        if (document.getElementById('adminPanel').style.display === 'block') {
+          updateAdminView();
+        }
+      });
+
+      // Escutar Relatos em tempo real
+      const reportsRef = window.dbRef(window.db, 'reports');
+      window.dbOnValue(reportsRef, (snapshot) => {
+        allReportsData = snapshot.val() || {};
+        if (document.getElementById('adminPanel').style.display === 'block') {
+          updateAdminView();
+        }
+      });
+
+      // Escutar Mural em tempo real
+      const muralRef = window.dbRef(window.db, 'mural');
+      window.dbOnValue(muralRef, (snapshot) => {
+        allMuralData = snapshot.val() || {};
+        renderMuralPosts();
+      });
+    }
+
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      if (element) element.classList.add('active');
+
+      const titleMap = {
+        'inicioTab': 'Portal ABRAÇAR',
+        'chatTab': 'Chat de Escuta',
+        'respiracaoTab': 'Respiração Guiada',
+        'relatoTab': 'Relato Anônimo',
+        'apoioTab': 'Canais de Apoio',
+        'muralTab': 'Mural de Avisos',
+        'adminTab': 'Painel Administrativo'
+      };
+      document.getElementById('headerTitle').innerText = titleMap[tabId] || 'Portal ABRAÇAR';
+
+      if (tabId === 'chatTab') loadStudentChatMessages();
+      if (window.innerWidth <= 768) closeMobileSidebar();
+    }
+
+    function openMobileSidebar() {
+      document.getElementById('sidebar').classList.add('mobile-open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+    }
+
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    }
+
+    document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    });
+
+    // CHAT DO ESTUDANTE
+    function sendStudentMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      const recipient = document.getElementById('chatRecipient').value;
+
+      if (!text) return;
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const newMsg = { sender: userAnonId, recipient: recipient, text: text, time: time };
+
+      const chatRoomRef = window.dbRef(window.db, 'chats/' + userAnonId.replace('#', '_'));
+      window.dbPush(chatRoomRef, newMsg);
+
+      input.value = '';
+    }
+
+    function loadStudentChatMessages() {
+      const container = document.getElementById('studentChatMessages');
+      const roomKey = userAnonId.replace('#', '_');
+      const messagesObj = allChatsData[roomKey] || {};
+      const messages = Object.values(messagesObj);
+
+      if (messages.length === 0) {
+        container.innerHTML = `
+          <div class="message gremio">
+            <strong>Atendimento ABRAÇAR</strong><br>
+            Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar.
+            <div class="message-time">Início</div>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = messages.map(msg => `
+        <div class="message ${msg.sender === userAnonId ? 'user' : 'gremio'}">
+          <strong>${msg.sender === userAnonId ? 'Você' : msg.sender}</strong><br>
+          ${msg.text}
+          <div class="message-time">${msg.time}</div>
+        </div>
+      `).join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // RESPIRAÇÃO GUIADA
+    function toggleBreathing() {
+      const circle = document.getElementById('breathCircle');
+      const text = document.getElementById('breathText');
+      const btn = document.getElementById('startBreathBtn');
+
+      if (breathingInterval) {
+        clearInterval(breathingInterval);
+        breathingInterval = null;
+        circle.className = 'breathing-circle';
+        text.innerText = 'Iniciar';
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Respiração';
+        return;
+      }
+
+      btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar Respiração';
+      let step = 0;
+
+      const runCycle = () => {
+        if (step === 0) {
+          circle.className = 'breathing-circle inhale';
+          text.innerText = 'Inspire... (4s)';
+          step = 1;
+        } else if (step === 1) {
+          circle.className = 'breathing-circle hold';
+          text.innerText = 'Segure... (4s)';
+          step = 2;
+        } else {
+          circle.className = 'breathing-circle exhale';
+          text.innerText = 'Expire... (4s)';
+          step = 0;
+        }
+      };
+
+      runCycle();
+      breathingInterval = setInterval(runCycle, 4000);
+    }
+
+    // RELATO ANÔNIMO
+    function submitReport(e) {
+      e.preventDefault();
+      const type = document.getElementById('reportType').value;
+      const location = document.getElementById('reportLocation').value.trim() || 'Não especificado';
+      const message = document.getElementById('reportMessage').value.trim();
+
+      const newReport = {
+        type,
+        location,
+        message,
+        date: new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      const reportsRef = window.dbRef(window.db, 'reports');
+      window.dbPush(reportsRef, newReport);
+
+      alert('Seu relato foi enviado anonimamente com sucesso. Obrigado por contribuir!');
+      document.getElementById('reportForm').reset();
+    }
+
+    // MURAL DE AVISOS
+    function renderMuralPosts() {
+      const container = document.getElementById('muralPostsContainer');
+      const postsArray = Object.entries(allMuralData).map(([id, post]) => ({ id, ...post }));
+
+      if (postsArray.length === 0) {
+        container.innerHTML = '<p style="font-size: 0.85rem; color: #888;">Nenhum aviso publicado ainda.</p>';
+        return;
+      }
+
+      postsArray.reverse();
+
+      container.innerHTML = postsArray.map(post => `
+        <div class="mural-card">
+          <span style="font-size: 0.75rem; color: #888; font-weight: 600;">${post.date || ''}</span>
+          <h4 style="color: var(--roxo-escuro); margin: 6px 0;">${post.title}</h4>
+          <p style="font-size: 0.85rem; line-height: 1.4;">${post.content}</p>
+        </div>
+      `).join('');
+    }
+
+    // ÁREA ADMINISTRATIVA
+    function loginAdmin() {
+      const pass = document.getElementById('adminPasswordInput').value;
+      if (pass === 'abracar2025' || pass === 'admin') {
+        document.getElementById('adminAuthCard').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        updateAdminView();
+      } else {
+        alert('Senha incorreta! Tente novamente.');
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('adminAuthCard').style.display = 'block';
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('adminPasswordInput').value = '';
+    }
+
+    function updateAdminView() {
+      const reportsCount = Object.keys(allReportsData).length;
+      const chatsCount = Object.keys(allChatsData).length;
+
+      document.getElementById('statTotalReports').innerText = reportsCount;
+      document.getElementById('statTotalChats').innerText = chatsCount;
+
+      renderAdminRooms();
+      renderAdminReports();
+    }
+
+    function renderAdminRooms() {
+      const roomList = document.getElementById('adminRoomList');
+      const chatKeys = Object.keys(allChatsData);
+
+      if (chatKeys.length === 0) {
+        roomList.innerHTML = '<div style="padding: 15px; text-align: center; font-size: 0.8rem; color: #888;">Nenhuma conversa iniciada.</div>';
+        return;
+      }
+
+      roomList.innerHTML = chatKeys.map(roomKey => {
+        const studentId = roomKey.replace('_', '#');
+        return `
+          <div class="room-item ${currentAdminRoom === roomKey ? 'active' : ''}" onclick="selectAdminRoom('${roomKey}')">
+            <i class="fa-solid fa-user-secret"></i> ${studentId}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectAdminRoom(roomKey) {
+      currentAdminRoom = roomKey;
+      renderAdminRooms();
+      document.getElementById('adminSelectedRoomTitle').innerText = 'Atendendo: ' + roomKey.replace('_', '#');
+      renderAdminMessages();
+    }
+
+    function renderAdminMessages() {
+      const container = document.getElementById('adminChatMessages');
+      if (!currentAdminRoom || !allChatsData[currentAdminRoom]) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const messages = Object.values(allChatsData[currentAdminRoom]);
+      container.innerHTML = messages.map(msg => `
+        <div class="message ${msg.sender === 'Equipe ABRAÇAR (Admin)' ? 'user' : 'gremio'}">
+          <strong>${msg.sender}</strong> (Para: ${msg.recipient || 'Geral'})<br>
+          ${msg.text}
+          <div class="message-time">${msg.time}</div>
+        </div>
+      `).join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendAdminMessage() {
+      const input = document.getElementById('adminChatInput');
+      const text = input.value.trim();
+
+      if (!text || !currentAdminRoom) return;
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const newMsg = {
+        sender: 'Equipe ABRAÇAR (Admin)',
+        recipient: currentAdminRoom.replace('_', '#'),
+        text: text,
+        time: time
+      };
+
+      const chatRoomRef = window.dbRef(window.db, 'chats/' + currentAdminRoom);
+      window.dbPush(chatRoomRef, newMsg);
+
+      input.value = '';
+    }
+
+    function renderAdminReports() {
+      const container = document.getElementById('adminReportsList');
+      const reportsArray = Object.entries(allReportsData).map(([id, rep]) => ({ id, ...rep }));
+
+      if (reportsArray.length === 0) {
+        container.innerHTML = '<p style="font-size: 0.85rem; color: #888;">Nenhum relato registrado até o momento.</p>';
+        return;
+      }
+
+      reportsArray.reverse();
+
+      container.innerHTML = reportsArray.map(rep => `
+        <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 10px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; margin-bottom: 6px;">
+            <span style="font-weight: 700; color: var(--roxo);">${rep.type}</span>
+            <span>${rep.date || ''}</span>
+          </div>
+          <p style="font-size: 0.85rem; margin-bottom: 6px;"><strong>Local/Turma:</strong> ${rep.location}</p>
+          <p style="font-size:0.85rem; line-height: 1.4; color: var(--cinza-texto);">${rep.message}</p>
+          <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport('${rep.id}')"><i class="fa-solid fa-trash"></i> Excluir</button>
+        </div>
+      `).join('');
+    }
+
+    function deleteReport(id) {
+      if (confirm('Deseja realmente excluir este relato?')) {
+        const reportRef = window.dbRef(window.db, 'reports/' + id);
+        window.dbRemove(reportRef);
+      }
+    }
+
+    function createMuralPost(e) {
+      e.preventDefault();
+      const title = document.getElementById('muralTitleInput').value.trim();
+      const content = document.getElementById('muralContentInput').value.trim();
+
+      const newPost = {
+        title,
+        content,
+        date: new Date().toLocaleDateString('pt-BR')
+      };
+
+      const muralRef = window.dbRef(window.db, 'mural');
+      window.dbPush(muralRef, newPost);
+
+      document.getElementById('muralTitleInput').value = '';
+      document.getElementById('muralContentInput').value = '';
+      alert('Aviso publicado com sucesso no Mural!');
+    }
+  </script>
 </body>
 </html>

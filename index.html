@@ -676,26 +676,28 @@
     </main>
   </div>
 
-  <!-- FIREBASE SDKs (Modular v10) -->
+  <!-- FIREBASE SDKs (Modular v12) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+    import { getDatabase, ref, push, set, onValue, remove, get } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-    // Insira sua configuração do Firebase aqui
     const firebaseConfig = {
-      apiKey: "SUA_API_KEY",
-      authDomain: "seu-projeto.firebaseapp.com",
-      databaseURL: "https://seu-projeto-default-rtdb.firebaseio.com",
-      projectId: "seu-projeto",
-      storageBucket: "seu-projeto.appspot.com",
-      messagingSenderId: "ID",
-      appId: "APP_ID"
+      apiKey: "AIzaSyCMvBe_Yn6A_zJY12UKo8tMxUFPi1hE7LU",
+      authDomain: "acolhimentoeescuta.firebaseapp.com",
+      databaseURL: "https://acolhimentoeescuta-default-rtdb.firebaseio.com",
+      projectId: "acolhimentoeescuta",
+      storageBucket: "acolhimentoeescuta.firebasestorage.app",
+      messagingSenderId: "592294218900",
+      appId: "1:592294218900:web:2c93404f641ce274aab881",
+      measurementId: "G-MT75SG2FJB"
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getDatabase(app);
 
-    // Disponibiliza as instâncias e funções globalmente para o escopo do app
+    // Disponibiliza as instâncias e funções globalmente
     window.db = db;
     window.dbRef = ref;
     window.dbPush = push;
@@ -704,7 +706,6 @@
     window.dbRemove = remove;
     window.dbGet = get;
 
-    // Dispara o evento de carregamento do Firebase
     window.dispatchEvent(new Event('firebaseReady'));
   </script>
 
@@ -830,7 +831,7 @@
       if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Exercício (1 Minuto)';
     }
 
-    // Sanitizador XSS para inputs de texto
+    // Sanitizador XSS
     function escapeHTML(str) {
       if (!str) return '';
       return str.replace(/[&<>'"]/g, 
@@ -838,7 +839,7 @@
       );
     }
 
-    // Inicialização dos Ouvintes do Firebase após carregamento
+    // Inicialização do Firebase e Componentes Dinâmicos
     window.addEventListener('firebaseReady', () => {
       const db = window.db;
       const dbRef = window.dbRef;

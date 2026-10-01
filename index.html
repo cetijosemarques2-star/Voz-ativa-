@@ -1120,13 +1120,19 @@
       breathingInterval = setInterval(runCycle, 4000);
     }
 
-    // Login Admin
+        // Login Admin
     function verifyAdminPassword() {
       const pass = document.getElementById('adminPasswordInput').value;
       if (pass === 'abracar2026') {
         document.getElementById('adminLoginBox').style.display = 'none';
         document.getElementById('adminDashboardBox').style.display = 'block';
-        if (typeof window.loadAdminData     }
+        if (typeof window.loadAdminData === 'function') {
+          window.loadAdminData();
+        }
+      } else {
+        alert('Senha incorreta!');
+      }
+    }
 
     function logoutAdmin() {
       document.getElementById('adminDashboardBox').style.display = 'none';

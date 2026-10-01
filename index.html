@@ -703,358 +703,455 @@
           <div class="tip-card">
             <i class="fa-solid fa-glass-water" style="color: var(--verde); font-size: 1.3rem;"></i>
             <h4 style="margin-top: 5px;">Hidrate-se e Respire</h4>
-   <p style="font-size: 0.8rem; margin-top: 4px;">Tome um copo d'água fresca e faça pausas durante os estudos pesados.</p>
-</div>
-</div>
-</section>
-<!-- ABA 4: RELATO ANÔNIMO -->
-<section id="relatoTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-user-shield"></i> Canal de Relatos e Denúncias Sigilosas</h2>
-<p style="font-size: 0.85rem; margin-bottom: 15px;">
-Presenciou ou sofreu bullying, preconceito ou qualquer situação desconfortável? Relate aqui. Sua identidade será preservada.
-</p>
-<form id="reportForm" onsubmit="submitReport(event)">
-<div class="form-group">
-<label><i class="fa-solid fa-tag"></i> Tipo de Ocorrência:</label>
-<select id="reportType" class="form-control" required>
-<option value="">Selecione...</option>
-<option value="Bullying">Bullying / Cyberbullying</option>
-<option value="Preconceito/Discriminação">Preconceito ou Discriminação</option>
-<option value="Saúde Mental / Apoio Pessoal">Saúde Mental / Necessidade de Apoio</option>
-<option value="Infraestrutura / Escola">Problema na Infraestrutura Escolar</option>
-<option value="Outro">Outro Assunto</option>
-</select>
-</div>
-<div class="form-group">
-<label><i class="fa-solid fa-location-dot"></i> Onde/Quando aconteceu? (Opcional):</label>
-<input type="text" id="reportLocation" class="form-control" placeholder="Ex: Pátio, horário do intervalo, sala de aula...">
-</div>
-<div class="form-group">
-<label><i class="fa-solid fa-pen-nib"></i> Descreva o ocorrido:</label>
-<textarea id="reportDesc" class="form-control" rows="4" placeholder="Detalhe os fatos de forma clara para que a equipe possa agir com segurança..." required></textarea>
-</div>
-<button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Anônimo</button>
-</form>
-</div>
-</section>
-<!-- ABA 5: CANAIS DE APOIO -->
-<section id="apoioTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio Externo e Interno</h2>
-<p style="font-size: 0.85rem; margin-bottom: 15px;">Se precisar de ajuda imediata ou atendimento especializado fora da escola, utilize os contatos abaixo:</p>
-<div class="emergency-grid">
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-life-ring"></i></div>
-<div>
-<h4 style="font-size: 0.95rem; color: var(--roxo-escuro);">CVV - Apoio Emocional</h4>
-<a href="tel:188" class="emergency-number">Ligar 188</a>
-<p style="font-size: 0.75rem; color: var(--cinza-texto);">Gratuito, sigiloso e 24h por dia.</p>
-</div>
-</div>
-<div class="emergency-card">
-<div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div>
-<div>
-<h4 style="font-size: 0.95rem; color: var(--roxo-escuro);">Conselho Tutelar</h4>
-<span class="emergency-number" style="font-size: 0.9rem;">Disque 100</span>
-<p style="font-size: 0.75rem; color: var(--cinza-texto);">Direitos humanos e proteção à infância/juventude.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ABA 6: MURAL DE AVISOS -->
-<section id="muralTab" class="tab-content">
-<div class="card">
-<h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos do Grêmio</h2>
-<p style="font-size: 0.85rem; margin-bottom: 15px;">Fique por dentro das novidades, eventos e pautas do Grêmio Estudantil.</p>
-<div class="mural-grid" id="muralContainer">
-<div class="mural-card">
-<span style="font-size: 0.75rem; background: rgba(69,39,160,0.1); color: var(--roxo); padding: 3px 8px; border-radius: 6px; font-weight: 700;">Geral</span>
-<h4 style="margin-top: 8px; color: var(--roxo-escuro);">Início do Portal ABRAÇAR</h4>
-<p style="font-size: 0.85rem; margin-top: 6px;">Sejam todos bem-vindos ao nosso canal oficial de acolhimento digital. Participem e usem com responsabilidade!</p>
-<div style="font-size: 0.7rem; color: #718096; margin-top: 10px;"><i class="fa-regular fa-calendar"></i> Outubro, 2026</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ABA 7: ÁREA DO ADMIN -->
-<section id="adminTab" class="tab-content">
-<div class="card" id="adminLoginCard">
-<h2><i class="fa-solid fa-lock"></i> Restrito à Equipe / Admin</h2>
-<p style="font-size: 0.85rem; margin-bottom: 15px;">Insira a senha de acesso da gestão para visualizar os relatos e conversar no chat.</p>
-<div class="form-group" style="max-width: 300px;">
-<input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha de acesso">
-</div>
-<button class="btn-primary" onclick="checkAdminPassword()"><i class="fa-solid fa-key"></i> Entrar no Painel</button>
-</div>
-<div class="card" id="adminDashboardCard" style="display: none;">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-<h2><i class="fa-solid fa-gauge-high"></i> Painel de Controle — ABRAÇAR</h2>
-<button class="btn-danger" onclick="logoutAdmin()">Sair do Admin</button>
-</div>
-<!-- Estatísticas rápidas -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
-<div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
-<span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Total de Relatos</span>
-<h3 id="adminTotalReports" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
-</div>
-<div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
-<span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Conversas Ativas</span>
-<h3 id="adminTotalChats" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
-</div>
-</div>
-<!-- Seção de Chat do Admin -->
-<h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-comments"></i> Central de Atendimento (Chat)</h3>
-<div class="admin-chat-layout" style="margin-bottom: 25px;">
-<!-- Lista de usuários que mandaram mensagem -->
-<div class="room-list" id="adminRoomList">
-<div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>
-</div>
-<!-- Janela de conversa do admin com o usuário selecionado -->
-<div class="chat-container" style="height: 100%;">
-<div class="chat-channel-selector" id="adminChatHeader">
-<label><i class="fa-solid fa-user"></i> Selecione um estudante ao lado</label>
-</div>
-<div class="chat-messages" id="adminChatMessages">
-<div class="message gremio">
-<strong>Painel do Admin</strong>
+             <p style="font-size: 0.8rem; margin-top: 4px;">Tome um copo d'água fresca e faça pausas durante os estudos pesados.</p>
+          </div>
+        </div>
+      </section>
 
-Selecione um ID de estudante na lista ao lado para visualizar e responder à conversa.
-</div>
-</div>
-<div class="chat-input-area">
-<input type="text" id="adminChatInput" class="form-control" placeholder="Digite a resposta oficial..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
-<button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-</div>
-</div>
-</div>
-<h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-clipboard-list"></i> Relatos Anônimos Recebidos</h3>
-<div id="adminReportsList" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
-<!-- Preenchido via JS -->
-</div>
-</div>
-</section>
-</main>
-</div>
-<!-- JavaScript do Sistema -->
-<script>
-// Gerenciador de ID Anônimo do Usuário
-let userId = localStorage.getItem('abracar_user_id');
-if (!userId) {
-userId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
-localStorage.setItem('abracar_user_id', userId);
-}
-document.getElementById('userAnonId').innerText = 'ID: ' + userId;
-let currentActiveChatUser = null;
-// Alternância de Abas
-function switchTab(tabId, element) {
-document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-document.getElementById(tabId).classList.add('active');
-if(element) element.classList.add('active');
-closeMobileSidebar();
-window.scrollTo(0, 0);
-// Se abrir o painel admin, recarrega os dados caso já esteja logado
-if (tabId === 'adminTab' && document.getElementById('adminDashboardCard').style.display === 'block') {
-loadAdminData();
-}
-}
-// Controle de Sidebar Responsiva
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const toggleBtn = document.getElementById('toggleSidebarBtn');
-toggleBtn.addEventListener('click', () => {
-sidebar.classList.toggle('collapsed');
-});
-function openMobileSidebar() {
-sidebar.classList.add('mobile-open');
-overlay.classList.add('active');
-}
-function closeMobileSidebar() {
-sidebar.classList.remove('mobile-open');
-overlay.classList.remove('active');
-}
-// Chat do Estudante
-function sendStudentMessage() {
-const input = document.getElementById('chatInput');
-const text = input.value.trim();
-const recipient = document.getElementById('chatRecipient').value;
-if (!text) return;
-const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-const msgObj = {
-sender: 'user',
-text: text,
-time: timeNow,
-recipient: recipient
-};
-let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-if (!allChats[userId]) allChats[userId] = [];
-allChats[userId].push(msgObj);
-localStorage.setItem('abracar_chats', JSON.stringify(allChats));
-renderStudentChat();
-input.value = '';
-// Simulação inicial automática de boas-vindas do sistema
-setTimeout(() => {
-let updatedChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-if (updatedChats[userId].length === 1) {
-updatedChats[userId].push({
-sender: 'gremio',
-text: Olá! Recebemos sua mensagem direcionada para (${recipient}). Em breve a equipe responderá por aqui.,
-time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-recipient: recipient
-});
-localStorage.setItem('abracar_chats', JSON.stringify(updatedChats));
-renderStudentChat();
-}
-}, 1000);
-}
-function renderStudentChat() {
-const messagesContainer = document.getElementById('studentChatMessages');
-let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-let userMessages = allChats[userId] || [];
-if (userMessages.length === 0) {
-messagesContainer.innerHTML = <div class="message gremio"> <strong>Atendimento ABRAÇAR</strong><br> Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar. <div class="message-time">Início</div> </div>;
-return;
-}
-messagesContainer.innerHTML = userMessages.map(m => <div class="message ${m.sender === 'user' ? 'user' : 'gremio'}"> ${m.sender === 'gremio' ? '<strong>Equipe ABRAÇAR</strong><br>' : ''} ${escapeHtml(m.text)} <div class="message-time">${m.time}</div> </div>).join('');
-messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-window.addEventListener('DOMContentLoaded', () => {
-renderStudentChat();
-});
-// Lógica de Respiração Guiada
-let breathInterval = null;
-function toggleBreathing() {
-const circle = document.getElementById('breathCircle');
-const text = document.getElementById('breathText');
-const btn = document.getElementById('startBreathBtn');
-if (breathInterval) {
-clearInterval(breathInterval);
-breathInterval = null;
-circle.className = 'breathing-circle';
-text.innerText = 'Iniciar';
-btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Respiração';
-return;
-}
-btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar';
-runBreathCycle(circle, text);
-breathInterval = setInterval(() => {
-runBreathCycle(circle, text);
-}, 12000);
-}
-function runBreathCycle(circle, text) {
-text.innerText = 'Inspira (4s)';
-circle.className = 'breathing-circle inhale';
-setTimeout(() => {
-text.innerText = 'Segura (4s)';
-circle.className = 'breathing-circle hold';
-}, 4000);
-setTimeout(() => {
-text.innerText = 'Expira (4s)';
-circle.className = 'breathing-circle exhale';
-}, 8000);
-}
-// Envio de Relatos Anônimos
-function submitReport(e) {
-e.preventDefault();
-const type = document.getElementById('reportType').value;
-const location = document.getElementById('reportLocation').value;
-const desc = document.getElementById('reportDesc').value;
-const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-reports.unshift({
-id: 'REL-' + Math.floor(100 + Math.random() * 900),
-type,
-location: location || 'Não informado',
-desc,
-date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
-});
-localStorage.setItem('abracar_reports', JSON.stringify(reports));
-alert('Relato enviado com sucesso! O Grêmio e a coordenação foram notificados de forma totalmente anônima.');
-document.getElementById('reportForm').reset();
-switchTab('inicioTab', document.querySelector('.nav-list .nav-item'));
-}
-// --- ÁREA DO ADMIN ---
-function checkAdminPassword() {
-const pass = document.getElementById('adminPasswordInput').value;
-if (pass === 'abracar2026' || pass === 'gremio123') {
-document.getElementById('adminLoginCard').style.display = 'none';
-document.getElementById('adminDashboardCard').style.display = 'block';
-loadAdminData();
-} else {
-alert('Senha incorreta!');
-}
-}
-function logoutAdmin() {
-document.getElementById('adminPasswordInput').value = '';
-document.getElementById('adminDashboardCard').style.display = 'none';
-document.getElementById('adminLoginCard').style.display = 'block';
-}
-function loadAdminData() {
-const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-document.getElementById('adminTotalReports').innerText = reports.length;
-let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-let chatUsers = Object.keys(allChats);
-document.getElementById('adminTotalChats').innerText = chatUsers.length;
-const roomListContainer = document.getElementById('adminRoomList');
-if (chatUsers.length === 0) {
-roomListContainer.innerHTML = '<div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>';
-} else {
-roomListContainer.innerHTML = chatUsers.map(uId => <div class="room-item ${currentActiveChatUser === uId ? 'active' : ''}" onclick="selectAdminChatUser('${uId}')"> <i class="fa-solid fa-user-secret"></i> ${uId} </div>).join('');
-}
-const listContainer = document.getElementById('adminReportsList');
-if (reports.length === 0) {
-listContainer.innerHTML = '<p style="font-size: 0.85rem; color: #718096;">Nenhum relato registrado até o momento.</p>';
-return;
-}
-listContainer.innerHTML = reports.map((r, index) => <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 8px;"> <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: var(--roxo);"> <span>[${r.id}] ${r.type}</span> <span>${r.date}</span> </div> <p style="font-size: 0.85rem; margin: 6px 0;"><strong>Local:</strong> ${r.location}</p> <p style="font-size: 0.85rem; background: #FFF; padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0;">${escapeHtml(r.desc)}</p> <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport(${index})">Excluir Relato</button> </div>).join('');
-}
-function selectAdminChatUser(uId) {
-currentActiveChatUser = uId;
-loadAdminData();
-renderAdminChatMessages();
-}
-function renderAdminChatMessages() {
-if (!currentActiveChatUser) return;
-document.getElementById('adminChatHeader').innerHTML = <label><i class="fa-solid fa-user-check" style="color: var(--verde);"></i> Conversando com: <strong>${currentActiveChatUser}</strong></label>;
-let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-let userMessages = allChats[currentActiveChatUser] || [];
-const messagesContainer = document.getElementById('adminChatMessages');
-messagesContainer.innerHTML = userMessages.map(m => <div class="message ${m.sender === 'gremio' ? 'user' : 'gremio'}"> ${m.sender === 'user' ?<strong>Estudante (${currentActiveChatUser})</strong>
-: '<strong>Você (Admin/Grêmio)</strong><br>'} ${escapeHtml(m.text)} <div class="message-time">${m.time}</div> </div>).join('');
-messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-function sendAdminMessage() {
-if (!currentActiveChatUser) {
-alert('Selecione um estudante na lista ao lado primeiro.');
-return;
-}
-const input = document.getElementById('adminChatInput');
-const text = input.value.trim();
-if (!text) return;
-const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-if (!allChats[currentActiveChatUser]) allChats[currentActiveChatUser] = [];
-allChats[currentActiveChatUser].push({
-sender: 'gremio',
-text: text,
-time: timeNow
-});
-localStorage.setItem('abracar_chats', JSON.stringify(allChats));
-input.value = '';
-renderAdminChatMessages();
-renderStudentChat();
-}
-function deleteReport(index) {
-const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-reports.splice(index, 1);
-localStorage.setItem('abracar_reports', JSON.stringify(reports));
-loadAdminData();
-}
-function escapeHtml(text) {
-const map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
-return text.replace(/[&<>"']/g, m => map[m]);
-}
-</script>
+      <!-- ABA 4: RELATO ANÔNIMO -->
+      <section id="relatoTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-user-shield"></i> Canal de Relatos e Denúncias Sigilosas</h2>
+          <p style="font-size: 0.85rem; margin-bottom: 15px;">
+            Presenciou ou sofreu bullying, preconceito ou qualquer situação desconfortável? Relate aqui. Sua identidade será preservada.
+          </p>
+
+          <form id="reportForm" onsubmit="submitReport(event)">
+            <div class="form-group">
+              <label><i class="fa-solid fa-tag"></i> Tipo de Ocorrência:</label>
+              <select id="reportType" class="form-control" required>
+                <option value="">Selecione...</option>
+                <option value="Bullying">Bullying / Cyberbullying</option>
+                <option value="Preconceito/Discriminação">Preconceito ou Discriminação</option>
+                <option value="Saúde Mental / Apoio Pessoal">Saúde Mental / Necessidade de Apoio</option>
+                <option value="Infraestrutura / Escola">Problema na Infraestrutura Escolar</option>
+                <option value="Outro">Outro Assunto</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-location-dot"></i> Onde/Quando aconteceu? (Opcional):</label>
+              <input type="text" id="reportLocation" class="form-control" placeholder="Ex: Pátio, horário do intervalo, sala de aula...">
+            </div>
+
+            <div class="form-group">
+              <label><i class="fa-solid fa-pen-nib"></i> Descreva o ocorrido:</label>
+              <textarea id="reportDesc" class="form-control" rows="4" placeholder="Detalhe os fatos de forma clara para que a equipe possa agir com segurança..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Anônimo</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ABA 5: CANAIS DE APOIO -->
+      <section id="apoioTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio Externo e Interno</h2>
+          <p style="font-size: 0.85rem; margin-bottom: 15px;">Se precisar de ajuda imediata ou atendimento especializado fora da escola, utilize os contatos abaixo:</p>
+
+          <div class="emergency-grid">
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-life-ring"></i></div>
+              <div>
+                <h4 style="font-size: 0.95rem; color: var(--roxo-escuro);">CVV - Apoio Emocional</h4>
+                <a href="tel:188" class="emergency-number">Ligar 188</a>
+                <p style="font-size: 0.75rem; color: var(--cinza-texto);">Gratuito, sigiloso e 24h por dia.</p>
+              </div>
+            </div>
+
+            <div class="emergency-card">
+              <div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div>
+                <h4 style="font-size: 0.95rem; color: var(--roxo-escuro);">Conselho Tutelar</h4>
+                <span class="emergency-number" style="font-size: 0.9rem;">Disque 100</span>
+                <p style="font-size: 0.75rem; color: var(--cinza-texto);">Direitos humanos e proteção à infância/juventude.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 6: MURAL DE AVISOS -->
+      <section id="muralTab" class="tab-content">
+        <div class="card">
+          <h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos do Grêmio</h2>
+          <p style="font-size: 0.85rem; margin-bottom: 15px;">Fique por dentro das novidades, eventos e pautas do Grêmio Estudantil.</p>
+
+          <div class="mural-grid" id="muralContainer">
+            <div class="mural-card">
+              <span style="font-size: 0.75rem; background: rgba(69,39,160,0.1); color: var(--roxo); padding: 3px 8px; border-radius: 6px; font-weight: 700;">Geral</span>
+              <h4 style="margin-top: 8px; color: var(--roxo-escuro);">Início do Portal ABRAÇAR</h4>
+              <p style="font-size: 0.85rem; margin-top: 6px;">Sejam todos bem-vindos ao nosso canal oficial de acolhimento digital. Participem e usem com responsabilidade!</p>
+              <div style="font-size: 0.7rem; color: #718096; margin-top: 10px;"><i class="fa-regular fa-calendar"></i> Outubro, 2026</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA 7: ÁREA DO ADMIN -->
+      <section id="adminTab" class="tab-content">
+        <div class="card" id="adminLoginCard">
+          <h2><i class="fa-solid fa-lock"></i> Restrito à Equipe / Admin</h2>
+          <p style="font-size: 0.85rem; margin-bottom: 15px;">Insira a senha de acesso da gestão para visualizar os relatos e conversar no chat.</p>
+          <div class="form-group" style="max-width: 300px;">
+            <input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha de acesso">
+          </div>
+          <button class="btn-primary" onclick="checkAdminPassword()"><i class="fa-solid fa-key"></i> Entrar no Painel</button>
+        </div>
+
+        <div class="card" id="adminDashboardCard" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2><i class="fa-solid fa-gauge-high"></i> Painel de Controle — ABRAÇAR</h2>
+            <button class="btn-danger" onclick="logoutAdmin()">Sair do Admin</button>
+          </div>
+
+          <!-- Estatísticas rápidas -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
+            <div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Total de Relatos</span>
+              <h3 id="adminTotalReports" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
+            </div>
+            <div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Conversas Ativas</span>
+              <h3 id="adminTotalChats" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
+            </div>
+          </div>
+
+          <!-- Seção de Chat do Admin -->
+          <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-comments"></i> Central de Atendimento (Chat)</h3>
+          <div class="admin-chat-layout" style="margin-bottom: 25px;">
+            <!-- Lista de usuários que mandaram mensagem -->
+            <div class="room-list" id="adminRoomList">
+              <div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>
+            </div>
+            
+            <!-- Janela de conversa do admin com o usuário selecionado -->
+            <div class="chat-container" style="height: 100%;">
+              <div class="chat-channel-selector" id="adminChatHeader">
+                <label><i class="fa-solid fa-user"></i> Selecione um estudante ao lado</label>
+              </div>
+              <div class="chat-messages" id="adminChatMessages">
+                <div class="message gremio">
+                  <strong>Painel do Admin</strong><br>
+                  Selecione um ID de estudante na lista ao lado para visualizar e responder à conversa.
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <input type="text" id="adminChatInput" class="form-control" placeholder="Digite a resposta oficial..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
+                <button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-clipboard-list"></i> Relatos Anônimos Recebidos</h3>
+          <div id="adminReportsList" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JavaScript do Sistema -->
+  <script>
+    // Gerenciador de ID Anônimo do Usuário
+    let userId = localStorage.getItem('abracar_user_id');
+    if (!userId) {
+      userId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem('abracar_user_id', userId);
+    }
+    document.getElementById('userAnonId').innerText = 'ID: ' + userId;
+
+    let currentActiveChatUser = null;
+
+    // Alternância de Abas
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      if(element) element.classList.add('active');
+
+      closeMobileSidebar();
+      window.scrollTo(0, 0);
+
+      // Se abrir o painel admin, recarrega os dados caso já esteja logado
+      if (tabId === 'adminTab' && document.getElementById('adminDashboardCard').style.display === 'block') {
+        loadAdminData();
+      }
+    }
+
+    // Controle de Sidebar Responsiva
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggleBtn = document.getElementById('toggleSidebarBtn');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+    });
+
+    function openMobileSidebar() {
+      sidebar.classList.add('mobile-open');
+      overlay.classList.add('active');
+    }
+
+    function closeMobileSidebar() {
+      sidebar.classList.remove('mobile-open');
+      overlay.classList.remove('active');
+    }
+
+    // Chat do Estudante
+    function sendStudentMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      const recipient = document.getElementById('chatRecipient').value;
+      if (!text) return;
+
+      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const msgObj = {
+        sender: 'user',
+        text: text,
+        time: timeNow,
+        recipient: recipient
+      };
+
+      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+      if (!allChats[userId]) allChats[userId] = [];
+      allChats[userId].push(msgObj);
+      localStorage.setItem('abracar_chats', JSON.stringify(allChats));
+
+      renderStudentChat();
+      input.value = '';
+
+      // Simulação inicial automática de boas-vindas do sistema
+      setTimeout(() => {
+        let updatedChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+        if (updatedChats[userId].length === 1) {
+          updatedChats[userId].push({
+            sender: 'gremio',
+            text: `Olá! Recebemos sua mensagem direcionada para (${recipient}). Em breve a equipe responderá por aqui.`,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            recipient: recipient
+          });
+          localStorage.setItem('abracar_chats', JSON.stringify(updatedChats));
+          renderStudentChat();
+        }
+      }, 1000);
+    }
+
+    function renderStudentChat() {
+      const messagesContainer = document.getElementById('studentChatMessages');
+      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+      let userMessages = allChats[userId] || [];
+
+      if (userMessages.length === 0) {
+        messagesContainer.innerHTML = `
+          <div class="message gremio">
+            <strong>Atendimento ABRAÇAR</strong><br>
+            Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar.
+            <div class="message-time">Início</div>
+          </div>
+        `;
+        return;
+      }
+
+      messagesContainer.innerHTML = userMessages.map(m => `
+        <div class="message ${m.sender === 'user' ? 'user' : 'gremio'}">
+          ${m.sender === 'gremio' ? '<strong>Equipe ABRAÇAR</strong><br>' : ''}
+          ${escapeHtml(m.text)}
+          <div class="message-time">${m.time}</div>
+        </div>
+      `).join('');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStudentChat();
+    });
+
+    // Lógica de Respiração Guiada
+    let breathInterval = null;
+    function toggleBreathing() {
+      const circle = document.getElementById('breathCircle');
+      const text = document.getElementById('breathText');
+      const btn = document.getElementById('startBreathBtn');
+
+      if (breathInterval) {
+        clearInterval(breathInterval);
+        breathInterval = null;
+        circle.className = 'breathing-circle';
+        text.innerText = 'Iniciar';
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Respiração';
+        return;
+      }
+
+      btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar';
+      runBreathCycle(circle, text);
+      breathInterval = setInterval(() => {
+        runBreathCycle(circle, text);
+      }, 12000);
+    }
+
+    function runBreathCycle(circle, text) {
+      text.innerText = 'Inspira (4s)';
+      circle.className = 'breathing-circle inhale';
+
+      setTimeout(() => {
+        text.innerText = 'Segura (4s)';
+        circle.className = 'breathing-circle hold';
+      }, 4000);
+
+      setTimeout(() => {
+        text.innerText = 'Expira (4s)';
+        circle.className = 'breathing-circle exhale';
+      }, 8000);
+    }
+
+    // Envio de Relatos Anônimos
+    function submitReport(e) {
+      e.preventDefault();
+      const type = document.getElementById('reportType').value;
+      const location = document.getElementById('reportLocation').value;
+      const desc = document.getElementById('reportDesc').value;
+
+      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
+      reports.unshift({
+        id: 'REL-' + Math.floor(100 + Math.random() * 900),
+        type,
+        location: location || 'Não informado',
+        desc,
+        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+      });
+
+      localStorage.setItem('abracar_reports', JSON.stringify(reports));
+      alert('Relato enviado com sucesso! O Grêmio e a coordenação foram notificados de forma totalmente anônima.');
+      document.getElementById('reportForm').reset();
+      switchTab('inicioTab', document.querySelector('.nav-list .nav-item'));
+    }
+
+    // --- ÁREA DO ADMIN ---
+    function checkAdminPassword() {
+      const pass = document.getElementById('adminPasswordInput').value;
+      if (pass === 'abracar2026' || pass === 'gremio123') {
+        document.getElementById('adminLoginCard').style.display = 'none';
+        document.getElementById('adminDashboardCard').style.display = 'block';
+        loadAdminData();
+      } else {
+        alert('Senha incorreta!');
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminDashboardCard').style.display = 'none';
+      document.getElementById('adminLoginCard').style.display = 'block';
+    }
+
+    function loadAdminData() {
+      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
+      document.getElementById('adminTotalReports').innerText = reports.length;
+
+      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+      let chatUsers = Object.keys(allChats);
+      document.getElementById('adminTotalChats').innerText = chatUsers.length;
+
+      const roomListContainer = document.getElementById('adminRoomList');
+      if (chatUsers.length === 0) {
+        roomListContainer.innerHTML = '<div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>';
+      } else {
+        roomListContainer.innerHTML = chatUsers.map(uId => `
+          <div class="room-item ${currentActiveChatUser === uId ? 'active' : ''}" onclick="selectAdminChatUser('${uId}')">
+            <i class="fa-solid fa-user-secret"></i> ${uId}
+          </div>
+        `).join('');
+      }
+
+      const listContainer = document.getElementById('adminReportsList');
+      if (reports.length === 0) {
+        listContainer.innerHTML = '<p style="font-size: 0.85rem; color: #718096;">Nenhum relato registrado até o momento.</p>';
+        return;
+      }
+
+      listContainer.innerHTML = reports.map((r, index) => `
+        <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 8px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: var(--roxo);">
+            <span>[${r.id}] ${r.type}</span>
+            <span>${r.date}</span>
+          </div>
+          <p style="font-size: 0.85rem; margin: 6px 0;"><strong>Local:</strong> ${r.location}</p>
+          <p style="font-size: 0.85rem; background: #FFF; padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0;">${escapeHtml(r.desc)}</p>
+          <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport(${index})">Excluir Relato</button>
+        </div>
+      `).join('');
+    }
+
+    function selectAdminChatUser(uId) {
+      currentActiveChatUser = uId;
+      loadAdminData();
+      renderAdminChatMessages();
+    }
+
+    function renderAdminChatMessages() {
+      if (!currentActiveChatUser) return;
+      
+      document.getElementById('adminChatHeader').innerHTML = `
+        <label><i class="fa-solid fa-user-check" style="color: var(--verde);"></i> Conversando com: <strong>${currentActiveChatUser}</strong></label>
+      `;
+
+      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+      let userMessages = allChats[currentActiveChatUser] || [];
+      const messagesContainer = document.getElementById('adminChatMessages');
+
+      messagesContainer.innerHTML = userMessages.map(m => `
+        <div class="message ${m.sender === 'gremio' ? 'user' : 'gremio'}">
+          ${m.sender === 'user' ? `<strong>Estudante (${currentActiveChatUser})</strong><br>` : '<strong>Você (Admin/Grêmio)</strong><br>'}
+          ${escapeHtml(m.text)}
+          <div class="message-time">${m.time}</div>
+        </div>
+      `).join('');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function sendAdminMessage() {
+      if (!currentActiveChatUser) {
+        alert('Selecione um estudante na lista ao lado primeiro.');
+        return;
+      }
+
+      const input = document.getElementById('adminChatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
+      if (!allChats[currentActiveChatUser]) allChats[currentActiveChatUser] = [];
+      
+      allChats[currentActiveChatUser].push({
+        sender: 'gremio',
+        text: text,
+        time: timeNow
+      });
+
+      localStorage.setItem('abracar_chats', JSON.stringify(allChats));
+      input.value = '';
+      renderAdminChatMessages();
+      renderStudentChat();
+    }
+
+    function deleteReport(index) {
+      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
+      reports.splice(index, 1);
+      localStorage.setItem('abracar_reports', JSON.stringify(rports));
+      loadAdminData();
+    }
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+  </script>
 </body>
 </html>

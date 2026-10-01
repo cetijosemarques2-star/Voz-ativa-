@@ -48,7 +48,6 @@
       overflow-x: hidden;
     }
 
-    /* Overlay para Mobile */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -58,7 +57,6 @@
       z-index: 99;
     }
 
-    /* Sidebar - Menu Lateral */
     .sidebar {
       width: 260px;
       background: var(--gradiente-roxo);
@@ -72,9 +70,7 @@
       flex-shrink: 0;
     }
 
-    .sidebar.collapsed {
-      width: 80px;
-    }
+    .sidebar.collapsed { width: 80px; }
 
     .sidebar-header {
       padding: 18px 15px;
@@ -131,9 +127,7 @@
       transition: 0.2s;
     }
 
-    .toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+    .toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
     .nav-list {
       list-style: none;
@@ -176,7 +170,6 @@
       color: var(--roxo-escuro);
     }
 
-    /* Main Content Area */
     .main-wrapper {
       flex-grow: 1;
       display: flex;
@@ -209,16 +202,8 @@
       justify-content: center;
     }
 
-    .header-title h1 {
-      font-size: 1.4rem;
-      font-weight: 800;
-    }
-
-    .header-title p {
-      font-size: 0.85rem;
-      opacity: 0.9;
-      margin-top: 2px;
-    }
+    .header-title h1 { font-size: 1.4rem; font-weight: 800; }
+    .header-title p { font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
 
     .anon-badge {
       background: rgba(255, 255, 255, 0.2);
@@ -234,26 +219,20 @@
       white-space: nowrap;
     }
 
-    .content-area {
-      padding: 25px 30px;
-      flex-grow: 1;
-    }
+    .content-area { padding: 25px 30px; flex-grow: 1; }
 
     .tab-content {
       display: none;
       animation: fadeIn 0.3s ease;
     }
 
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Cards Estilizados */
     .card {
       background: var(--branco);
       border-radius: 16px;
@@ -273,10 +252,7 @@
       gap: 10px;
     }
 
-    /* Form & Input Styles */
-    .form-group {
-      margin-bottom: 15px;
-    }
+    .form-group { margin-bottom: 15px; }
 
     .form-group label {
       display: block;
@@ -296,9 +272,7 @@
       font-size: 0.9rem;
     }
 
-    .form-control:focus {
-      border-color: var(--verde-agua);
-    }
+    .form-control:focus { border-color: var(--verde-agua); }
 
     .btn-primary {
       background: var(--roxo);
@@ -332,7 +306,6 @@
       font-size: 0.8rem;
     }
 
-    /* Chat Section Responsivo */
     .chat-container {
       display: flex;
       flex-direction: column;
@@ -408,7 +381,6 @@
       border-top: 1px solid var(--cinza-borda);
     }
 
-    /* Respiração Guiada */
     .breathing-box {
       text-align: center;
       padding: 20px 10px;
@@ -447,9 +419,7 @@
       box-shadow: 0 0 35px rgba(25, 184, 165, 0.6);
     }
 
-    .breathing-circle.exhale {
-      transform: scale(1);
-    }
+    .breathing-circle.exhale { transform: scale(1); }
 
     .breathing-text {
       position: relative;
@@ -475,11 +445,7 @@
       padding: 18px;
     }
 
-    .emergency-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .emergency-card { display: flex; align-items: center; gap: 12px; }
 
     .emergency-icon {
       width: 46px;
@@ -501,7 +467,6 @@
       text-decoration: none;
     }
 
-    /* Admin View Layout */
     .admin-chat-layout {
       display: grid;
       grid-template-columns: 240px 1fr;
@@ -529,7 +494,6 @@
       color: var(--roxo);
     }
 
-    /* Ajustes Mobile Otimizados */
     @media (max-width: 768px) {
       .sidebar-overlay.active { display: block; }
       .sidebar {
@@ -621,7 +585,7 @@
 
     <main class="content-area">
 
-      <!-- ABA 1: INÍCIO / APRESENTAÇÃO -->
+      <!-- ABA 1: INÍCIO -->
       <section id="inicioTab" class="tab-content active">
         <div class="card" style="border-left-color: var(--verde);">
           <h2><i class="fa-solid fa-heart-circle-check"></i> Bem-vindo ao Portal ABRAÇAR</h2>
@@ -632,7 +596,7 @@
             "ABRAÇAR — Acolher, Escutar, Respeitar e Transformar."
           </blockquote>
           <p style="font-size: 0.9rem; line-height: 1.5;">
-            Aqui você conta com atendimento sigiloso, espaço seguro de descompressão emocional, registro anônimo de ocorrências e acesso direto à equipe de Mediação e Coordenação.
+            Aqui você conta com atendimento sigiloso em tempo real, espaço seguro de descompressão emocional, registro anônimo de ocorrências e acesso direto à equipe de Mediação e Coordenação.
           </p>
         </div>
 
@@ -642,8 +606,8 @@
             <p style="font-size: 0.85rem; margin-top: 8px;">Seu ID é gerado no seu próprio navegador. Ninguém consegue identificar sua identidade real.</p>
           </div>
           <div class="card" style="margin: 0; border-left-color: var(--verde-agua);">
-            <h3><i class="fa-solid fa-comments" style="color: var(--verde);"></i> Atendimento Direto</h3>
-            <p style="font-size: 0.85rem; margin-top: 8px;">Escolha falar com o Grêmio Estudantil, Coordenação ou Mediação de Conflitos.</p>
+            <h3><i class="fa-solid fa-comments" style="color: var(--verde);"></i> Atendimento Online</h3>
+            <p style="font-size: 0.85rem; margin-top: 8px;">Escolha falar com o Grêmio Estudantil, Coordenação ou Mediação de Conflitos via nuvem.</p>
           </div>
         </div>
       </section>
@@ -666,7 +630,7 @@
             <div class="chat-messages" id="studentChatMessages">
               <div class="message gremio">
                 <strong>Atendimento ABRAÇAR</strong><br>
-                Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar.
+                Olá! Como podemos te acolher ou ajudar hoje? Envie sua mensagem.
                 <div class="message-time">Início</div>
               </div>
             </div>
@@ -703,7 +667,7 @@
           <div class="tip-card">
             <i class="fa-solid fa-glass-water" style="color: var(--verde); font-size: 1.3rem;"></i>
             <h4 style="margin-top: 5px;">Hidrate-se e Respire</h4>
-             <p style="font-size: 0.8rem; margin-top: 4px;">Tome um copo d'água fresca e faça pausas durante os estudos pesados.</p>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Tome um copo d'água fresca e faça pausas durante os estudos pesados.</p>
           </div>
         </div>
       </section>
@@ -712,8 +676,8 @@
       <section id="relatoTab" class="tab-content">
         <div class="card">
           <h2><i class="fa-solid fa-user-shield"></i> Canal de Relatos e Denúncias Sigilosas</h2>
-          <p style="font-size: 0.85rem; margin-bottom: 15px;">
-            Presenciou ou sofreu bullying, preconceito ou qualquer situação desconfortável? Relate aqui. Sua identidade será preservada.
+          <p style="font-size: 0.885rem; margin-bottom: 15px;">
+            Presenciou ou sofreu bullying, preconceito ou qualquer situação desconfortável? Relate aqui. Os dados vão direto para o banco seguro.
           </p>
 
           <form id="reportForm" onsubmit="submitReport(event)">
@@ -736,7 +700,7 @@
 
             <div class="form-group">
               <label><i class="fa-solid fa-pen-nib"></i> Descreva o ocorrido:</label>
-              <textarea id="reportDesc" class="form-control" rows="4" placeholder="Detalhe os fatos de forma clara para que a equipe possa agir com segurança..." required></textarea>
+              <textarea id="reportDesc" class="form-control" rows="4" placeholder="Detalhe os fatos de forma clara..." required></textarea>
             </div>
 
             <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Anônimo</button>
@@ -782,7 +746,7 @@
             <div class="mural-card">
               <span style="font-size: 0.75rem; background: rgba(69,39,160,0.1); color: var(--roxo); padding: 3px 8px; border-radius: 6px; font-weight: 700;">Geral</span>
               <h4 style="margin-top: 8px; color: var(--roxo-escuro);">Início do Portal ABRAÇAR</h4>
-              <p style="font-size: 0.85rem; margin-top: 6px;">Sejam todos bem-vindos ao nosso canal oficial de acolhimento digital. Participem e usem com responsabilidade!</p>
+              <p style="font-size: 0.85rem; margin-top: 6px;">Sejam todos bem-vindos ao canal oficial conectado na nuvem!</p>
               <div style="font-size: 0.7rem; color: #718096; margin-top: 10px;"><i class="fa-regular fa-calendar"></i> Outubro, 2026</div>
             </div>
           </div>
@@ -793,7 +757,7 @@
       <section id="adminTab" class="tab-content">
         <div class="card" id="adminLoginCard">
           <h2><i class="fa-solid fa-lock"></i> Restrito à Equipe / Admin</h2>
-          <p style="font-size: 0.85rem; margin-bottom: 15px;">Insira a senha de acesso da gestão para visualizar os relatos e conversar no chat.</p>
+          <p style="font-size: 0.85rem; margin-bottom: 15px;">Insira a senha de acesso da gestão para visualizar os dados em tempo real.</p>
           <div class="form-group" style="max-width: 300px;">
             <input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha de acesso">
           </div>
@@ -802,31 +766,27 @@
 
         <div class="card" id="adminDashboardCard" style="display: none;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2><i class="fa-solid fa-gauge-high"></i> Painel de Controle — ABRAÇAR</h2>
+            <h2><i class="fa-solid fa-gauge-high"></i> Painel Firestore — ABRAÇAR</h2>
             <button class="btn-danger" onclick="logoutAdmin()">Sair do Admin</button>
           </div>
 
-          <!-- Estatísticas rápidas -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px;">
             <div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
               <span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Total de Relatos</span>
               <h3 id="adminTotalReports" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
             </div>
             <div style="background: #F8FAFC; padding: 15px; border-radius: 10px; border: 1px solid var(--cinza-borda);">
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Conversas Ativas</span>
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--cinza-texto);">Alunos no Chat</span>
               <h3 id="adminTotalChats" style="font-size: 1.5rem; color: var(--roxo-escuro); margin-top: 4px;">0</h3>
             </div>
           </div>
 
-          <!-- Seção de Chat do Admin -->
-          <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-comments"></i> Central de Atendimento (Chat)</h3>
+          <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-comments"></i> Central de Atendimento (Chat em Tempo Real)</h3>
           <div class="admin-chat-layout" style="margin-bottom: 25px;">
-            <!-- Lista de usuários que mandaram mensagem -->
             <div class="room-list" id="adminRoomList">
-              <div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>
+              <div style="padding: 12px; font-size: 0.8rem; color: #718096;">Carregando conversas...</div>
             </div>
             
-            <!-- Janela de conversa do admin com o usuário selecionado -->
             <div class="chat-container" style="height: 100%;">
               <div class="chat-channel-selector" id="adminChatHeader">
                 <label><i class="fa-solid fa-user"></i> Selecione um estudante ao lado</label>
@@ -834,7 +794,7 @@
               <div class="chat-messages" id="adminChatMessages">
                 <div class="message gremio">
                   <strong>Painel do Admin</strong><br>
-                  Selecione um ID de estudante na lista ao lado para visualizar e responder à conversa.
+                  Selecione um ID de estudante para conversar ao vivo.
                 </div>
               </div>
               <div class="chat-input-area">
@@ -846,7 +806,7 @@
 
           <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-clipboard-list"></i> Relatos Anônimos Recebidos</h3>
           <div id="adminReportsList" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
-            <!-- Preenchido via JS -->
+            <!-- Preenchido via Firebase -->
           </div>
         </div>
       </section>
@@ -854,9 +814,28 @@
     </main>
   </div>
 
-  <!-- JavaScript do Sistema -->
-  <script>
-    // Gerenciador de ID Anônimo do Usuário
+  <!-- Script Firebase & Sistema -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, doc, setDoc, getDocs, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMvBe_Yn6A_zJY12UKo8tMxUFPi1hE7LU",
+      authDomain: "acolhimentoeescuta.firebaseapp.com",
+      databaseURL: "https://acolhimentoeescuta-default-rtdb.firebaseio.com",
+      projectId: "acolhimentoeescuta",
+      storageBucket: "acolhimentoeescuta.firebasestorage.app",
+      messagingSenderId: "592294218900",
+      appId: "1:592294218900:web:2c93404f641ce274aab881",
+      measurementId: "G-MT75SG2FJB"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+
+    // ID Anônimo do Usuário Local
     let userId = localStorage.getItem('abracar_user_id');
     if (!userId) {
       userId = 'STU-' + Math.floor(1000 + Math.random() * 9000);
@@ -865,9 +844,11 @@
     document.getElementById('userAnonId').innerText = 'ID: ' + userId;
 
     let currentActiveChatUser = null;
+    let unsubscribeStudentChat = null;
+    let unsubscribeAdminList = null;
+    let unsubscribeAdminChat = null;
 
-    // Alternância de Abas
-    function switchTab(tabId, element) {
+    window.switchTab = function(tabId, element) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
       
@@ -877,13 +858,11 @@
       closeMobileSidebar();
       window.scrollTo(0, 0);
 
-      // Se abrir o painel admin, recarrega os dados caso já esteja logado
       if (tabId === 'adminTab' && document.getElementById('adminDashboardCard').style.display === 'block') {
         loadAdminData();
       }
-    }
+    };
 
-    // Controle de Sidebar Responsiva
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const toggleBtn = document.getElementById('toggleSidebarBtn');
@@ -892,88 +871,82 @@
       sidebar.classList.toggle('collapsed');
     });
 
-    function openMobileSidebar() {
+    window.openMobileSidebar = function() {
       sidebar.classList.add('mobile-open');
       overlay.classList.add('active');
-    }
+    };
 
-    function closeMobileSidebar() {
+    window.closeMobileSidebar = function() {
       sidebar.classList.remove('mobile-open');
       overlay.classList.remove('active');
-    }
+    };
 
-    // Chat do Estudante
-    function sendStudentMessage() {
+    // --- CHAT DO ESTUDANTE (Firestore) ---
+    window.sendStudentMessage = async function() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       const recipient = document.getElementById('chatRecipient').value;
       if (!text) return;
 
-      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const msgObj = {
-        sender: 'user',
-        text: text,
-        time: timeNow,
-        recipient: recipient
-      };
-
-      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-      if (!allChats[userId]) allChats[userId] = [];
-      allChats[userId].push(msgObj);
-      localStorage.setItem('abracar_chats', JSON.stringify(allChats));
-
-      renderStudentChat();
-      input.value = '';
-
-      // Simulação inicial automática de boas-vindas do sistema
-      setTimeout(() => {
-        let updatedChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-        if (updatedChats[userId].length === 1) {
-          updatedChats[userId].push({
-            sender: 'gremio',
-            text: `Olá! Recebemos sua mensagem direcionada para (${recipient}). Em breve a equipe responderá por aqui.`,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            recipient: recipient
-          });
-          localStorage.setItem('abracar_chats', JSON.stringify(updatedChats));
-          renderStudentChat();
-        }
-      }, 1000);
-    }
-
-    function renderStudentChat() {
-      const messagesContainer = document.getElementById('studentChatMessages');
-      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-      let userMessages = allChats[userId] || [];
-
-      if (userMessages.length === 0) {
-        messagesContainer.innerHTML = `
-          <div class="message gremio">
-            <strong>Atendimento ABRAÇAR</strong><br>
-            Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar.
-            <div class="message-time">Início</div>
-          </div>
-        `;
-        return;
+      try {
+        const msgRef = collection(db, "chats", userId, "mensagens");
+        await addDoc(msgRef, {
+          sender: 'user',
+          text: text,
+          recipient: recipient,
+          timestamp: serverTimestamp(),
+          timeFormatted: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        input.value = '';
+      } catch (error) {
+        console.error("Erro ao enviar mensagem: ", error);
+        alert("Erro ao enviar mensagem. Verifique a conexão.");
       }
+    };
 
-      messagesContainer.innerHTML = userMessages.map(m => `
-        <div class="message ${m.sender === 'user' ? 'user' : 'gremio'}">
-          ${m.sender === 'gremio' ? '<strong>Equipe ABRAÇAR</strong><br>' : ''}
-          ${escapeHtml(m.text)}
-          <div class="message-time">${m.time}</div>
-        </div>
-      `).join('');
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    function listenStudentChat() {
+      const messagesContainer = document.getElementById('studentChatMessages');
+      const msgRef = collection(db, "chats", userId, "mensagens");
+      const q = query(msgRef, orderBy("timestamp", "asc"));
+
+      if (unsubscribeStudentChat) unsubscribeStudentChat();
+
+      unsubscribeStudentChat = onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+          messagesContainer.innerHTML = `
+            <div class="message gremio">
+              <strong>Atendimento ABRAÇAR</strong><br>
+              Olá! Como podemos te acolher ou ajudar hoje?
+              <div class="message-time">Início</div>
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach((docSnap) => {
+          const m = docSnap.data();
+          const isUser = m.sender === 'user';
+          html += `
+            <div class="message ${isUser ? 'user' : 'gremio'}">
+              ${!isUser ? '<strong>Equipe ABRAÇAR</strong><br>' : ''}
+              ${escapeHtml(m.text)}
+              <div class="message-time">${m.timeFormatted || 'Agora'}</div>
+            </div>
+          `;
+        });
+        messagesContainer.innerHTML = html;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      renderStudentChat();
+      listenStudentChat();
     });
 
-    // Lógica de Respiração Guiada
+    // --- RESPIRAÇÃO GUIADA ---
     let breathInterval = null;
-    function toggleBreathing() {
+    window.toggleBreathing = function() {
       const circle = document.getElementById('breathCircle');
       const text = document.getElementById('breathText');
       const btn = document.getElementById('startBreathBtn');
@@ -989,50 +962,50 @@
 
       btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar';
       runBreathCycle(circle, text);
-      breathInterval = setInterval(() => {
-        runBreathCycle(circle, text);
-      }, 12000);
-    }
+      breathInterval = setInterval(() => { runBreathCycle(circle, text); }, 12000);
+    };
 
     function runBreathCycle(circle, text) {
       text.innerText = 'Inspira (4s)';
       circle.className = 'breathing-circle inhale';
-
       setTimeout(() => {
         text.innerText = 'Segura (4s)';
         circle.className = 'breathing-circle hold';
       }, 4000);
-
       setTimeout(() => {
         text.innerText = 'Expira (4s)';
         circle.className = 'breathing-circle exhale';
       }, 8000);
     }
 
-    // Envio de Relatos Anônimos
-    function submitReport(e) {
+    // --- RELATOS ANÔNIMOS (Firestore) ---
+    window.submitReport = async function(e) {
       e.preventDefault();
       const type = document.getElementById('reportType').value;
       const location = document.getElementById('reportLocation').value;
       const desc = document.getElementById('reportDesc').value;
 
-      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-      reports.unshift({
-        id: 'REL-' + Math.floor(100 + Math.random() * 900),
-        type,
-        location: location || 'Não informado',
-        desc,
-        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
-      });
+      try {
+        await addDoc(collection(db, "relatos"), {
+          id: 'REL-' + Math.floor(100 + Math.random() * 900),
+          type,
+          location: location || 'Não informado',
+          desc,
+          timestamp: serverTimestamp(),
+          dateFormatted: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+        });
 
-      localStorage.setItem('abracar_reports', JSON.stringify(reports));
-      alert('Relato enviado com sucesso! O Grêmio e a coordenação foram notificados de forma totalmente anônima.');
-      document.getElementById('reportForm').reset();
-      switchTab('inicioTab', document.querySelector('.nav-list .nav-item'));
-    }
+        alert('Relato enviado com segurança para a nuvem do Grêmio e Coordenação!');
+        document.getElementById('reportForm').reset();
+        window.switchTab('inicioTab', document.querySelector('.nav-list .nav-item'));
+      } catch (error) {
+        console.error("Erro ao enviar relato:", error);
+        alert("Erro ao enviar relato.");
+      }
+    };
 
     // --- ÁREA DO ADMIN ---
-    function checkAdminPassword() {
+    window.checkAdminPassword = function() {
       const pass = document.getElementById('adminPasswordInput').value;
       if (pass === 'abracar2026' || pass === 'gremio123') {
         document.getElementById('adminLoginCard').style.display = 'none';
@@ -1041,57 +1014,79 @@
       } else {
         alert('Senha incorreta!');
       }
-    }
+    };
 
-    function logoutAdmin() {
+    window.logoutAdmin = function() {
       document.getElementById('adminPasswordInput').value = '';
       document.getElementById('adminDashboardCard').style.display = 'none';
       document.getElementById('adminLoginCard').style.display = 'block';
+      if (unsubscribeAdminList) unsubscribeAdminList();
+      if (unsubscribeAdminChat) unsubscribeAdminChat();
+    };
+
+    async function loadAdminData() {
+      // Carregar Estatísticas de Relatos e Listar
+      const reportsQuery = query(collection(db, "relatos"), orderBy("timestamp", "desc"));
+      onSnapshot(reportsQuery, (snapshot) => {
+        document.getElementById('adminTotalReports').innerText = snapshot.size;
+        const listContainer = document.getElementById('adminReportsList');
+        
+        if (snapshot.empty) {
+          listContainer.innerHTML = '<p style="font-size: 0.85rem; color: #718096;">Nenhum relato registrado até o momento.</p>';
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach((docSnap) => {
+          const r = docSnap.data();
+          const docId = docSnap.id;
+          html += `
+            <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: var(--roxo);">
+                <span>[${r.id || 'REL'}] ${r.type}</span>
+                <span>${r.dateFormatted || ''}</span>
+              </div>
+              <p style="font-size: 0.85rem; margin: 6px 0;"><strong>Local:</strong> ${r.location}</p>
+              <p style="font-size: 0.85rem; background: #FFF; padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0;">${escapeHtml(r.desc)}</p>
+              <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport('${docId}')">Excluir Relato</button>
+            </div>
+          `;
+        });
+        listContainer.innerHTML = html;
+      });
+
+      // Carregar Lista de Chats Ativos
+      const chatsRef = collection(db, "chats");
+      if (unsubscribeAdminList) unsubscribeAdminList();
+
+      unsubscribeAdminList = onSnapshot(chatsRef, (snapshot) => {
+        document.getElementById('adminTotalChats').innerText = snapshot.size;
+        const roomListContainer = document.getElementById('adminRoomList');
+
+        if (snapshot.empty) {
+          roomListContainer.innerHTML = '<div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>';
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach((docSnap) => {
+          const uId = docSnap.id;
+          const isActive = currentActiveChatUser === uId;
+          html += `
+            <div class="room-item ${isActive ? 'active' : ''}" onclick="selectAdminChatUser('${uId}')">
+              <i class="fa-solid fa-user-secret"></i> ${uId}
+            </div>
+          `;
+        });
+        roomListContainer.innerHTML = html;
+      });
     }
 
-    function loadAdminData() {
-      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-      document.getElementById('adminTotalReports').innerText = reports.length;
-
-      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-      let chatUsers = Object.keys(allChats);
-      document.getElementById('adminTotalChats').innerText = chatUsers.length;
-
-      const roomListContainer = document.getElementById('adminRoomList');
-      if (chatUsers.length === 0) {
-        roomListContainer.innerHTML = '<div style="padding: 12px; font-size: 0.8rem; color: #718096;">Nenhuma conversa iniciada.</div>';
-      } else {
-        roomListContainer.innerHTML = chatUsers.map(uId => `
-          <div class="room-item ${currentActiveChatUser === uId ? 'active' : ''}" onclick="selectAdminChatUser('${uId}')">
-            <i class="fa-solid fa-user-secret"></i> ${uId}
-          </div>
-        `).join('');
-      }
-
-      const listContainer = document.getElementById('adminReportsList');
-      if (reports.length === 0) {
-        listContainer.innerHTML = '<p style="font-size: 0.85rem; color: #718096;">Nenhum relato registrado até o momento.</p>';
-        return;
-      }
-
-      listContainer.innerHTML = reports.map((r, index) => `
-        <div style="background: #F8FAFC; border: 1px solid var(--cinza-borda); padding: 12px; border-radius: 8px;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: var(--roxo);">
-            <span>[${r.id}] ${r.type}</span>
-            <span>${r.date}</span>
-          </div>
-          <p style="font-size: 0.85rem; margin: 6px 0;"><strong>Local:</strong> ${r.location}</p>
-          <p style="font-size: 0.85rem; background: #FFF; padding: 8px; border-radius: 6px; border: 1px solid #E2E8F0;">${escapeHtml(r.desc)}</p>
-          <button class="btn-danger" style="margin-top: 8px;" onclick="deleteReport(${index})">Excluir Relato</button>
-        </div>
-      `).join('');
-    }
-
-    function selectAdminChatUser(uId) {
+    window.selectAdminChatUser = function(uId) {
       currentActiveChatUser = uId;
       loadAdminData();
       renderAdminChatMessages();
-    }
+    };
 
     function renderAdminChatMessages() {
       if (!currentActiveChatUser) return;
@@ -1100,21 +1095,31 @@
         <label><i class="fa-solid fa-user-check" style="color: var(--verde);"></i> Conversando com: <strong>${currentActiveChatUser}</strong></label>
       `;
 
-      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-      let userMessages = allChats[currentActiveChatUser] || [];
       const messagesContainer = document.getElementById('adminChatMessages');
+      const msgRef = collection(db, "chats", currentActiveChatUser, "mensagens");
+      const q = query(msgRef, orderBy("timestamp", "asc"));
 
-      messagesContainer.innerHTML = userMessages.map(m => `
-        <div class="message ${m.sender === 'gremio' ? 'user' : 'gremio'}">
-          ${m.sender === 'user' ? `<strong>Estudante (${currentActiveChatUser})</strong><br>` : '<strong>Você (Admin/Grêmio)</strong><br>'}
-          ${escapeHtml(m.text)}
-          <div class="message-time">${m.time}</div>
-        </div>
-      `).join('');
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      if (unsubscribeAdminChat) unsubscribeAdminChat();
+
+      unsubscribeAdminChat = onSnapshot(q, (snapshot) => {
+        let html = '';
+        snapshot.forEach((docSnap) => {
+          const m = docSnap.data();
+          const isUser = m.sender === 'user';
+          html += `
+            <div class="message ${!isUser ? 'user' : 'gremio'}">
+              ${isUser ? `<strong>Estudante (${currentActiveChatUser})</strong><br>` : '<strong>Você (Admin/Grêmio)</strong><br>'}
+              ${escapeHtml(m.text)}
+              <div class="message-time">${m.timeFormatted || 'Agora'}</div>
+            </div>
+          `;
+        });
+        messagesContainer.innerHTML = html;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
     }
 
-    function sendAdminMessage() {
+    window.sendAdminMessage = async function() {
       if (!currentActiveChatUser) {
         alert('Selecione um estudante na lista ao lado primeiro.');
         return;
@@ -1124,31 +1129,32 @@
       const text = input.value.trim();
       if (!text) return;
 
-      const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      
-      let allChats = JSON.parse(localStorage.getItem('abracar_chats') || '{}');
-      if (!allChats[currentActiveChatUser]) allChats[currentActiveChatUser] = [];
-      
-      allChats[currentActiveChatUser].push({
-        sender: 'gremio',
-        text: text,
-        time: timeNow
-      });
+      try {
+        const msgRef = collection(db, "chats", currentActiveChatUser, "mensagens");
+        await addDoc(msgRef, {
+          sender: 'gremio',
+          text: text,
+          timestamp: serverTimestamp(),
+          timeFormatted: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        input.value = '';
+      } catch (error) {
+        console.error("Erro ao enviar mensagem do admin:", error);
+      }
+    };
 
-      localStorage.setItem('abracar_chats', JSON.stringify(allChats));
-      input.value = '';
-      renderAdminChatMessages();
-      renderStudentChat();
-    }
-
-    function deleteReport(index) {
-      const reports = JSON.parse(localStorage.getItem('abracar_reports') || '[]');
-      reports.splice(index, 1);
-      localStorage.setItem('abracar_reports', JSON.stringify(rports));
-      loadAdminData();
-    }
+    window.deleteReport = async function(docId) {
+      if (confirm("Deseja realmente excluir este relato?")) {
+        try {
+          await deleteDoc(doc(db, "relatos", docId));
+        } catch (error) {
+          console.error("Erro ao excluir relato:", error);
+        }
+      }
+    };
 
     function escapeHtml(text) {
+      if (!text) return '';
       const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
       return text.replace(/[&<>"']/g, m => map[m]);
     }

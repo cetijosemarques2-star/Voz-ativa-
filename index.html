@@ -617,7 +617,7 @@
           <div class="chat-container">
             <div class="chat-channel-selector">
               <label><i class="fa-solid fa-headset"></i> Falar com:</label>
-              <select id="chatRecipient" class="form-control" style="width: auto; flex-grow: 1; padding: 6px 10px; font-size: 0.85rem;">
+              <select id="chatRecipient" class="form-control" style="width: auto; flex-grow: 1; padding: 6px 10px; font-size: 0.85rem;" onchange="window.mudarCanalChat()">
                 <option value="Grêmio Estudantil">Grêmio Estudantil</option>
                 <option value="Coordenação">Coordenação Escolar</option>
                 <option value="Mediação de Conflitos">Mediação de Conflitos</option>
@@ -633,8 +633,8 @@
             </div>
 
             <div class="chat-input-area">
-              <input type="text" id="chatInput" class="form-control" placeholder="Digite sua mensagem anônima..." onkeypress="if(event.key==='Enter') sendStudentMessage()">
-              <button class="btn-primary" onclick="sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              <input type="text" id="chatInput" class="form-control" placeholder="Digite sua mensagem anônima..." onkeypress="if(event.key==='Enter') window.sendStudentMessage()">
+              <button class="btn-primary" onclick="window.sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
@@ -674,10 +674,10 @@
         <div class="card">
           <h2><i class="fa-solid fa-user-shield"></i> Canal de Relatos e Denúncias Sigilosas</h2>
           <p style="font-size: 0.85rem; margin-bottom: 15px;">
-            Presenciou ou sofreu bullying, preconceito ou qualquer sitrescimento no colégio? Relate aqui de forma totalmente segura.
+            Presenciou ou sofreu bullying, preconceito ou qualquer situação no colégio? Relate aqui de forma totalmente segura.
           </p>
 
-          <form id="relatoForm" onsubmit="submitRelato(event)">
+          <form id="relatoForm" onsubmit="window.submitRelato(event)">
             <div class="form-group">
               <label><i class="fa-solid fa-tag"></i> Tipo de Ocorrência:</label>
               <select id="relatoTipo" class="form-control" required>
@@ -749,7 +749,6 @@
           <p style="font-size: 0.85rem; margin-bottom: 15px;">Fique por dentro das novidades, campeonatos, reuniões e eventos do Grêmio Estudantil.</p>
 
           <div class="mural-grid" id="muralGrid">
-            <!-- Conteúdo carregado via script ou estático -->
             <div class="mural-card">
               <span style="background: rgba(7, 148, 71, 0.1); color: var(--verde); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">EVENTO</span>
               <h4 style="margin-top: 8px; color: var(--roxo-escuro);">Semana da Gentileza</h4>
@@ -785,23 +784,23 @@
               <button class="btn-danger" onclick="logoutAdmin()">Sair do Admin</button>
             </div>
 
-            <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-inbox"></i> Relatos Anônimos Recebidos:</h3>
+            <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-inbox"></i> Relatos Anônimos Recebidos (Tempo Real):</h3>
             <div id="adminRelatosList" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--cinza-borda); border-radius: 10px; padding: 10px; margin-bottom: 20px; background: #F8FAFC;">
-              <p style="font-size: 0.82rem; color: var(--cinza-texto);">Nenhum relato novo no momento.</p>
+              <p style="font-size: 0.82rem; color: var(--cinza-texto);">Carregando relatos...</p>
             </div>
 
             <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-headset"></i> Salas de Chat Ativas:</h3>
             <div class="admin-chat-layout">
               <div class="room-list" id="adminRoomList">
-                <!-- Salas preenchidas via script -->
+                <div class="room-item">Carregando salas...</div>
               </div>
               <div class="chat-container" style="height: 100%;">
                 <div class="chat-messages" id="adminChatMessages">
                   <div class="message gremio">Selecione uma sala ao lado para responder.</div>
                 </div>
                 <div class="chat-input-area">
-                  <input type="text" id="adminChatInput" class="form-control" placeholder="Responder como administração..." onkeypress="if(event.key==='Enter') sendAdminMessage()">
-                  <button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                  <input type="text" id="adminChatInput" class="form-control" placeholder="Responder como administração..." onkeypress="if(event.key==='Enter') window.sendAdminMessage()">
+                  <button class="btn-primary" onclick="window.sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
               </div>
             </div>
@@ -812,8 +811,27 @@
     </main>
   </div>
 
-  <!-- Scripts JavaScript -->
-  <script>
+  <!-- Scripts Firebase e Lógica da Aplicação -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+    import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfTq91qndqKd3hrgh5xRh-imR0eYOTYrQ",
+      authDomain: "escutaacolhimento-a9f15.firebaseapp.com",
+      databaseURL: "https://escutaacolhimento-a9f15-default-rtdb.firebaseio.com",
+      projectId: "escutaacolhimento-a9f15",
+      storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
+      messagingSenderId: "639476751207",
+      appId: "1:639476751207:web:571f32f893f4156176adc2",
+      measurementId: "G-WEQXQG0PHH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+
     // Gerenciamento de ID Anônimo do Usuário
     let userAnonId = localStorage.getItem('abracar_anon_id');
     if (!userAnonId) {
@@ -822,7 +840,209 @@
     }
     document.getElementById('userAnonId').innerText = 'ID: ' + userAnonId;
 
-    // Alternar abas do sistema
+    // Chat do Aluno
+    let currentStudentMessages = [];
+    let unsubStudentChat = null;
+
+    function initStudentChat() {
+      const recipient = document.getElementById('chatRecipient').value;
+      const roomKey = `${userAnonId}_to_${recipient}`.replace(/[.#$[\]]/g, "_");
+      const chatRef = ref(database, 'chats/' + roomKey);
+
+      if (unsubStudentChat) unsubStudentChat();
+
+      unsubStudentChat = onValue(chatRef, (snapshot) => {
+        const data = snapshot.val();
+        const messagesContainer = document.getElementById('studentChatMessages');
+        messagesContainer.innerHTML = '';
+
+        if (!data) {
+          messagesContainer.innerHTML = `
+            <div class="message gremio">
+              <strong>Atendimento ABRAÇAR</strong><br>
+              Olá! Como podemos te acolher ou ajudar hoje? Envie sua mensagem.
+              <div class="message-time">Início</div>
+            </div>`;
+          return;
+        }
+
+        currentStudentMessages = Object.values(data);
+        currentStudentMessages.sort((a, b) => a.timestamp - b.timestamp);
+
+        currentStudentMessages.forEach(msg => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
+          msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Você (Anônimo)' : 'Atendimento ABRAÇAR'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
+          messagesContainer.appendChild(msgDiv);
+        });
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
+    }
+
+    window.mudarCanalChat = function() {
+      initStudentChat();
+    };
+
+    window.sendStudentMessage = function() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const recipient = document.getElementById('chatRecipient').value;
+      const roomKey = `${userAnonId}_to_${recipient}`.replace(/[.#$[\]]/g, "_");
+      const chatRef = ref(database, 'chats/' + roomKey);
+      const newMsgRef = push(chatRef);
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      set(newMsgRef, {
+        sender: 'user',
+        text: text,
+        time: timeStr,
+        timestamp: Date.now()
+      }).then(() => {
+        input.value = '';
+      });
+    };
+
+    // Inicializar chat do aluno na carga
+    initStudentChat();
+
+    // Envio de Relato Anônimo
+    window.submitRelato = function(event) {
+      event.preventDefault();
+      const tipo = document.getElementById('relatoTipo').value;
+      const local = document.getElementById('relatoLocal').value || 'Não informado';
+      const mensagem = document.getElementById('relatoMensagem').value;
+
+      const relatosRef = ref(database, 'relatos');
+      const newRelatoRef = push(relatosRef);
+
+      set(newRelatoRef, {
+        id: 'REL-' + Math.floor(1000 + Math.random() * 9000),
+        tipo,
+        local,
+        mensagem,
+        data: new Date().toLocaleString(),
+        timestamp: Date.now()
+      }).then(() => {
+        alert('Relato enviado com sucesso para a nuvem com total sigilo!');
+        document.getElementById('relatoForm').reset();
+        switchTab('inicioTab', document.querySelector('.nav-item'));
+      }).catch((error) => {
+        alert('Erro ao enviar relato: ' + error.message);
+      });
+    };
+
+    // Funções Administrativas
+    window.loadAdminData = function() {
+      // Carregar Relatos em Tempo Real
+      const relatosContainer = document.getElementById('adminRelatosList');
+      const relatosRef = ref(database, 'relatos');
+
+      onValue(relatosRef, (snapshot) => {
+        const data = snapshot.val();
+        relatosContainer.innerHTML = '';
+        if (!data) {
+          relatosContainer.innerHTML = '<p style="font-size: 0.82rem; color: var(--cinza-texto);">Nenhum relato registrado até o momento.</p>';
+          return;
+        }
+
+        const relatosArray = Object.values(data);
+        relatosArray.sort((a, b) => b.timestamp - a.timestamp);
+
+        relatosArray.forEach(r => {
+          const div = document.createElement('div');
+          div.style.cssText = 'background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--cinza-borda); font-size: 0.82rem;';
+          div.innerHTML = `<strong>[${r.id}] ${r.tipo}</strong> (Local: ${r.local})<br><p style="margin: 4px 0;">${r.mensagem}</p><span style="font-size:0.7rem; color:gray;">${r.data}</span>`;
+          relatosContainer.appendChild(div);
+        });
+      });
+
+      // Carregar Salas de Chat Ativas em Tempo Real
+      const roomListContainer = document.getElementById('adminRoomList');
+      const chatsRef = ref(database, 'chats');
+
+      onValue(chatsRef, (snapshot) => {
+        const data = snapshot.val();
+        roomListContainer.innerHTML = '';
+        if (!data) {
+          roomListContainer.innerHTML = '<div class="room-item">Nenhuma conversa ativa</div>';
+          return;
+        }
+
+        const roomKeys = Object.keys(data);
+        roomKeys.forEach(key => {
+          const div = document.createElement('div');
+          div.className = 'room-item';
+          div.innerText = key.replace(/_to_/g, " ➔ ");
+          if (window.activeAdminRoomKey === key) div.classList.add('active');
+          div.onclick = () => window.selectAdminRoom(key, div);
+          roomListContainer.appendChild(div);
+        });
+      });
+    };
+
+    window.activeAdminRoomKey = null;
+    let unsubAdminChat = null;
+
+    window.selectAdminRoom = function(key, element) {
+      document.querySelectorAll('.room-item').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+      window.activeAdminRoomKey = key;
+
+      const container = document.getElementById('adminChatMessages');
+      const chatRef = ref(database, 'chats/' + key);
+
+      if (unsubAdminChat) unsubAdminChat();
+
+      unsubAdminChat = onValue(chatRef, (snapshot) => {
+        const data = snapshot.val();
+        container.innerHTML = '';
+        if (!data) {
+          container.innerHTML = '<div class="message gremio">Nenhuma mensagem nesta sala ainda.</div>';
+          return;
+        }
+
+        const messages = Object.values(data);
+        messages.sort((a, b) => a.timestamp - b.timestamp);
+
+        messages.forEach(msg => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
+          msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Aluno (Anônimo)' : 'Administração'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
+          container.appendChild(msgDiv);
+        });
+        container.scrollTop = container.scrollHeight;
+      });
+    };
+
+    window.sendAdminMessage = function() {
+      if (!window.activeAdminRoomKey) {
+        alert('Selecione uma sala de chat ao lado primeiro.');
+        return;
+      }
+      const input = document.getElementById('adminChatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatRef = ref(database, 'chats/' + window.activeAdminRoomKey);
+      const newMsgRef = push(chatRef);
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      set(newMsgRef, {
+        sender: 'gremio',
+        text: text,
+        time: timeStr,
+        timestamp: Date.now()
+      }).then(() => {
+        input.value = '';
+      });
+    };
+  </script>
+
+  <!-- Script Geral de Navegação e Ferramentas -->
+  <script>
     function switchTab(tabId, element) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -835,7 +1055,6 @@
       }
     }
 
-    // Comportamento da Sidebar (Desktop e Mobile)
     const sidebar = document.getElementById('sidebar');
     const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -861,69 +1080,6 @@
       sidebar.classList.remove('mobile-open');
       sidebarOverlay.classList.remove('active');
     }
-
-    // Lógica do Chat de Escuta do Aluno
-    let chatSessions = JSON.parse(localStorage.getItem('abracar_chat_sessions')) || {};
-
-    function getActiveSessionKey() {
-      const recipient = document.getElementById('chatRecipient').value;
-      return `${userAnonId}_to_${recipient}`;
-    }
-
-    function renderStudentChat() {
-      const key = getActiveSessionKey();
-      const messagesContainer = document.getElementById('studentChatMessages');
-      
-      if (!chatSessions[key]) {
-        chatSessions[key] = [
-          { sender: 'gremio', text: 'Olá! Como podemos te acolher ou ajudar hoje? Envie sua mensagem.', time: 'Início' }
-        ];
-      }
-
-      messagesContainer.innerHTML = '';
-      chatSessions[key].forEach(msg => {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
-        msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Você (Anônimo)' : 'Atendimento ABRAÇAR'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
-        messagesContainer.appendChild(msgDiv);
-      });
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    document.getElementById('chatRecipient').addEventListener('change', renderStudentChat);
-
-    function sendStudentMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const key = getActiveSessionKey();
-      if (!chatSessions[key]) chatSessions[key] = [];
-
-      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      chatSessions[key].push({ sender: 'user', text: text, time: timeStr });
-      localStorage.setItem('abracar_chat_sessions', JSON.stringify(chatSessions));
-
-      input.value = '';
-      renderStudentChat();
-
-      // Simulação de resposta automática de acolhimento se for a primeira vez
-      setTimeout(() => {
-        if (chatSessions[key].length === 2) {
-          chatSessions[key].push({ 
-            sender: 'gremio', 
-            text: 'Recebemos sua mensagem com total sigilo. Um membro responsável responderá em breve.', 
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-          });
-          localStorage.setItem('abracar_chat_sessions', JSON.stringify(chatSessions));
-          renderStudentChat();
-        }
-      }, 1000);
-    }
-
-    // Inicializar chat na carga
-    renderStudentChat();
 
     // Respiração Guiada
     let breathingInterval = null;
@@ -964,127 +1120,18 @@
       breathingInterval = setInterval(runCycle, 4000);
     }
 
-    // Envio de Relato Anônimo
-    let relatosList = JSON.parse(localStorage.getItem('abracar_relatos')) || [];
-
-    function submitRelato(event) {
-      event.preventDefault();
-      const tipo = document.getElementById('relatoTipo').value;
-      const local = document.getElementById('relatoLocal').value || 'Não informado';
-      const mensagem = document.getElementById('relatoMensagem').value;
-
-      const novoRelato = {
-        id: 'REL-' + Math.floor(1000 + Math.random() * 9000),
-        tipo,
-        local,
-        mensagem,
-        data: new Date().toLocaleString()
-      };
-
-      relatosList.push(novoRelato);
-      localStorage.setItem('abracar_relatos', JSON.stringify(relatosList));
-
-      alert('Relato enviado com sucesso! O sistema preservou seu anonimato.');
-      document.getElementById('relatoForm').reset();
-      switchTab('inicioTab', document.querySelector('.nav-item'));
-    }
-
-    // Área Administrativa
+    // Login Admin
     function verifyAdminPassword() {
       const pass = document.getElementById('adminPasswordInput').value;
-      // Senha padrão simples para demonstração escolar: abracar2026
       if (pass === 'abracar2026') {
         document.getElementById('adminLoginBox').style.display = 'none';
         document.getElementById('adminDashboardBox').style.display = 'block';
-        loadAdminData();
-      } else {
-        alert('Senha incorreta!');
-      }
-    }
+        if (typeof window.loadAdminData     }
 
     function logoutAdmin() {
       document.getElementById('adminDashboardBox').style.display = 'none';
       document.getElementById('adminLoginBox').style.display = 'block';
       document.getElementById('adminPasswordInput').value = '';
-    }
-
-    function loadAdminData() {
-      // Carregar Relatos
-      const relatosContainer = document.getElementById('adminRelatosList');
-      relatosList = JSON.parse(localStorage.getItem('abracar_relatos')) || [];
-      
-      if (relatosList.length === 0) {
-        relatosContainer.innerHTML = '<p style="font-size: 0.82rem; color: var(--cinza-texto);">Nenhum relato registrado até o momento.</p>';
-      } else {
-        relatosContainer.innerHTML = '';
-        relatosList.forEach((r, index) => {
-          const div = document.createElement('div');
-          div.style.cssText = 'background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--cinza-borda); font-size: 0.82rem;';
-          div.innerHTML = `<strong>[${r.id}] ${r.tipo}</strong> (Local: ${r.local})<br><p style="margin: 4px 0;">${r.mensagem}</p><span style="font-size:0.7rem; color:gray;">${r.data}</span>`;
-          relatosContainer.appendChild(div);
-        });
-      }
-
-      // Carregar Salas de Chat
-      const roomListContainer = document.getElementById('adminRoomList');
-      chatSessions = JSON.parse(localStorage.getItem('abracar_chat_sessions')) || {};
-      const keys = Object.keys(chatSessions);
-
-      if (keys.length === 0) {
-        roomListContainer.innerHTML = '<div class="room-item">Nenhuma conversa ativa</div>';
-      } else {
-        roomListContainer.innerHTML = '';
-        keys.forEach(key => {
-          const div = document.createElement('div');
-          div.className = 'room-item';
-          div.innerText = key;
-          div.onclick = () => selectAdminRoom(key, div);
-          roomListContainer.appendChild(div);
-        });
-      }
-    }
-
-    let activeAdminRoomKey = null;
-
-    function selectAdminRoom(key, element) {
-      document.querySelectorAll('.room-item').forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
-      activeAdminRoomKey = key;
-      renderAdminChatMessages();
-    }
-
-    function renderAdminChatMessages() {
-      if (!activeAdminRoomKey) return;
-      const container = document.getElementById('adminChatMessages');
-      const messages = chatSessions[activeAdminRoomKey] || [];
-
-      container.innerHTML = '';
-      messages.forEach(msg => {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
-        msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Aluno (Anônimo)' : 'Administração'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
-        container.appendChild(msgDiv);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function sendAdminMessage() {
-      if (!activeAdminRoomKey) {
-        alert('Selecione uma sala de chat primeiro.');
-        return;
-      }
-      const input = document.getElementById('adminChatInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      if (!chatSessions[activeAdminRoomKey]) chatSessions[activeAdminRoomKey] = [];
-
-      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      chatSessions[activeAdminRoomKey].push({ sender: 'gremio', text: text, time: timeStr });
-      localStorage.setItem('abracar_chat_sessions', JSON.stringify(chatSessions));
-
-      input.value = '';
-      renderAdminChatMessages();
     }
   </script>
 </body>

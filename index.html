@@ -2,804 +2,209 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Portal ABRAÇAR — Grêmio Estudantil</title>
-  
-  <!-- Fontes e Ícones -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Abraçar - Escuta e Acolhimento</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <style>
     :root {
-      --verde: #079447;
-      --verde-claro: #39C72B;
+      --roxo-escuro: #311B92;
       --roxo: #4527A0;
-      --roxo-escuro: #351887;
-      --verde-agua: #19B8A5;
-      --branco: #FFFFFF;
-      --dourado: #FFD21C;
-      --cinza-fundo: #F4F6F9;
-      --cinza-texto: #4A5568;
+      --verde: #079447;
+      --cinza-bg: #F4F6F9;
+      --cinza-texto: #555555;
       --cinza-borda: #E2E8F0;
-
-      --gradiente-principal: linear-gradient(135deg, #4527A0 0%, #19B8A5 100%);
-      --gradiente-verde: linear-gradient(135deg, #079447 0%, #19B8A5 100%);
-      --gradiente-roxo: linear-gradient(135deg, #351887 0%, #4527A0 55%, #19B8A5 100%);
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--cinza-fundo);
-      color: var(--cinza-texto);
-      display: flex;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      z-index: 99;
-    }
-
-    .sidebar {
-      width: 260px;
-      background: var(--gradiente-roxo);
-      color: var(--branco);
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      z-index: 100;
-      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-      flex-shrink: 0;
-    }
-
-    .sidebar.collapsed { width: 80px; }
-
-    .sidebar-header {
-      padding: 18px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1.1rem;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: var(--branco);
-      padding: 2px;
-      flex-shrink: 0;
-    }
-
-    .brand-icon-fallback {
-      width: 42px;
-      height: 42px;
-      background: var(--dourado);
-      color: var(--roxo-escuro);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-
-    .toggle-btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: none;
-      color: var(--branco);
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
-
-    .toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
-
-    .nav-list {
-      list-style: none;
-      padding: 15px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex-grow: 1;
-      overflow-y: auto;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 14px;
-      color: rgba(255, 255, 255, 0.85);
-      text-decoration: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .nav-item i {
-      font-size: 1.2rem;
-      min-width: 24px;
-      text-align: center;
-    }
-
-    .nav-item:hover, .nav-item.active {
-      background: rgba(255, 255, 255, 0.2);
-      color: var(--branco);
-    }
-
-    .nav-item.active {
-      background: var(--verde-agua);
-      color: var(--roxo-escuro);
-    }
-
-    .main-wrapper {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .header {
-      background: var(--gradiente-verde);
-      color: var(--branco);
-      padding: 20px 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .mobile-menu-btn {
-      display: none;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: var(--branco);
-      font-size: 1.2rem;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header-title h1 { font-size: 1.4rem; font-weight: 800; }
-    .header-title p { font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
-
-    .anon-badge {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(5px);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      white-space: nowrap;
-    }
-
-    .content-area { padding: 25px 30px; flex-grow: 1; }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--cinza-bg); color: #333; display: flex; height: 100vh; overflow: hidden; }
+    
+    /* Layout Geral */
+    sidebar { width: 260px; background: white; border-right: 1px solid var(--cinza-borda); display: flex; flex-direction: column; transition: 0.3s; z-index: 10; }
+    sidebar.collapsed { width: 70px; }
+    .sidebar-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--cinza-borda); }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 10px; }
+    .nav-item { display: flex; align-items: center; padding: 12px 15px; color: var(--cinza-texto); text-decoration: none; border-radius: 8px; margin-bottom: 5px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; font-weight: 600; }
+    .nav-item:hover, .nav-item.active { background: rgba(69, 39, 160, 0.08); color: var(--roxo); }
+    .nav-item i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
+    sidebar.collapsed .nav-item span { display: none; }
+    
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    header { background: white; padding: 15px 25px; border-bottom: 1px solid var(--cinza-borda); display: flex; justify-content: space-between; align-items: center; }
+    main { flex: 1; overflow-y: auto; padding: 20px; }
+    
+    .card { background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--cinza-borda); margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; color: var(--roxo-escuro); }
+    .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--cinza-borda); border-radius: 8px; font-size: 0.9rem; outline: none; transition: 0.2s; }
+    .form-control:focus { border-color: var(--roxo); }
+    
+    .btn-primary { background: var(--roxo); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-primary:hover { background: var(--roxo-escuro); }
+    .btn-danger { background: #D32F2F; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    
+    /* Abas */
+    .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    /* Chat */
+    .chat-layout { display: grid; grid-template-columns: 1fr; height: 400px; border: 1px solid var(--cinza-borda); border-radius: 10px; overflow: hidden; background: #fff; }
+    .chat-container { display: flex; flex-direction: column; height: 100%; }
+    .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #F8FAFC; display: flex; flex-direction: column; gap: 10px; }
+    .message { max-width: 75%; padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; line-height: 1.4; position: relative; }
+    .message.user { background: var(--roxo); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .message.gremio { background: white; color: #333; align-self: flex-start; border: 1px solid var(--cinza-borda); border-bottom-left-radius: 2px; }
+    .message-time { font-size: 0.65rem; opacity: 0.7; margin-top: 4px; text-align: right; }
+    .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid var(--cinza-borda); gap: 10px; }
 
-    .card {
-      background: var(--branco);
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-      border: 1px solid var(--cinza-borda);
-      margin-bottom: 20px;
-      border-left: 5px solid var(--roxo);
-    }
+    /* Emergência */
+    .emergency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+    .emergency-card { background: #FFF5F5; border: 1px solid #FEB2B2; padding: 15px; border-radius: 10px; display: flex; align-items: center; gap: 15px; }
+    .emergency-icon { font-size: 1.5rem; color: #E53E3E; }
+    .emergency-number { font-size: 1.2rem; font-weight: bold; color: #C53030; text-decoration: none; }
 
-    .card h2 {
-      color: var(--roxo-escuro);
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    /* Mural */
+    .mural-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .mural-card { background: white; border: 1px solid var(--cinza-borda); padding: 15px; border-radius: 10px; }
 
-    .form-group { margin-bottom: 15px; }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: var(--roxo-escuro);
-      font-size: 0.88rem;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 12px 14px;
-      border: 2px solid var(--cinza-borda);
-      border-radius: 10px;
-      outline: none;
-      transition: 0.2s;
-      font-size: 0.9rem;
-    }
-
-    .form-control:focus { border-color: var(--verde-agua); }
-
-    .btn-primary {
-      background: var(--roxo);
-      color: var(--branco);
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 0.9rem;
-    }
-
-    .btn-primary:hover {
-      background: var(--verde-agua);
-      color: var(--roxo-escuro);
-    }
-
-    .btn-danger {
-      background: #E53E3E;
-      color: var(--branco);
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-
-    .chat-container {
-      display: flex;
-      flex-direction: column;
-      height: 520px;
-      background: var(--branco);
-      border-radius: 16px;
-      border: 1px solid var(--cinza-borda);
-      overflow: hidden;
-    }
-
-    .chat-channel-selector {
-      background: #F8FAFC;
-      padding: 12px 15px;
-      border-bottom: 1px solid var(--cinza-borda);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .chat-channel-selector label {
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--roxo-escuro);
-    }
-
-    .chat-messages {
-      flex-grow: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: #FAFCFE;
-    }
-
-    .message {
-      max-width: 82%;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .message.user {
-      align-self: flex-end;
-      background: var(--roxo);
-      color: var(--branco);
-      border-bottom-right-radius: 2px;
-    }
-
-    .message.gremio {
-      align-self: flex-start;
-      background: #E8F7F5;
-      color: var(--roxo-escuro);
-      border: 1px solid rgba(25, 184, 165, 0.2);
-      border-bottom-left-radius: 2px;
-    }
-
-    .message-time {
-      font-size: 0.68rem;
-      opacity: 0.75;
-      margin-top: 4px;
-      text-align: right;
-    }
-
-    .chat-input-area {
-      display: flex;
-      gap: 8px;
-      padding: 12px;
-      background: var(--branco);
-      border-top: 1px solid var(--cinza-borda);
-    }
-
-    .breathing-box {
-      text-align: center;
-      padding: 20px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .circle-container {
-      width: 200px;
-      height: 200px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 25px 0;
-    }
-
-    .breathing-circle {
-      width: 110px;
-      height: 110px;
-      background: var(--gradiente-principal);
-      border-radius: 50%;
-      position: absolute;
-      transition: transform 4s ease-in-out;
-      box-shadow: 0 0 25px rgba(69, 39, 160, 0.3);
-    }
-
-    .breathing-circle.inhale {
-      transform: scale(1.7);
-      background: var(--gradiente-verde);
-    }
-
-    .breathing-circle.hold {
-      transform: scale(1.7);
-      box-shadow: 0 0 35px rgba(25, 184, 165, 0.6);
-    }
-
-    .breathing-circle.exhale { transform: scale(1); }
-
-    .breathing-text {
-      position: relative;
-      z-index: 10;
-      color: var(--branco);
-      font-weight: 800;
-      font-size: 1rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-      padding: 0 10px;
-    }
-
-    .tips-grid, .emergency-grid, .mural-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .tip-card, .emergency-card, .mural-card {
-      background: var(--branco);
-      border: 1px solid var(--cinza-borda);
-      border-radius: 12px;
-      padding: 18px;
-    }
-
-    .emergency-card { display: flex; align-items: center; gap: 12px; }
-
-    .emergency-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 10px;
-      background: rgba(7, 148, 71, 0.1);
-      color: var(--verde);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-
-    .emergency-number {
-      font-weight: 800;
-      color: var(--verde);
-      font-size: 1.1rem;
-      text-decoration: none;
-    }
-
-    .admin-chat-layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 15px;
-      height: 480px;
-    }
-
-    .room-list {
-      background: var(--branco);
-      border-radius: 12px;
-      border: 1px solid var(--cinza-borda);
-      overflow-y: auto;
-    }
-
-    .room-item {
-      padding: 12px;
-      border-bottom: 1px solid var(--cinza-borda);
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .room-item:hover, .room-item.active {
-      background: #F1F5F9;
-      color: var(--roxo);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar-overlay.active { display: block; }
-      .sidebar {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: -270px;
-        width: 260px !important;
-        transition: left 0.3s ease;
-      }
-      .sidebar.mobile-open { left: 0; }
-      .sidebar.collapsed { width: 260px !important; }
-      
-      .mobile-menu-btn { display: flex; }
-      .header { padding: 15px 18px; }
-      .header-title h1 { font-size: 1.15rem; }
-      .header-title p { font-size: 0.75rem; }
-      .content-area { padding: 15px; }
-      .card { padding: 16px; margin-bottom: 15px; }
-      
-      .chat-container { height: 430px; }
-      .admin-chat-layout { grid-template-columns: 1fr; height: auto; }
-      .room-list { max-height: 140px; }
-    }
+    /* Admin Chat Layout */
+    .admin-chat-layout { display: grid; grid-template-columns: 250px 1fr; height: 350px; border: 1px solid var(--cinza-borda); border-radius: 8px; overflow: hidden; }
+    .room-list { border-right: 1px solid var(--cinza-borda); background: #f8fafc; overflow-y: auto; }
+    .room-item { padding: 10px 12px; font-size: 0.8rem; border-bottom: 1px solid var(--cinza-borda); cursor: pointer; }
+    .room-item:hover, .room-item.active { background: rgba(69, 39, 160, 0.1); color: var(--roxo); font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
-
-  <!-- Sidebar / Menu Lateral -->
-  <aside class="sidebar" id="sidebar">
+  <!-- SIDEBAR -->
+  <sidebar id="sidebar">
     <div class="sidebar-header">
-      <div class="brand">
-        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="brand-icon-fallback" style="display: none;"><i class="fa-solid fa-hands-holding-child"></i></div>
-        <span class="brand-name">ABRAÇAR</span>
-      </div>
-      <button class="toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-chevron-left"></i></button>
+      <h3 style="font-size: 1rem; color: var(--roxo-escuro);"><i class="fa-solid fa-hands-holding-child"></i> ABRAÇAR</h3>
+      <button id="toggleSidebarBtn" style="background:none; border:none; cursor:pointer; color:var(--cinza-texto);"><i class="fa-solid fa-chevron-left"></i></button>
     </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active" onclick="switchTab('inicioTab', this)"><i class="fa-solid fa-house"></i><span>Início</span></div>
+      <div class="nav-item" onclick="switchTab('chatTab', this)"><i class="fa-solid fa-comments"></i><span>Chat Sigiloso</span></div>
+      <div class="nav-item" onclick="switchTab('relatoTab', this)"><i class="fa-solid fa-file-pen"></i><span>Enviar Relato</span></div>
+      <div class="nav-item" onclick="switchTab('apoioTab', this)"><i class="fa-solid fa-phone-volume"></i><span>Canais de Apoio</span></div>
+      <div class="nav-item" onclick="switchTab('muralTab', this)"><i class="fa-solid fa-bullhorn"></i><span>Mural de Avisos</span></div>
+      <div class="nav-item" onclick="switchTab('adminTab', this)"><i class="fa-solid fa-lock"></i><span>Área Admin</span></div>
+    </div>
+  </sidebar>
 
-    <ul class="nav-list">
-      <li class="nav-item active" onclick="switchTab('inicioTab', this)">
-        <i class="fa-solid fa-house"></i>
-        <span>Início</span>
-      </li>
-      <li class="nav-item" onclick="switchTab('chatTab', this)">
-        <i class="fa-solid fa-comments"></i>
-        <span>Chat de Escuta</span>
-      </li>
-      <li class="nav-item" onclick="switchTab('respiracaoTab', this)">
-        <i class="fa-solid fa-wind"></i>
-        <span>Respiração Guiada</span>
-      </li>
-      <li class="nav-item" onclick="switchTab('relatoTab', this)">
-        <i class="fa-solid fa-user-shield"></i>
-        <span>Relato Anônimo</span>
-      </li>
-      <li class="nav-item" onclick="switchTab('apoioTab', this)">
-        <i class="fa-solid fa-phone-volume"></i>
-        <span>Canais de Apoio</span>
-      </li>
-      <li class="nav-item" onclick="switchTab('muralTab', this)">
-        <i class="fa-solid fa-bullhorn"></i>
-        <span>Mural de Avisos</span>
-      </li>
-      <li class="nav-item" style="margin-top: auto;" onclick="switchTab('adminTab', this)">
-        <i class="fa-solid fa-lock"></i>
-        <span>Área do Admin</span>
-      </li>
-    </ul>
-  </aside>
-
-  <!-- Conteúdo Principal -->
-  <div class="main-wrapper">
-    <header class="header">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <button class="mobile-menu-btn" onclick="openMobileSidebar()"><i class="fa-solid fa-bars"></i></button>
-        <div class="header-title">
-          <h1 id="headerTitle">Portal ABRAÇAR</h1>
-          <p>Projeto de Escuta, Acolhimento e Cultura de Paz</p>
-        </div>
-      </div>
-      <div class="anon-badge">
-        <i class="fa-solid fa-user-secret"></i>
-        <span id="userAnonId">ID: ...</span>
-      </div>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <header>
+      <h2 style="font-size: 1.1rem; color: var(--roxo-escuro);">Plataforma de Escuta e Acolhimento</h2>
+      <span id="userAnonId" style="font-size: 0.8rem; background: rgba(7,148,71,0.1); color: var(--verde); padding: 4px 10px; border-radius: 20px; font-weight: bold;">ID: Carregando...</span>
     </header>
 
-    <main class="content-area">
-
+    <main>
       <!-- ABA 1: INÍCIO -->
       <section id="inicioTab" class="tab-content active">
-        <div class="card" style="border-left-color: var(--verde);">
-          <h2><i class="fa-solid fa-heart-circle-check"></i> Bem-vindo ao Portal ABRAÇAR</h2>
-          <p style="margin-bottom: 12px; line-height: 1.5;">
-            Este espaço foi idealizado pelo <strong>Grêmio Estudantil</strong> para garantir que nenhum estudante se sinta sozinho no ambiente escolar.
-          </p>
-          <blockquote style="background: #E8F7F5; padding: 12px 15px; border-radius: 10px; border-left: 4px solid var(--verde-agua); font-style: italic; margin-bottom: 15px; font-weight: 600; color: var(--roxo-escuro);">
-            "ABRAÇAR — Acolher, Escutar, Respeitar e Transformar."
-          </blockquote>
-          <p style="font-size: 0.9rem; line-height: 1.5;">
-            Aqui você conta com atendimento sigiloso em tempo real, espaço seguro de descompressão emocional, registro anônimo de ocorrências e acesso direto à equipe de Mediação e Coordenação.
-          </p>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
-          <div class="card" style="margin: 0; border-left-color: var(--dourado);">
-            <h3><i class="fa-solid fa-user-lock" style="color: var(--roxo);"></i> 100% Anônimo</h3>
-            <p style="font-size: 0.85rem; margin-top: 8px;">Seu ID é gerado no seu próprio navegador. Ninguém consegue identificar sua identidade real.</p>
-          </div>
-          <div class="card" style="margin: 0; border-left-color: var(--verde-agua);">
-            <h3><i class="fa-solid fa-comments" style="color: var(--verde);"></i> Atendimento Online</h3>
-            <p style="font-size: 0.85rem; margin-top: 8px;">Escolha falar com o Grêmio Estudantil, Coordenação ou Mediação de Conflitos via nuvem.</p>
-          </div>
+        <div class="card">
+          <h2>Bem-vindo ao Abraçar!</h2>
+          <p style="margin-top: 10px; font-size: 0.9rem; color: var(--cinza-texto);">Este é um espaço seguro e sigiloso para você relatar situações, buscar apoio emocional ou falar diretamente com o grêmio estudantil de forma anônima.</p>
         </div>
       </section>
 
-      <!-- ABA 2: CHAT DE ESCUTA -->
+      <!-- ABA 2: CHAT -->
       <section id="chatTab" class="tab-content">
         <div class="card">
-          <h2><i class="fa-solid fa-comments"></i> Chat de Escuta Anônima</h2>
-          
-          <div class="chat-container">
-            <div class="chat-channel-selector">
-              <label><i class="fa-solid fa-headset"></i> Falar com:</label>
-              <select id="chatRecipient" class="form-control" style="width: auto; flex-grow: 1; padding: 6px 10px; font-size: 0.85rem;" onchange="window.mudarCanalChat()">
-                <option value="Grêmio Estudantil">Grêmio Estudantil</option>
-                <option value="Coordenação">Coordenação Escolar</option>
-                <option value="Mediação de Conflitos">Mediação de Conflitos</option>
-              </select>
-            </div>
-
-            <div class="chat-messages" id="studentChatMessages">
-              <div class="message gremio">
-                <strong>Atendimento ABRAÇAR</strong><br>
-                Olá! Como podemos te acolher ou ajudar hoje? Envie sua mensagem.
-                <div class="message-time">Início</div>
+          <h2><i class="fa-solid fa-comments"></i> Chat de Escuta Sigilosa</h2>
+          <div class="form-group" style="max-width: 300px; margin-top: 10px;">
+            <label>Falar com:</label>
+            <select id="chatRecipient" class="form-control" onchange="window.mudarCanalChat()">
+              <option value="gremio">Grêmio Estudantil</option>
+              <option value="orientacao">Orientação Educacional</option>
+            </select>
+          </div>
+          <div class="chat-layout">
+            <div class="chat-container">
+              <div class="chat-messages" id="studentChatMessages"></div>
+              <div class="chat-input-area">
+                <input type="text" id="chatInput" class="form-control" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter') window.sendStudentMessage()">
+                <button class="btn-primary" onclick="window.sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
               </div>
             </div>
-
-            <div class="chat-input-area">
-              <input type="text" id="chatInput" class="form-control" placeholder="Digite sua mensagem anônima..." onkeypress="if(event.key==='Enter') window.sendStudentMessage()">
-              <button class="btn-primary" onclick="window.sendStudentMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
           </div>
         </div>
       </section>
 
-      <!-- ABA 3: RESPIRAÇÃO GUIADA -->
-      <section id="respiracaoTab" class="tab-content">
-        <div class="card">
-          <h2><i class="fa-solid fa-wind"></i> Respiração Guiada</h2>
-          <p style="font-size: 0.85rem;">Siga o ritmo do círculo para acalmar a mente e reduzir o estresse.</p>
-
-          <div class="breathing-box">
-            <div class="circle-container">
-              <div class="breathing-circle" id="breathCircle"></div>
-              <div class="breathing-text" id="breathText">Iniciar</div>
-            </div>
-            <button class="btn-primary" id="startBreathBtn" onclick="toggleBreathing()"><i class="fa-solid fa-play"></i> Iniciar Respiração</button>
-          </div>
-        </div>
-
-        <div class="tips-grid">
-          <div class="tip-card">
-            <i class="fa-solid fa-hand" style="color: var(--verde); font-size: 1.3rem;"></i>
-            <h4 style="margin-top: 5px;">Técnica 5-4-3-2-1</h4>
-            <p style="font-size: 0.8rem; margin-top: 4px;">Observe 5 coisas visíveis, 4 para tocar, 3 sons, 2 cheiros e 1 sabor.</p>
-          </div>
-          <div class="tip-card">
-            <i class="fa-solid fa-glass-water" style="color: var(--verde); font-size: 1.3rem;"></i>
-            <h4 style="margin-top: 5px;">Hidrate-se e Respire</h4>
-            <p style="font-size: 0.8rem; margin-top: 4px;">Tome um copo d'água fresca e faça pausas durante os estudos pesados.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA 4: RELATO ANÔNIMO -->
+      <!-- ABA 3: RELATO -->
       <section id="relatoTab" class="tab-content">
         <div class="card">
-          <h2><i class="fa-solid fa-user-shield"></i> Canal de Relatos e Denúncias Sigilosas</h2>
-          <p style="font-size: 0.85rem; margin-bottom: 15px;">
-            Presenciou ou sofreu bullying, preconceito ou qualquer situação no colégio? Relate aqui de forma totalmente segura.
-          </p>
-
+          <h2><i class="fa-solid fa-file-pen"></i> Enviar Relato Anônimo</h2>
           <form id="relatoForm" onsubmit="window.submitRelato(event)">
             <div class="form-group">
-              <label><i class="fa-solid fa-tag"></i> Tipo de Ocorrência:</label>
+              <label>Tipo de Ocorrência:</label>
               <select id="relatoTipo" class="form-control" required>
                 <option value="">Selecione...</option>
                 <option value="Bullying / Cyberbullying">Bullying / Cyberbullying</option>
                 <option value="Preconceito / Discriminação">Preconceito / Discriminação</option>
-                <option value="Saúde Mental / Apoio Emocional">Saúde Mental / Apoio Emocional</option>
-                <option value="Infraestrutura / Escola">Infraestrutura / Escola</option>
+                <option value="Saúde Mental">Saúde Mental / Apoio Emocional</option>
                 <option value="Outros">Outros</option>
               </select>
             </div>
-
             <div class="form-group">
-              <label><i class="fa-solid fa-location-dot"></i> Local ou Contexto (Opcional):</label>
-              <input type="text" id="relatoLocal" class="form-control" placeholder="Ex: Pátio, Sala de Aula, Corredor...">
+              <label>Local ou Contexto (Opcional):</label>
+              <input type="text" id="relatoLocal" class="form-control" placeholder="Ex: Pátio, Sala...">
             </div>
-
             <div class="form-group">
-              <label><i class="fa-solid fa-pen"></i> Detalhes do Ocorrido:</label>
-              <textarea id="relatoMensagem" class="form-control" rows="5" placeholder="Descreva os fatos com clareza. Não é necessário se identificar..." required></textarea>
+              <label>Detalhes:</label>
+              <textarea id="relatoMensagem" class="form-control" rows="4" required></textarea>
             </div>
-
-            <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Enviar Relato Sigiloso</button>
+            <button type="submit" class="btn-primary">Enviar Relato</button>
           </form>
         </div>
       </section>
 
-      <!-- ABA 5: CANAIS DE APOIO -->
+      <!-- ABA 4: APOIO -->
       <section id="apoioTab" class="tab-content">
         <div class="card">
-          <h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio Externos e Internos</h2>
-          <p style="font-size: 0.85rem; margin-bottom: 15px;">Se precisar de ajuda especializada fora do ambiente escolar, utilize os contatos abaixo:</p>
-
-          <div class="emergency-grid">
+          <h2>Canais de Apoio</h2>
+          <div class="emergency-grid" style="margin-top: 15px;">
             <div class="emergency-card">
               <div class="emergency-icon"><i class="fa-solid fa-phone"></i></div>
               <div>
-                <span style="font-size: 0.8rem; display: block; color: var(--cinza-texto);">CVV (Apoio Emocional)</span>
-                <a href="tel:188" class="emergency-number">Ligar 188</a>
-                <p style="font-size: 0.75rem; margin-top: 2px;">Gratuito, sigiloso e 24h.</p>
-              </div>
-            </div>
-
-            <div class="emergency-card">
-              <div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div>
-              <div>
-                <span style="font-size: 0.8rem; display: block; color: var(--cinza-texto);">Disque Direitos Humanos</span>
-                <a href="tel:100" class="emergency-number">Ligar 100</a>
-                <p style="font-size: 0.75rem; margin-top: 2px;">Proteção contra violações.</p>
-              </div>
-            </div>
-
-            <div class="emergency-card">
-              <div class="emergency-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-              <div>
-                <span style="font-size: 0.8rem; display: block; color: var(--cinza-texto);">Polícia Militar (Emergência)</span>
-                <a href="tel:190" class="emergency-number">Ligar 190</a>
-                <p style="font-size: 0.75rem; margin-top: 2px;">Para situações imediatas.</p>
+                <span style="font-size: 0.8rem;">CVV (Apoio Emocional)</span>
+                <a href="tel:188" class="emergency-number">188</a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ABA 6: MURAL DE AVISOS -->
+      <!-- ABA 5: MURAL -->
       <section id="muralTab" class="tab-content">
         <div class="card">
-          <h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos do Grêmio</h2>
-          <p style="font-size: 0.85rem; margin-bottom: 15px;">Fique por dentro das novidades, campeonatos, reuniões e eventos do Grêmio Estudantil.</p>
-
-          <div class="mural-grid" id="muralGrid">
-            <div class="mural-card">
-              <span style="background: rgba(7, 148, 71, 0.1); color: var(--verde); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">EVENTO</span>
-              <h4 style="margin-top: 8px; color: var(--roxo-escuro);">Semana da Gentileza</h4>
-              <p style="font-size: 0.82rem; margin-top: 6px;">Participe das dinâmicas interativas nos intervalos e espalhe recados de apoio no mural físico da escola!</p>
-              <span style="font-size: 0.7rem; color: var(--cinza-texto); display: block; margin-top: 10px;"><i class="fa-regular fa-clock"></i> Postado há 2 dias</span>
-            </div>
-
-            <div class="mural-card">
-              <span style="background: rgba(69, 39, 160, 0.1); color: var(--roxo); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">GERAL</span>
-              <h4 style="margin-top: 8px; color: var(--roxo-escuro);">Reunião Aberta do Grêmio</h4>
-              <p style="font-size: 0.82rem; margin-top: 6px;">Sexta-feira, às 13h, na sala de reuniões. Traga suas sugestões para melhorias no campus.</p>
-              <span style="font-size: 0.7rem; color: var(--cinza-texto); display: block; margin-top: 10px;"><i class="fa-regular fa-clock"></i> Postado há 5 dias</span>
-            </div>
-          </div>
+          <h2>Mural de Avisos</h2>
+          <p style="font-size: 0.9rem; color: var(--cinza-texto); margin-top: 10px;">Fique de olho nas novidades e eventos do grêmio.</p>
         </div>
       </section>
 
-      <!-- ABA 7: ÁREA DO ADMIN -->
+      <!-- ABA 6: ADMIN -->
       <section id="adminTab" class="tab-content">
         <div class="card">
-          <h2><i class="fa-solid fa-lock"></i> Área Restrita — Administração</h2>
-          <div id="adminLoginBox">
-            <p style="font-size: 0.85rem; margin-bottom: 12px;">Insira a senha de acesso para gerenciar os chats de escuta e relatos anônimos:</p>
+          <h2>Área Restrita — Administração</h2>
+          <div id="adminLoginBox" style="margin-top: 15px;">
             <div class="form-group" style="max-width: 300px;">
-              <input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha do Administrador">
+              <input type="password" id="adminPasswordInput" class="form-control" placeholder="Senha (abracar2026)">
             </div>
-            <button class="btn-primary" onclick="verifyAdminPassword()"><i class="fa-solid fa-key"></i> Entrar como Admin</button>
+            <button class="btn-primary" onclick="verifyAdminPassword()">Entrar</button>
           </div>
-
           <div id="adminDashboardBox" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-              <span style="font-weight: 700; color: var(--verde);"><i class="fa-solid fa-circle-check"></i> Sessão Administrativa Ativa</span>
-              <button class="btn-danger" onclick="logoutAdmin()">Sair do Admin</button>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+              <span style="color: var(--verde); font-weight: bold;">Painel Ativo</span>
+              <button class="btn-danger" onclick="logoutAdmin()">Sair</button>
             </div>
-
-            <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-inbox"></i> Relatos Anônimos Recebidos (Tempo Real):</h3>
-            <div id="adminRelatosList" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--cinza-borda); border-radius: 10px; padding: 10px; margin-bottom: 20px; background: #F8FAFC;">
-              <p style="font-size: 0.82rem; color: var(--cinza-texto);">Carregando relatos...</p>
-            </div>
-
-            <h3 style="font-size: 1rem; color: var(--roxo-escuro); margin-bottom: 10px;"><i class="fa-solid fa-headset"></i> Salas de Chat Ativas:</h3>
+            <h3 style="font-size: 0.9rem; margin-bottom: 5px;">Relatos Recebidos:</h3>
+            <div id="adminRelatosList" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--cinza-borda); padding: 8px; margin-bottom: 15px; background: #F8FAFC;"></div>
+            <h3 style="font-size: 0.9rem; margin-bottom: 5px;">Salas de Chat:</h3>
             <div class="admin-chat-layout">
-              <div class="room-list" id="adminRoomList">
-                <div class="room-item">Carregando salas...</div>
-              </div>
-              <div class="chat-container" style="height: 100%;">
-                <div class="chat-messages" id="adminChatMessages">
-                  <div class="message gremio">Selecione uma sala ao lado para responder.</div>
-                </div>
+              <div class="room-list" id="adminRoomList"></div>
+              <div class="chat-container">
+                <div class="chat-messages" id="adminChatMessages"></div>
                 <div class="chat-input-area">
-                  <input type="text" id="adminChatInput" class="form-control" placeholder="Responder como administração..." onkeypress="if(event.key==='Enter') window.sendAdminMessage()">
+                  <input type="text" id="adminChatInput" class="form-control" placeholder="Responder..." onkeypress="if(event.key==='Enter') window.sendAdminMessage()">
                   <button class="btn-primary" onclick="window.sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
               </div>
@@ -807,14 +212,12 @@
           </div>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- Scripts Firebase e Lógica da Aplicação -->
+  <!-- FIREBASE E SCRIPTS PRINCIPAIS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
     import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
     const firebaseConfig = {
@@ -824,28 +227,26 @@
       projectId: "escutaacolhimento-a9f15",
       storageBucket: "escutaacolhimento-a9f15.firebasestorage.app",
       messagingSenderId: "639476751207",
-      appId: "1:639476751207:web:571f32f893f4156176adc2",
-      measurementId: "G-WEQXQG0PHH"
+      appId: "1:639476751207:web:571f32f893f4156176adc2"
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const database = getDatabase(app);
 
-    // Gerenciamento de ID Anônimo do Usuário
     let userAnonId = localStorage.getItem('abracar_anon_id');
     if (!userAnonId) {
       userAnonId = 'ALU-' + Math.floor(1000 + Math.random() * 9000);
       localStorage.setItem('abracar_anon_id', userAnonId);
     }
-    document.getElementById('userAnonId').innerText = 'ID: ' + userAnonId;
+    const idEl = document.getElementById('userAnonId');
+    if (idEl) idEl.innerText = 'ID: ' + userAnonId;
 
-    // Chat do Aluno
-    let currentStudentMessages = [];
     let unsubStudentChat = null;
 
     function initStudentChat() {
-      const recipient = document.getElementById('chatRecipient').value;
+      const recipientSel = document.getElementById('chatRecipient');
+      if (!recipientSel) return;
+      const recipient = recipientSel.value;
       const roomKey = `${userAnonId}_to_${recipient}`.replace(/[.#$[\]]/g, "_");
       const chatRef = ref(database, 'chats/' + roomKey);
 
@@ -854,125 +255,90 @@
       unsubStudentChat = onValue(chatRef, (snapshot) => {
         const data = snapshot.val();
         const messagesContainer = document.getElementById('studentChatMessages');
+        if (!messagesContainer) return;
         messagesContainer.innerHTML = '';
 
         if (!data) {
-          messagesContainer.innerHTML = `
-            <div class="message gremio">
-              <strong>Atendimento ABRAÇAR</strong><br>
-              Olá! Como podemos te acolher ou ajudar hoje? Envie sua mensagem.
-              <div class="message-time">Início</div>
-            </div>`;
+          messagesContainer.innerHTML = `<div class="message gremio"><strong>Atendimento ABRAÇAR</strong><br>Olá! Como podemos te acolher hoje?</div>`;
           return;
         }
 
-        currentStudentMessages = Object.values(data);
-        currentStudentMessages.sort((a, b) => a.timestamp - b.timestamp);
-
-        currentStudentMessages.forEach(msg => {
+        const msgs = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
+        msgs.forEach(msg => {
           const msgDiv = document.createElement('div');
           msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
-          msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Você (Anônimo)' : 'Atendimento ABRAÇAR'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
+          msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Você (Anônimo)' : 'Atendimento'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
           messagesContainer.appendChild(msgDiv);
         });
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       });
     }
 
-    window.mudarCanalChat = function() {
-      initStudentChat();
-    };
+    window.mudarCanalChat = function() { initStudentChat(); };
 
     window.sendStudentMessage = function() {
       const input = document.getElementById('chatInput');
+      if (!input) return;
       const text = input.value.trim();
       if (!text) return;
 
       const recipient = document.getElementById('chatRecipient').value;
       const roomKey = `${userAnonId}_to_${recipient}`.replace(/[.#$[\]]/g, "_");
-      const chatRef = ref(database, 'chats/' + roomKey);
-      const newMsgRef = push(chatRef);
-
+      const newMsgRef = push(ref(database, 'chats/' + roomKey));
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      set(newMsgRef, {
-        sender: 'user',
-        text: text,
-        time: timeStr,
-        timestamp: Date.now()
-      }).then(() => {
-        input.value = '';
-      });
+      set(newMsgRef, { sender: 'user', text, time: timeStr, timestamp: Date.now() })
+        .then(() => { input.value = ''; });
     };
 
-    // Inicializar chat do aluno na carga
     initStudentChat();
 
-    // Envio de Relato Anônimo
     window.submitRelato = function(event) {
       event.preventDefault();
       const tipo = document.getElementById('relatoTipo').value;
       const local = document.getElementById('relatoLocal').value || 'Não informado';
       const mensagem = document.getElementById('relatoMensagem').value;
 
-      const relatosRef = ref(database, 'relatos');
-      const newRelatoRef = push(relatosRef);
-
+      const newRelatoRef = push(ref(database, 'relatos'));
       set(newRelatoRef, {
         id: 'REL-' + Math.floor(1000 + Math.random() * 9000),
-        tipo,
-        local,
-        mensagem,
+        tipo, local, mensagem,
         data: new Date().toLocaleString(),
         timestamp: Date.now()
       }).then(() => {
-        alert('Relato enviado com sucesso para a nuvem com total sigilo!');
+        alert('Relato enviado com sucesso!');
         document.getElementById('relatoForm').reset();
-        switchTab('inicioTab', document.querySelector('.nav-item'));
-      }).catch((error) => {
-        alert('Erro ao enviar relato: ' + error.message);
-      });
+      }).catch(err => alert('Erro: ' + err.message));
     };
 
-    // Funções Administrativas
     window.loadAdminData = function() {
-      // Carregar Relatos em Tempo Real
       const relatosContainer = document.getElementById('adminRelatosList');
-      const relatosRef = ref(database, 'relatos');
-
-      onValue(relatosRef, (snapshot) => {
+      onValue(ref(database, 'relatos'), (snapshot) => {
         const data = snapshot.val();
+        if (!relatosContainer) return;
         relatosContainer.innerHTML = '';
         if (!data) {
-          relatosContainer.innerHTML = '<p style="font-size: 0.82rem; color: var(--cinza-texto);">Nenhum relato registrado até o momento.</p>';
+          relatosContainer.innerHTML = '<p style="font-size:0.8rem; color:#77f;">Nenhum relato.</p>';
           return;
         }
-
-        const relatosArray = Object.values(data);
-        relatosArray.sort((a, b) => b.timestamp - a.timestamp);
-
-        relatosArray.forEach(r => {
+        Object.values(data).sort((a,b)=>b.timestamp-a.timestamp).forEach(r => {
           const div = document.createElement('div');
-          div.style.cssText = 'background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--cinza-borda); font-size: 0.82rem;';
-          div.innerHTML = `<strong>[${r.id}] ${r.tipo}</strong> (Local: ${r.local})<br><p style="margin: 4px 0;">${r.mensagem}</p><span style="font-size:0.7rem; color:gray;">${r.data}</span>`;
+          div.style.cssText = 'background:white; padding:6px; margin-bottom:4px; border:1px solid #ccc; font-size:0.75rem;';
+          div.innerHTML = `<b>[${r.id}] ${r.tipo}</b>: ${r.mensagem}`;
           relatosContainer.appendChild(div);
         });
       });
 
-      // Carregar Salas de Chat Ativas em Tempo Real
       const roomListContainer = document.getElementById('adminRoomList');
-      const chatsRef = ref(database, 'chats');
-
-      onValue(chatsRef, (snapshot) => {
+      onValue(ref(database, 'chats'), (snapshot) => {
         const data = snapshot.val();
+        if (!roomListContainer) return;
         roomListContainer.innerHTML = '';
         if (!data) {
-          roomListContainer.innerHTML = '<div class="room-item">Nenhuma conversa ativa</div>';
+          roomListContainer.innerHTML = '<div class="room-item">Sem conversas</div>';
           return;
         }
-
-        const roomKeys = Object.keys(data);
-        roomKeys.forEach(key => {
+        Object.keys(data).forEach(key => {
           const div = document.createElement('div');
           div.className = 'room-item';
           div.innerText = key.replace(/_to_/g, " ➔ ");
@@ -992,25 +358,20 @@
       window.activeAdminRoomKey = key;
 
       const container = document.getElementById('adminChatMessages');
-      const chatRef = ref(database, 'chats/' + key);
-
       if (unsubAdminChat) unsubAdminChat();
 
-      unsubAdminChat = onValue(chatRef, (snapshot) => {
+      unsubAdminChat = onValue(ref(database, 'chats/' + key), (snapshot) => {
         const data = snapshot.val();
+        if (!container) return;
         container.innerHTML = '';
         if (!data) {
-          container.innerHTML = '<div class="message gremio">Nenhuma mensagem nesta sala ainda.</div>';
+          container.innerHTML = '<div class="message gremio">Sem mensagens.</div>';
           return;
         }
-
-        const messages = Object.values(data);
-        messages.sort((a, b) => a.timestamp - b.timestamp);
-
-        messages.forEach(msg => {
+        Object.values(data).sort((a,b)=>a.timestamp-b.timestamp).forEach(msg => {
           const msgDiv = document.createElement('div');
           msgDiv.className = `message ${msg.sender === 'user' ? 'user' : 'gremio'}`;
-          msgDiv.innerHTML = `<strong>${msg.sender === 'user' ? 'Aluno (Anônimo)' : 'Administração'}</strong><br>${msg.text}<div class="message-time">${msg.time}</div>`;
+          msgDiv.innerHTML = `<b>${msg.sender === 'user' ? 'Aluno' : 'Admin'}</b><br>${msg.text}<div class="message-time">${msg.time}</div>`;
           container.appendChild(msgDiv);
         });
         container.scrollTop = container.scrollHeight;
@@ -1018,117 +379,42 @@
     };
 
     window.sendAdminMessage = function() {
-      if (!window.activeAdminRoomKey) {
-        alert('Selecione uma sala de chat ao lado primeiro.');
-        return;
-      }
+      if (!window.activeAdminRoomKey) { alert('Selecione uma sala!'); return; }
       const input = document.getElementById('adminChatInput');
+      if (!input) return;
       const text = input.value.trim();
       if (!text) return;
 
-      const chatRef = ref(database, 'chats/' + window.activeAdminRoomKey);
-      const newMsgRef = push(chatRef);
-      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      set(newMsgRef, {
-        sender: 'gremio',
-        text: text,
-        time: timeStr,
-        timestamp: Date.now()
-      }).then(() => {
-        input.value = '';
-      });
+      const newMsgRef = push(ref(database, 'chats/' + window.activeAdminRoomKey));
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit    ) ? [; // Mantém correção de fechamento do timeStr
+      set(newMsgRef, { sender: 'gremio', text, time: timeStr, timestamp: Date.now() })
+        .then(() => { input.value = ''; });
     };
   </script>
 
-  <!-- Script Geral de Navegação e Ferramentas -->
+  <!-- CONTROLE DE INTERFACE GERAL -->
   <script>
     function switchTab(tabId, element) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-
       document.getElementById(tabId).classList.add('active');
       if (element) element.classList.add('active');
-
-      if (window.innerWidth <= 768) {
-        closeMobileSidebar();
-      }
     }
 
     const sidebar = document.getElementById('sidebar');
     const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-    toggleSidebarBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      const icon = toggleSidebarBtn.querySelector('i');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-chevron-left');
-        icon.classList.add('fa-chevron-right');
-      } else {
-        icon.classList.remove('fa-chevron-right');
-        icon.classList.add('fa-chevron-left');
-      }
-    });
-
-    function openMobileSidebar() {
-      sidebar.classList.add('mobile-open');
-      sidebarOverlay.classList.add('active');
+    if (toggleSidebarBtn) {
+      toggleSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+      });
     }
 
-    function closeMobileSidebar() {
-      sidebar.classList.remove('mobile-open');
-      sidebarOverlay.classList.remove('active');
-    }
-
-    // Respiração Guiada
-    let breathingInterval = null;
-    let isBreathingActive = false;
-
-    function toggleBreathing() {
-      const circle = document.getElementById('breathCircle');
-      const text = document.getElementById('breathText');
-      const btn = document.getElementById('startBreathBtn');
-
-      if (isBreathingActive) {
-        clearInterval(breathingInterval);
-        circle.className = 'breathing-circle';
-        text.innerText = 'Iniciar';
-        btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Respiração';
-        isBreathingActive = false;
-        return;
-      }
-
-      isBreathingActive = true;
-      btn.innerHTML = '<i class="fa-solid fa-stop"></i> Parar';
-
-      const phases = [
-        { text: 'Inspire (4s)', className: 'breathing-circle inhale' },
-        { text: 'Segure (4s)', className: 'breathing-circle hold' },
-        { text: 'Expire (4s)', className: 'breathing-circle exhale' },
-        { text: 'Aguarde (2s)', className: 'breathing-circle' }
-      ];
-
-      let phaseIndex = 0;
-      function runCycle() {
-        text.innerText = phases[phaseIndex].text;
-        circle.className = phases[phaseIndex].className;
-        phaseIndex = (phaseIndex + 1) % phases.length;
-      }
-
-      runCycle();
-      breathingInterval = setInterval(runCycle, 4000);
-    }
-
-        // Login Admin
     function verifyAdminPassword() {
       const pass = document.getElementById('adminPasswordInput').value;
       if (pass === 'abracar2026') {
         document.getElementById('adminLoginBox').style.display = 'none';
         document.getElementById('adminDashboardBox').style.display = 'block';
-        if (typeof window.loadAdminData === 'function') {
-          window.loadAdminData();
-        }
+        if (typeof window.loadAdminData === 'function') window.loadAdminData();
       } else {
         alert('Senha incorreta!');
       }

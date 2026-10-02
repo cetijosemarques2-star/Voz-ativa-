@@ -615,3 +615,52 @@
   window.deleteReport = async function(id) {
     if(!adminIsAuthorized || !confirm("Deseja realmente excluir este relato?")) return;
     try { await remove(ref(db,`reports/${id}`)
+); }
+    catch(error){ console.error(error); showMessage("Não foi possível excluir o relato."); }
+  };
+
+  window.createMuralPost = async function(event) {
+    event.preventDefault();
+    if(!adminIsAuthorized || !currentUser || currentUser.isAnonymous) return;
+    const title=$("muralTitleInput").value.trim(), content=$("muralContentInput").value.trim();
+    if(!title || !content) return;
+    try {
+      const newRef=push(ref(db,"mural"));
+      await set(newRef,{title,content,timestamp:Date.now(),authorUid:currentUser.uid});
+      $("muralTitleInput").value=""; $("muralContentInput").value="";
+      showMessage("Aviso publicado com sucesso.");
+    } catch(error){console.error(error);showMessage("Não foi possível publicar o aviso.");}
+  };
+
+  window.logoutAdmin = async function() {
+    adminIsAuthorized=false; currentAdminRoom=null; stopAdminListeners();
+    await signOut(auth);
+    $("adminPanel").style.display="none"; $("adminAuthCard").style.display="block";
+    $("adminPasswordInput").value=""; $("userAnonId").textContent="Conectando..."; setStatus(false);
+    try { await signInAnonymously(auth); } catch(e){console.error(e); }
+  };
+
+  window.switchTab = function(tabId,element) {
+    document.querySelectorAll(".tab-content").forEach(tab=>tab.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(item=>item.classList.remove("active"));
+    $(tabId).classList.add("active"); if(element) element.classList.add("active");
+    const titleMap={inicioTab:"Portal ABRAÇAR",chatTab:"Chat de Escuta",respiracaoTab:"Respiração Guiada",relatoTab:"Relato Anônimo",apoioTab:"Canais de Apoio",muralTab:"Mural de Avisos",adminTab:"Painel Administrativo"};
+    $("headerTitle").textContent=titleMap[tabId]||"Portal ABRAÇAR";
+    if(tabId==="chatTab" && currentUser?.isAnonymous) subscribeStudentChat(currentUser.uid);
+    if(window.innerWidth<=768) closeMobileSidebar();
+  };
+
+  window.openMobileSidebar=()=>{$("sidebar").classList.add("mobile-open");$("sidebarOverlay").classList.add("active")};
+  window.closeMobileSidebar=()=>{$("sidebar").classList.remove("mobile-open");$("sidebarOverlay").classList.remove("active")};
+  $("toggleSidebarBtn").addEventListener("click",()=>$("sidebar").classList.toggle("collapsed"));
+
+  window.toggleBreathing=function(){
+    const circle=$("breathCircle"),text=$("breathText"),btn=$("startBreathBtn");
+    if(breathingInterval){clearInterval(breathingInterval);breathingInterval=null;circle.className="breathing-circle";text.textContent="Iniciar";btn.innerHTML='<i class="fa-solid fa-play"></i> Iniciar Respiração';return;}
+    btn.innerHTML='<i class="fa-solid fa-stop"></i> Parar Respiração';let step=0;
+    const runCycle=()=>{if(step===0){circle.className="breathing-circle inhale";text.textContent="Inspire... (4s)";step=1}else if(step===1){circle.className="breathing-circle hold";text.textContent="Segure... (4s)";step=2}else{circle.className="breathing-circle exhale";text.textContent="Expire... (4s)";step=0}};
+    runCycle();breathingInterval=setInterval(runCycle,4000);
+  };
+</script>
+</body>
+</html>

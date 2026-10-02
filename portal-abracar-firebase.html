@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#4527A0">
+  <title>Portal ABRAÇAR — Grêmio Estudantil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --verde:#079447; --verde-claro:#39C72B; --roxo:#4527A0; --roxo-escuro:#351887;
+      --verde-agua:#19B8A5; --branco:#fff; --dourado:#FFD21C; --cinza-fundo:#F4F6F9;
+      --cinza-texto:#4A5568; --cinza-borda:#E2E8F0; --vermelho:#E53E3E;
+      --gradiente-principal:linear-gradient(135deg,#4527A0 0%,#19B8A5 100%);
+      --gradiente-verde:linear-gradient(135deg,#079447 0%,#19B8A5 100%);
+      --gradiente-roxo:linear-gradient(135deg,#351887 0%,#4527A0 55%,#19B8A5 100%);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;-webkit-tap-highlight-color:transparent}
+    body{background:var(--cinza-fundo);color:var(--cinza-texto);display:flex;min-height:100vh;overflow-x:hidden}
+    button,input,select,textarea{font:inherit}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:99}
+    .sidebar{width:260px;background:var(--gradiente-roxo);color:#fff;display:flex;flex-direction:column;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;z-index:100;box-shadow:4px 0 15px rgba(0,0,0,.1);flex-shrink:0}
+    .sidebar.collapsed{width:80px}
+    .sidebar-header{padding:18px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.15)}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.1rem;white-space:nowrap;overflow:hidden}
+    .brand-logo{width:42px;height:42px;object-fit:contain;border-radius:10px;background:#fff;padding:2px;flex-shrink:0}
+    .brand-icon-fallback{width:42px;height:42px;background:var(--dourado);color:var(--roxo-escuro);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .toggle-btn{background:rgba(255,255,255,.15);border:0;color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .nav-list{list-style:none;padding:15px 10px;display:flex;flex-direction:column;gap:6px;flex-grow:1;overflow-y:auto}
+    .nav-item{display:flex;align-items:center;gap:14px;padding:12px 14px;color:rgba(255,255,255,.85);text-decoration:none;border-radius:10px;cursor:pointer;font-weight:600;transition:.2s;white-space:nowrap;overflow:hidden}
+    .nav-item i{font-size:1.2rem;min-width:24px;text-align:center}
+    .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.2);color:#fff}
+    .nav-item.active{background:var(--verde-agua);color:var(--roxo-escuro)}
+    .main-wrapper{flex-grow:1;display:flex;flex-direction:column;min-width:0}
+    .header{background:var(--gradiente-verde);color:#fff;padding:20px 30px;box-shadow:0 4px 15px rgba(0,0,0,.05);display:flex;justify-content:space-between;align-items:center;gap:15px}
+    .mobile-menu-btn{display:none;background:rgba(255,255,255,.2);border:0;color:#fff;font-size:1.2rem;width:40px;height:40px;border-radius:10px;cursor:pointer;align-items:center;justify-content:center}
+    .header-title h1{font-size:1.4rem;font-weight:800}.header-title p{font-size:.85rem;opacity:.9;margin-top:2px}
+    .anon-badge{background:rgba(255,255,255,.2);backdrop-filter:blur(5px);padding:8px 14px;border-radius:20px;font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.3);white-space:nowrap}
+    .status-dot{width:8px;height:8px;border-radius:50%;background:#FBBF24;display:inline-block}.status-dot.ok{background:#86EFAC}
+    .content-area{padding:25px 30px;flex-grow:1}.tab-content{display:none;animation:fadeIn .3s ease}.tab-content.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.03);border:1px solid var(--cinza-borda);margin-bottom:20px;border-left:5px solid var(--roxo)}
+    .card h2{color:var(--roxo-escuro);font-size:1.2rem;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .form-group{margin-bottom:15px}.form-group label{display:block;margin-bottom:6px;font-weight:600;color:var(--roxo-escuro);font-size:.88rem}
+    .form-control{width:100%;padding:12px 14px;border:2px solid var(--cinza-borda);border-radius:10px;outline:none;transition:.2s;font-size:.9rem;background:#fff;color:var(--cinza-texto)}
+    .form-control:focus{border-color:var(--verde-agua)}
+    .btn-primary{background:var(--roxo);color:#fff;border:0;padding:12px 20px;border-radius:10px;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.9rem}
+    .btn-primary:hover{background:var(--verde-agua);color:var(--roxo-escuro)}.btn-primary:disabled{opacity:.55;cursor:not-allowed}
+    .btn-danger{background:var(--vermelho);color:#fff;border:0;padding:6px 12px;border-radius:6px;font-weight:600;cursor:pointer;font-size:.8rem}
+    .btn-secondary{background:#EEF2F7;color:var(--roxo-escuro);border:1px solid var(--cinza-borda);padding:10px 14px;border-radius:9px;font-weight:700;cursor:pointer}
+    .notice{padding:12px 14px;border-radius:10px;margin-bottom:15px;font-size:.84rem;line-height:1.45}
+    .notice.info{background:#E8F7F5;border:1px solid rgba(25,184,165,.25);color:var(--roxo-escuro)}
+    .notice.warning{background:#FFF8DB;border:1px solid #F5D76E;color:#6B4F00}
+    .notice.error{background:#FFF0F0;border:1px solid #F3B2B2;color:#8B1E1E}
+    .chat-container{display:flex;flex-direction:column;height:520px;background:#fff;border-radius:16px;border:1px solid var(--cinza-borda);overflow:hidden}
+    .chat-channel-selector{background:#F8FAFC;padding:12px 15px;border-bottom:1px solid var(--cinza-borda);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .chat-channel-selector label{font-weight:700;font-size:.85rem;color:var(--roxo-escuro)}
+    .chat-messages{flex-grow:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;background:#FAFCFE}
+    .message{max-width:82%;padding:10px 14px;border-radius:14px;font-size:.9rem;line-height:1.4;word-break:break-word}
+    .message.user{align-self:flex-end;background:var(--roxo);color:#fff;border-bottom-right-radius:2px}
+    .message.gremio{align-self:flex-start;background:#E8F7F5;color:var(--roxo-escuro);border:1px solid rgba(25,184,165,.2);border-bottom-left-radius:2px}
+    .message-time{font-size:.68rem;opacity:.75;margin-top:4px;text-align:right}
+    .chat-input-area{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid var(--cinza-borda)}
+    .chat-input-area .form-control{flex:1}
+    .breathing-box{text-align:center;padding:20px 10px;display:flex;flex-direction:column;align-items:center}
+    .circle-container{width:200px;height:200px;position:relative;display:flex;align-items:center;justify-content:center;margin:25px 0}
+    .breathing-circle{width:110px;height:110px;background:var(--gradiente-principal);border-radius:50%;position:absolute;transition:transform 4s ease-in-out;box-shadow:0 0 25px rgba(69,39,160,.3)}
+    .breathing-circle.inhale{transform:scale(1.7);background:var(--gradiente-verde)}.breathing-circle.hold{transform:scale(1.7);box-shadow:0 0 35px rgba(25,184,165,.6)}.breathing-circle.exhale{transform:scale(1)}
+    .breathing-text{position:relative;z-index:10;color:#fff;font-weight:800;font-size:1rem;text-shadow:0 2px 4px rgba(0,0,0,.4);padding:0 10px}
+    .tips-grid,.emergency-grid,.mural-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin-top:15px}
+    .tip-card,.emergency-card,.mural-card{background:#fff;border:1px solid var(--cinza-borda);border-radius:12px;padding:18px}
+    .emergency-card{display:flex;align-items:center;gap:12px}.emergency-icon{width:46px;height:46px;border-radius:10px;background:rgba(7,148,71,.1);color:var(--verde);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .emergency-number{font-weight:800;color:var(--verde);font-size:1.1rem;text-decoration:none}
+    .admin-chat-layout{display:grid;grid-template-columns:240px 1fr;gap:15px;height:480px}
+    .room-list{background:#fff;border-radius:12px;border:1px solid var(--cinza-borda);overflow-y:auto}.room-item{padding:12px;border-bottom:1px solid var(--cinza-borda);cursor:pointer;font-size:.85rem;font-weight:600}
+    .room-item:hover,.room-item.active{background:#F1F5F9;color:var(--roxo)}
+    .loading{padding:18px;text-align:center;color:#7B8794;font-size:.85rem}.empty{padding:18px;text-align:center;color:#888;font-size:.85rem}
+    .pill{display:inline-flex;align-items:center;gap:5px;background:#EEF2FF;color:var(--roxo);border-radius:20px;padding:4px 8px;font-size:.7rem;font-weight:700}
+    .mural-card{position:relative}.mural-card .delete-post{position:absolute;right:12px;top:12px}
+    .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+    .stat-card{text-align:center;border-left:5px solid var(--verde)}.stat-card.purple{border-left-color:var(--roxo)}.stat-card.teal{border-left-color:var(--verde-agua)}
+    .report-card{background:#F8FAFC;border:1px solid var(--cinza-borda);padding:12px;border-radius:10px}
+    .report-head{display:flex;justify-content:space-between;gap:10px;font-size:.75rem;color:#666;margin-bottom:6px;flex-wrap:wrap}
+    .admin-email{font-size:.78rem;color:#666;word-break:break-all}
+    @media(max-width:768px){
+      .sidebar-overlay.active{display:block}.sidebar{position:fixed;top:0;bottom:0;left:-270px;width:260px!important;transition:left .3s ease}.sidebar.mobile-open{left:0}.sidebar.collapsed{width:260px!important}
+      .mobile-menu-btn{display:flex}.header{padding:15px 18px}.header-title h1{font-size:1.15rem}.header-title p{font-size:.75rem}.content-area{padding:15px}.card{padding:16px;margin-bottom:15px}
+      .chat-container{height:430px}.admin-chat-layout{grid-template-columns:1fr;height:auto}.room-list{max-height:140px}.form-grid-2{grid-template-columns:1fr!important}.anon-badge{padding:7px 9px;font-size:.72rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="brand">
+      <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="brand-icon-fallback" style="display:none"><i class="fa-solid fa-hands-holding-child"></i></div>
+      <span class="brand-name">ABRAÇAR</span>
+    </div>
+    <button class="toggle-btn" id="toggleSidebarBtn" aria-label="Recolher menu"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+  <ul class="nav-list">
+    <li class="nav-item active" onclick="switchTab('inicioTab',this)"><i class="fa-solid fa-house"></i><span>Início</span></li>
+    <li class="nav-item" onclick="switchTab('chatTab',this)"><i class="fa-solid fa-comments"></i><span>Chat de Escuta</span></li>
+    <li class="nav-item" onclick="switchTab('respiracaoTab',this)"><i class="fa-solid fa-wind"></i><span>Respiração Guiada</span></li>
+    <li class="nav-item" onclick="switchTab('relatoTab',this)"><i class="fa-solid fa-user-shield"></i><span>Relato Anônimo</span></li>
+    <li class="nav-item" onclick="switchTab('apoioTab',this)"><i class="fa-solid fa-phone-volume"></i><span>Canais de Apoio</span></li>
+    <li class="nav-item" onclick="switchTab('muralTab',this)"><i class="fa-solid fa-bullhorn"></i><span>Mural de Avisos</span></li>
+    <li class="nav-item" style="margin-top:auto" onclick="switchTab('adminTab',this)"><i class="fa-solid fa-lock"></i><span>Área do Admin</span></li>
+  </ul>
+</aside>
+
+<div class="main-wrapper">
+  <header class="header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="mobile-menu-btn" onclick="openMobileSidebar()" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+      <div class="header-title">
+        <h1 id="headerTitle">Portal ABRAÇAR</h1>
+        <p>Projeto de Escuta, Acolhimento e Cultura de Paz</p>
+      </div>
+    </div>
+    <div class="anon-badge"><span class="status-dot" id="statusDot"></span><i class="fa-solid fa-user-secret"></i><span id="userAnonId">Conectando...</span></div>
+  </header>
+
+  <main class="content-area">
+
+    <section id="inicioTab" class="tab-content active">
+      <div class="card" style="border-left-color:var(--verde)">
+        <h2><i class="fa-solid fa-heart-circle-check"></i> Bem-vindo ao Portal ABRAÇAR</h2>
+        <p style="margin-bottom:12px;line-height:1.5">Este espaço foi idealizado pelo <strong>Grêmio Estudantil</strong> para garantir que nenhum estudante se sinta sozinho no ambiente escolar.</p>
+        <blockquote style="background:#E8F7F5;padding:12px 15px;border-radius:10px;border-left:4px solid var(--verde-agua);font-style:italic;margin-bottom:15px;font-weight:600;color:var(--roxo-escuro)">“ABRAÇAR — Acolher, Escutar, Respeitar e Transformar.”</blockquote>
+        <p style="font-size:.9rem;line-height:1.5">Aqui você encontra um espaço de escuta, descompressão, registro de ocorrências e acesso a canais de apoio.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px">
+        <div class="card" style="margin:0;border-left-color:var(--dourado)">
+          <h3><i class="fa-solid fa-user-lock" style="color:var(--roxo)"></i> Acesso sem nome ou e-mail</h3>
+          <p style="font-size:.85rem;margin-top:8px">O portal usa uma conta anônima do Firebase para identificar tecnicamente sua sessão sem pedir nome ou e-mail.</p>
+        </div>
+        <div class="card" style="margin:0;border-left-color:var(--verde-agua)">
+          <h3><i class="fa-solid fa-comments" style="color:var(--verde)"></i> Atendimento Direto</h3>
+          <p style="font-size:.85rem;margin-top:8px">Escolha falar com o Grêmio Estudantil, Coordenação ou Mediação de Conflitos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="chatTab" class="tab-content">
+      <div class="card">
+        <h2><i class="fa-solid fa-comments"></i> Chat de Escuta</h2>
+        <div class="notice info">As mensagens são vinculadas à sua sessão anônima no Firebase. Evite enviar dados pessoais desnecessários.</div>
+        <div class="chat-container">
+          <div class="chat-channel-selector">
+            <label><i class="fa-solid fa-headset"></i> Falar com:</label>
+            <select id="chatRecipient" class="form-control" style="width:auto;flex-grow:1;padding:6px 10px;font-size:.85rem">
+              <option value="Grêmio Estudantil">Grêmio Estudantil</option>
+              <option value="Coordenação">Coordenação Escolar</option>
+              <option value="Mediação de Conflitos">Mediação de Conflitos</option>
+            </select>
+          </div>
+          <div class="chat-messages" id="studentChatMessages">
+            <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Carregando conversa...</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInput" class="form-control" maxlength="1000" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter')sendStudentMessage()">
+            <button class="btn-primary" id="studentSendBtn" onclick="sendStudentMessage()" aria-label="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="respiracaoTab" class="tab-content">
+      <div class="card">
+        <h2><i class="fa-solid fa-wind"></i> Respiração Guiada</h2>
+        <p style="font-size:.85rem">Siga o ritmo do círculo para fazer uma pausa e desacelerar.</p>
+        <div class="breathing-box">
+          <div class="circle-container"><div class="breathing-circle" id="breathCircle"></div><div class="breathing-text" id="breathText">Iniciar</div></div>
+          <button class="btn-primary" id="startBreathBtn" onclick="toggleBreathing()"><i class="fa-solid fa-play"></i> Iniciar Respiração</button>
+        </div>
+      </div>
+      <div class="tips-grid">
+        <div class="tip-card"><i class="fa-solid fa-hand" style="color:var(--verde);font-size:1.3rem"></i><h4 style="margin-top:5px">Técnica 5-4-3-2-1</h4><p style="font-size:.8rem;margin-top:4px">Observe 5 coisas visíveis, 4 para tocar, 3 sons, 2 cheiros e 1 sabor.</p></div>
+        <div class="tip-card"><i class="fa-solid fa-glass-water" style="color:var(--verde);font-size:1.3rem"></i><h4 style="margin-top:5px">Faça uma pausa</h4><p style="font-size:.8rem;margin-top:4px">Pare por alguns instantes, respire com calma e procure um adulto de confiança se precisar de apoio.</p></div>
+      </div>
+    </section>
+
+    <section id="relatoTab" class="tab-content">
+      <div class="card">
+        <h2><i class="fa-solid fa-user-shield"></i> Enviar Relato</h2>
+        <div class="notice info">O formulário não pede nome ou e-mail. O relato é armazenado no Firebase para que a equipe autorizada possa analisá-lo. Evite incluir informações pessoais que não sejam necessárias.</div>
+        <form id="reportForm" onsubmit="submitReport(event)">
+          <div class="form-group"><label for="reportType"><i class="fa-solid fa-tag"></i> Tipo de Ocorrência</label>
+            <select id="reportType" class="form-control" required>
+              <option value="">Selecione a categoria...</option><option>Bullying / Cyberbullying</option><option>Conflito entre Estudantes</option><option>Problema Estrutural / Limpeza</option><option>Problema Comportamental</option><option>Sugestão ou Elogio</option><option>Outro Motivo</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="reportLocation"><i class="fa-solid fa-location-dot"></i> Local ou Turma Relevante (Opcional)</label><input type="text" id="reportLocation" class="form-control" maxlength="300" placeholder="Ex.: pátio principal, Turma 2ºB, banheiro superior"></div>
+          <div class="form-group"><label for="reportMessage"><i class="fa-solid fa-pen"></i> Descrição</label><textarea id="reportMessage" class="form-control" rows="5" maxlength="3000" placeholder="Descreva a situação..." required></textarea></div>
+          <button type="submit" class="btn-primary" id="reportSubmitBtn" style="width:100%"><i class="fa-solid fa-paper-plane"></i> Enviar Relato</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="apoioTab" class="tab-content">
+      <div class="card">
+        <h2><i class="fa-solid fa-phone-volume"></i> Canais de Apoio</h2>
+        <p style="font-size:.88rem">Precisa de ajuda imediata ou de um serviço especializado? Estes são canais públicos de apoio e emergência.</p>
+        <div class="emergency-grid">
+          <div class="emergency-card"><div class="emergency-icon"><i class="fa-solid fa-heart-pulse"></i></div><div><strong>CVV (Apoio Emocional)</strong><br><a href="tel:188" class="emergency-number">188</a> <span style="font-size:.75rem">(24h)</span></div></div>
+          <div class="emergency-card"><div class="emergency-icon"><i class="fa-solid fa-child"></i></div><div><strong>Disque Direitos Humanos</strong><br><a href="tel:100" class="emergency-number">100</a></div></div>
+          <div class="emergency-card"><div class="emergency-icon"><i class="fa-solid fa-shield-halved"></i></div><div><strong>Polícia Militar</strong><br><a href="tel:190" class="emergency-number">190</a></div></div>
+          <div class="emergency-card"><div class="emergency-icon"><i class="fa-solid fa-user-nurse"></i></div><div><strong>SAMU</strong><br><a href="tel:192" class="emergency-number">192</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="muralTab" class="tab-content">
+      <div class="card">
+        <h2><i class="fa-solid fa-bullhorn"></i> Mural de Avisos</h2>
+        <p style="font-size:.88rem">Novidades, projetos e comunicados publicados pela equipe autorizada.</p>
+        <div class="mural-grid" id="muralPostsContainer"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Carregando mural...</div></div>
+      </div>
+    </section>
+
+    <section id="adminTab" class="tab-content">
+      <div class="card" id="adminAuthCard">
+        <h2><i class="fa-solid fa-lock"></i> Acesso Administrativo</h2>
+        <p style="font-size:.88rem;margin-bottom:15px">Área exclusiva para contas administrativas autorizadas no Firebase.</p>
+        <div class="notice warning">O login administrativo não usa uma senha gravada no HTML. A conta precisa estar cadastrada no Firebase Authentication e autorizada no nó <strong>admins</strong> do Realtime Database.</div>
+        <form onsubmit="loginAdmin(event)" style="max-width:500px">
+          <div class="form-group"><label for="adminEmailInput">E-mail</label><input type="email" id="adminEmailInput" class="form-control" autocomplete="username" required></div>
+          <div class="form-group"><label for="adminPasswordInput">Senha</label><input type="password" id="adminPasswordInput" class="form-control" autocomplete="current-password" required></div>
+          <button class="btn-primary" type="submit" id="adminLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Entrar</button>
+        </form>
+      </div>
+
+      <div id="adminPanel" style="display:none">
+        <div class="admin-top">
+          <div><h2 style="color:var(--roxo-escuro);margin:0"><i class="fa-solid fa-chart-line"></i> Painel de Controle</h2><div class="admin-email" id="loggedAdminEmail"></div></div>
+          <button class="btn-danger" onclick="logoutAdmin()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</button>
+        </div>
+
+        <div class="stat-grid">
+          <div class="card stat-card" style="margin:0"><h3 id="statTotalReports" style="font-size:1.8rem;color:var(--verde)">0</h3><p style="font-size:.8rem;font-weight:600">Relatos Recebidos</p></div>
+          <div class="card stat-card purple" style="margin:0"><h3 id="statTotalChats" style="font-size:1.8rem;color:var(--roxo)">0</h3><p style="font-size:.8rem;font-weight:600">Conversas Ativas</p></div>
+          <div class="card stat-card teal" style="margin:0"><h3 id="statTotalPosts" style="font-size:1.8rem;color:var(--verde-agua)">0</h3><p style="font-size:.8rem;font-weight:600">Avisos no Mural</p></div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-headset"></i> Resposta aos Chats</h2>
+          <div class="admin-chat-layout">
+            <div class="room-list" id="adminRoomList"><div class="empty">Nenhuma conversa iniciada.</div></div>
+            <div style="display:flex;flex-direction:column;height:100%;border:1px solid var(--cinza-borda);border-radius:12px;overflow:hidden">
+              <div id="adminSelectedRoomTitle" style="padding:10px 15px;background:#F8FAFC;border-bottom:1px solid var(--cinza-borda);font-weight:700;font-size:.85rem">Selecione uma conversa</div>
+              <div class="chat-messages" id="adminChatMessages"></div>
+              <div class="chat-input-area"><input type="text" id="adminChatInput" class="form-control" maxlength="1000" placeholder="Digite a resposta..." onkeypress="if(event.key==='Enter')sendAdminMessage()"><button class="btn-primary" onclick="sendAdminMessage()"><i class="fa-solid fa-paper-plane"></i></button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-clipboard-list"></i> Relatos Recebidos</h2>
+          <div id="adminReportsList"><p class="empty">Carregando...</p></div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-bullhorn"></i> Publicar Aviso</h2>
+          <form onsubmit="createMuralPost(event)">
+            <div class="form-group"><label for="muralTitleInput">Título do Aviso</label><input type="text" id="muralTitleInput" class="form-control" maxlength="150" required placeholder="Ex.: Reunião do Grêmio"></div>
+            <div class="form-group"><label for="muralContentInput">Conteúdo</label><textarea id="muralContentInput" class="form-control" rows="3" maxlength="2000" required placeholder="Escreva o comunicado..."></textarea></div>
+            <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Publicar Aviso</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import { getAuth, signInAnonymously, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  import { getDatabase, ref, push, set, onValue, get, remove, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAL4mzxnKoVoZkoExOKOBtDte8HXz2TvwA",
+    authDomain: "portal-abracar.firebaseapp.com",
+    databaseURL: "https://portal-abracar-default-rtdb.firebaseio.com",
+    projectId: "portal-abracar",
+    storageBucket: "portal-abracar.firebasestorage.app",
+    messagingSenderId: "808224098605",
+    appId: "1:808224098605:web:53c35fec2d100115dfaba4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  let currentUser = null;
+  let currentAdminRoom = null;
+  let breathingInterval = null;
+  let stopStudentChatListener = null;
+  let stopMuralListener = null;
+  let stopAdminChatsListener = null;
+  let stopAdminReportsListener = null;
+  let stopAdminMuralListener = null;
+  let adminIsAuthorized = false;
+  let adminChatsCache = {};
+  let adminReportsCache = {};
+  let adminMuralCache = {};
+
+  window.firebaseApp = app;
+  window.firebaseAuth = auth;
+  window.firebaseDB = db;
+
+  const $ = id => document.getElementById(id);
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+  const formatTime = ts => ts ? new Date(ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : "";
+  const shortId = uid => uid ? "ID: " + uid.slice(-6).toUpperCase() : "Conectando...";
+  const setStatus = ok => { $("statusDot").classList.toggle("ok", !!ok); };
+
+  function showMessage(message, type="info") {
+    alert(message);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    renderMuralLoading();
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (!user) {
+        setStatus(false);
+        $("userAnonId").textContent = "Desconectado";
+        return;
+      }
+
+      setStatus(true);
+
+      if (user.isAnonymous) {
+        $("userAnonId").textContent = shortId(user.uid);
+        await startStudentListeners();
+      } else {
+        $("userAnonId").textContent = "Admin";
+      }
+    });
+  });
+
+  async function ensureAnonymousUser() {
+    if (auth.currentUser) return auth.currentUser;
+    const result = await signInAnonymously(auth);
+    return result.user;
+  }
+
+  async function startStudentListeners() {
+    try {
+      const user = await ensureAnonymousUser();
+      $("userAnonId").textContent = shortId(user.uid);
+      subscribeStudentChat(user.uid);
+      subscribeMural();
+    } catch (error) {
+      console.error(error);
+      setStatus(false);
+      $("userAnonId").textContent = "Erro de conexão";
+      $("studentChatMessages").innerHTML = '<div class="notice error">Não foi possível conectar ao Firebase. Verifique se o provedor Anônimo está ativado.</div>';
+      $("muralPostsContainer").innerHTML = '<div class="notice error">Não foi possível carregar o mural.</div>';
+    }
+  }
+
+  function subscribeStudentChat(uid) {
+    if (stopStudentChatListener) stopStudentChatListener();
+    const messagesRef = ref(db, `chats/${uid}/messages`);
+    stopStudentChatListener = onValue(messagesRef, snapshot => {
+      const data = snapshot.val() || {};
+      const messages = Object.entries(data).map(([id,msg]) => ({id,...msg})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+      renderStudentMessages(messages, uid);
+    }, error => {
+      console.error(error);
+      $("studentChatMessages").innerHTML = '<div class="notice error">Não foi possível carregar as mensagens.</div>';
+    });
+  }
+
+  function renderStudentMessages(messages, uid) {
+    const container = $("studentChatMessages");
+    if (!messages.length) {
+      container.innerHTML = `<div class="message gremio"><strong>Atendimento ABRAÇAR</strong><br>Olá! Como podemos te acolher ou ajudar hoje? Selecione acima com quem deseja conversar.<div class="message-time">Início</div></div>`;
+      return;
+    }
+    container.innerHTML = messages.map(msg => {
+      const isUser = msg.senderUid === uid || msg.senderType === "student";
+      return `<div class="message ${isUser?'user':'gremio'}"><strong>${isUser?'Você':escapeHTML(msg.senderName||'Equipe ABRAÇAR')}</strong><br>${escapeHTML(msg.text).replace(/\n/g,"<br>")}<div class="message-time">${escapeHTML(formatTime(msg.timestamp))}</div></div>`;
+    }).join("");
+    container.scrollTop = container.scrollHeight;
+  }
+
+  window.sendStudentMessage = async function() {
+    const input = $("chatInput");
+    const text = input.value.trim();
+    const recipient = $("chatRecipient").value;
+    if (!text) return;
+    if (!currentUser || !currentUser.isAnonymous) { showMessage("A sessão anônima ainda não está pronta."); return; }
+
+    const btn = $("studentSendBtn");
+    btn.disabled = true;
+    try {
+      const messagesRef = ref(db, `chats/${currentUser.uid}/messages`);
+      const newMessageRef = push(messagesRef);
+      await set(newMessageRef, {
+        senderUid: currentUser.uid,
+        senderType: "student",
+        recipient,
+        text,
+        timestamp: Date.now()
+      });
+      await set(ref(db, `chats/${currentUser.uid}/lastActivity`), Date.now());
+      input.value = "";
+    } catch (error) {
+      console.error(error);
+      showMessage("Não foi possível enviar a mensagem. Tente novamente.");
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  window.submitReport = async function(event) {
+    event.preventDefault();
+    if (!currentUser || !currentUser.isAnonymous) { showMessage("A sessão anônima ainda não está pronta."); return; }
+
+    const type = $("reportType").value;
+    const location = $("reportLocation").value.trim();
+    const message = $("reportMessage").value.trim();
+    if (!type || !message) return;
+
+    const btn = $("reportSubmitBtn");
+    btn.disabled = true;
+    try {
+      const reportRef = push(ref(db, "reports"));
+      await set(reportRef, {
+        type,
+        location: location || "Não especificado",
+        message,
+        senderUid: currentUser.uid,
+        timestamp: Date.now(),
+        status: "novo"
+      });
+      $("reportForm").reset();
+      showMessage("Seu relato foi enviado. Obrigado por contribuir.");
+    } catch (error) {
+      console.error(error);
+      showMessage("Não foi possível enviar o relato. Tente novamente.");
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  function renderMuralLoading() {
+    $("muralPostsContainer").innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Carregando mural...</div>';
+  }
+
+  function subscribeMural() {
+    if (stopMuralListener) stopMuralListener();
+    stopMuralListener = onValue(ref(db,"mural"), snapshot => {
+      const data = snapshot.val() || {};
+      const posts = Object.entries(data).map(([id,p])=>({id,...p})).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+      renderMuralPosts(posts);
+    }, error => {
+      console.error(error);
+      $("muralPostsContainer").innerHTML = '<div class="notice error">Não foi possível carregar o mural.</div>';
+    });
+  }
+
+  function renderMuralPosts(posts) {
+    if (!posts.length) {
+      $("muralPostsContainer").innerHTML = `<div class="mural-card"><span class="pill"><i class="fa-solid fa-circle-info"></i> Portal ABRAÇAR</span><h4 style="color:var(--roxo-escuro);margin:8px 0">Bem-vindos ao Portal ABRAÇAR!</h4><p style="font-size:.85rem;line-height:1.4">Espaço aberto para escuta, acolhimento e melhorias do nosso ambiente escolar.</p></div>`;
+      return;
+    }
+    $("muralPostsContainer").innerHTML = posts.map(post => `<div class="mural-card">
+      <span style="font-size:.75rem;color:#888;font-weight:600">${escapeHTML(formatTime(post.timestamp))}</span>
+      <h4 style="color:var(--roxo-escuro);margin:6px 0">${escapeHTML(post.title)}</h4>
+      <p style="font-size:.85rem;line-height:1.4">${escapeHTML(post.content).replace(/\n/g,"<br>")}</p>
+    </div>`).join("");
+  }
+
+  window.loginAdmin = async function(event) {
+    event.preventDefault();
+    const email = $("adminEmailInput").value.trim();
+    const password = $("adminPasswordInput").value;
+    if (!email || !password) return;
+
+    const btn = $("adminLoginBtn");
+    btn.disabled = true;
+    try {
+      const result = await signInWithEmailAndPassword(auth,email,password);
+      const user = result.user;
+
+      const adminSnap = await get(ref(db,`admins/${user.uid}`));
+      if (adminSnap.val() !== true) {
+        await signOut(auth);
+        showMessage("Esta conta está autenticada, mas ainda não foi autorizada como administradora.");
+        return;
+      }
+
+      adminIsAuthorized = true;
+      $("adminAuthCard").style.display = "none";
+      $("adminPanel").style.display = "block";
+      $("loggedAdminEmail").textContent = user.email || "";
+      $("userAnonId").textContent = "Admin";
+      setStatus(true);
+      startAdminListeners();
+    } catch (error) {
+      console.error(error);
+      const msg = ({
+        "auth/invalid-credential":"E-mail ou senha incorretos.",
+        "auth/invalid-email":"Digite um e-mail válido.",
+        "auth/too-many-requests":"Muitas tentativas. Aguarde um pouco e tente novamente.",
+        "auth/user-disabled":"Esta conta foi desativada."
+      })[error.code] || "Não foi possível entrar como administrador.";
+      showMessage(msg);
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  async function startAdminListeners() {
+    stopAdminListeners();
+    stopAdminChatsListener = onValue(ref(db,"chats"), snapshot => {
+      adminChatsCache = snapshot.val() || {};
+      $("statTotalChats").textContent = Object.keys(adminChatsCache).length;
+      renderAdminRooms();
+      if (currentAdminRoom) renderAdminMessages();
+    });
+    stopAdminReportsListener = onValue(ref(db,"reports"), snapshot => {
+      adminReportsCache = snapshot.val() || {};
+      $("statTotalReports").textContent = Object.keys(adminReportsCache).length;
+      renderAdminReports();
+    });
+    stopAdminMuralListener = onValue(ref(db,"mural"), snapshot => {
+      adminMuralCache = snapshot.val() || {};
+      $("statTotalPosts").textContent = Object.keys(adminMuralCache).length;
+    });
+  }
+
+  function stopAdminListeners() {
+    if (stopAdminChatsListener) { stopAdminChatsListener(); stopAdminChatsListener=null; }
+    if (stopAdminReportsListener) { stopAdminReportsListener(); stopAdminReportsListener=null; }
+    if (stopAdminMuralListener) { stopAdminMuralListener(); stopAdminMuralListener=null; }
+  }
+
+  function renderAdminRooms() {
+    const rooms = Object.entries(adminChatsCache).sort((a,b)=>(b[1]?.lastActivity||0)-(a[1]?.lastActivity||0));
+    if (!rooms.length) { $("adminRoomList").innerHTML='<div class="empty">Nenhuma conversa iniciada.</div>'; return; }
+    $("adminRoomList").innerHTML = rooms.map(([uid,room]) => `<div class="room-item ${currentAdminRoom===uid?'active':''}" onclick="selectAdminRoom('${uid}')"><i class="fa-solid fa-user-secret"></i> ${escapeHTML(shortId(uid))}<br><small style="color:#777">${escapeHTML(room.lastActivity?formatTime(room.lastActivity):"Sem atividade")}</small></div>`).join("");
+  }
+
+  window.selectAdminRoom = function(uid) {
+    currentAdminRoom = uid;
+    renderAdminRooms();
+    $("adminSelectedRoomTitle").textContent = "Atendendo: " + shortId(uid);
+    renderAdminMessages();
+  };
+
+  function renderAdminMessages() {
+    const container = $("adminChatMessages");
+    if (!currentAdminRoom || !adminChatsCache[currentAdminRoom]?.messages) {
+      container.innerHTML = '<div class="empty">Nenhuma mensagem nesta conversa.</div>'; return;
+    }
+    const messages = Object.entries(adminChatsCache[currentAdminRoom].messages).map(([id,m])=>({id,...m})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+    container.innerHTML = messages.map(msg => {
+      const isAdmin = msg.senderType === "admin";
+      return `<div class="message ${isAdmin?'user':'gremio'}"><strong>${isAdmin?'Equipe ABRAÇAR':'Estudante'}</strong>${msg.recipient?` <span style="font-size:.7rem;opacity:.7">(${escapeHTML(msg.recipient)})</span>`:''}<br>${escapeHTML(msg.text).replace(/\n/g,"<br>")}<div class="message-time">${escapeHTML(formatTime(msg.timestamp))}</div></div>`;
+    }).join("");
+    container.scrollTop=container.scrollHeight;
+  }
+
+  window.sendAdminMessage = async function() {
+    const input=$("adminChatInput"), text=input.value.trim();
+    if (!text || !currentAdminRoom || !adminIsAuthorized || !currentUser || currentUser.isAnonymous) return;
+    try {
+      const newRef=push(ref(db,`chats/${currentAdminRoom}/messages`));
+      await set(newRef,{senderUid:currentUser.uid,senderType:"admin",senderName:"Equipe ABRAÇAR",recipient:currentAdminRoom,text,timestamp:Date.now()});
+      await set(ref(db,`chats/${currentAdminRoom}/lastActivity`),Date.now());
+      input.value="";
+    } catch(error) { console.error(error); showMessage("Não foi possível enviar a resposta."); }
+  };
+
+  function renderAdminReports() {
+    const entries=Object.entries(adminReportsCache).sort((a,b)=>(b[1]?.timestamp||0)-(a[1]?.timestamp||0));
+    if(!entries.length){$("adminReportsList").innerHTML='<p class="empty">Nenhum relato registrado até o momento.</p>';return;}
+    $("adminReportsList").innerHTML=entries.map(([id,rep])=>`<div class="report-card">
+      <div class="report-head"><span style="font-weight:700;color:var(--roxo)">${escapeHTML(rep.type)}</span><span>${escapeHTML(formatTime(rep.timestamp))}</span></div>
+      <p style="font-size:.85rem;margin-bottom:6px"><strong>Local/Turma:</strong> ${escapeHTML(rep.location||"Não especificado")}</p>
+      <p style="font-size:.85rem;line-height:1.4">${escapeHTML(rep.message).replace(/\n/g,"<br>")}</p>
+      <div style="margin-top:8px"><span class="pill">${escapeHTML(rep.status||"novo")}</span> <button class="btn-danger" onclick="deleteReport('${id}')"><i class="fa-solid fa-trash"></i> Excluir</button></div>
+    </div>`).join("");
+  }
+
+  window.deleteReport = async function(id) {
+    if(!adminIsAuthorized || !confirm("Deseja realmente excluir este relato?")) return;
+    try { await remove(ref(db,`reports/${id}`)); }
+    catch(error){ console.error(error); showMessage("Não foi possível excluir o relato."); }
+  };
+
+  window.createMuralPost = async function(event) {
+    event.preventDefault();
+    if(!adminIsAuthorized || !currentUser || currentUser.isAnonymous) return;
+    const title=$("muralTitleInput").value.trim(), content=$("muralContentInput").value.trim();
+    if(!title || !content) return;
+    try {
+      const newRef=push(ref(db,"mural"));
+      await set(newRef,{title,content,timestamp:Date.now(),authorUid:currentUser.uid});
+      $("muralTitleInput").value=""; $("muralContentInput").value="";
+      showMessage("Aviso publicado com sucesso.");
+    } catch(error){console.error(error);showMessage("Não foi possível publicar o aviso.");}
+  };
+
+  window.logoutAdmin = async function() {
+    adminIsAuthorized=false; currentAdminRoom=null; stopAdminListeners();
+    await signOut(auth);
+    $("adminPanel").style.display="none"; $("adminAuthCard").style.display="block";
+    $("adminPasswordInput").value=""; $("userAnonId").textContent="Conectando..."; setStatus(false);
+    try { await signInAnonymously(auth); } catch(e){console.error(e); }
+  };
+
+  window.switchTab = function(tabId,element) {
+    document.querySelectorAll(".tab-content").forEach(tab=>tab.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(item=>item.classList.remove("active"));
+    $(tabId).classList.add("active"); if(element) element.classList.add("active");
+    const titleMap={inicioTab:"Portal ABRAÇAR",chatTab:"Chat de Escuta",respiracaoTab:"Respiração Guiada",relatoTab:"Relato Anônimo",apoioTab:"Canais de Apoio",muralTab:"Mural de Avisos",adminTab:"Painel Administrativo"};
+    $("headerTitle").textContent=titleMap[tabId]||"Portal ABRAÇAR";
+    if(tabId==="chatTab" && currentUser?.isAnonymous) subscribeStudentChat(currentUser.uid);
+    if(window.innerWidth<=768) closeMobileSidebar();
+  };
+
+  window.openMobileSidebar=()=>{$("sidebar").classList.add("mobile-open");$("sidebarOverlay").classList.add("active")};
+  window.closeMobileSidebar=()=>{$("sidebar").classList.remove("mobile-open");$("sidebarOverlay").classList.remove("active")};
+  $("toggleSidebarBtn").addEventListener("click",()=>$("sidebar").classList.toggle("collapsed"));
+
+  window.toggleBreathing=function(){
+    const circle=$("breathCircle"),text=$("breathText"),btn=$("startBreathBtn");
+    if(breathingInterval){clearInterval(breathingInterval);breathingInterval=null;circle.className="breathing-circle";text.textContent="Iniciar";btn.innerHTML='<i class="fa-solid fa-play"></i> Iniciar Respiração';return;}
+    btn.innerHTML='<i class="fa-solid fa-stop"></i> Parar Respiração';let step=0;
+    const runCycle=()=>{if(step===0){circle.className="breathing-circle inhale";text.textContent="Inspire... (4s)";step=1}else if(step===1){circle.className="breathing-circle hold";text.textContent="Segure... (4s)";step=2}else{circle.className="breathing-circle exhale";text.textContent="Expire... (4s)";step=0}};
+    runCycle();breathingInterval=setInterval(runCycle,4000);
+  };
+</script>
+</body>
+</html>
